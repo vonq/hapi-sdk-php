@@ -1,0 +1,38 @@
+{
+    "name": "vonq/hapi-sdk",
+    "type": "library",
+    "keywords": [
+        "VONQ Hiring API",
+        "API",
+        "SDK"
+    ],
+    "homepage": "https://vonq.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marian Mazarovici",
+            "email": "marian@vonq.com",
+            "homepage": "https://vonq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2 <8.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "apimatic/unirest-php": "^2.2.2",
+        "apimatic/jsonmapper": "^3.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5 || ^8.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "HAPILib\\": "src/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html=coverage"
+    }
+}
