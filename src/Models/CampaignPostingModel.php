@@ -20,9 +20,14 @@ class CampaignPostingModel implements \JsonSerializable
     private $name;
 
     /**
-     * @var float|null
+     * @var int|null
      */
     private $clicks;
+
+    /**
+     * @var string|null
+     */
+    private $productId;
 
     /**
      * Returns Name.
@@ -48,7 +53,7 @@ class CampaignPostingModel implements \JsonSerializable
      * Returns Clicks.
      * Number of clicks of the mentioned posting
      */
-    public function getClicks(): ?float
+    public function getClicks(): ?int
     {
         return $this->clicks;
     }
@@ -59,9 +64,29 @@ class CampaignPostingModel implements \JsonSerializable
      *
      * @maps clicks
      */
-    public function setClicks(?float $clicks): void
+    public function setClicks(?int $clicks): void
     {
         $this->clicks = $clicks;
+    }
+
+    /**
+     * Returns Product Id.
+     * The ID of the product that was bought
+     */
+    public function getProductId(): ?string
+    {
+        return $this->productId;
+    }
+
+    /**
+     * Sets Product Id.
+     * The ID of the product that was bought
+     *
+     * @maps productId
+     */
+    public function setProductId(?string $productId): void
+    {
+        $this->productId = $productId;
     }
 
     private $additionalProperties = [];
@@ -90,10 +115,13 @@ class CampaignPostingModel implements \JsonSerializable
     {
         $json = [];
         if (isset($this->name)) {
-            $json['name']   = $this->name;
+            $json['name']      = $this->name;
         }
         if (isset($this->clicks)) {
-            $json['clicks'] = $this->clicks;
+            $json['clicks']    = $this->clicks;
+        }
+        if (isset($this->productId)) {
+            $json['productId'] = $this->productId;
         }
         $json = array_merge($json, $this->additionalProperties);
 

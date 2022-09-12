@@ -46,7 +46,7 @@ class PriceModel implements \JsonSerializable
 
     /**
      * Returns Currency.
-     * ISO 4217 code for the Currency.
+     * An ISO 4217 code for a currency to use for order invoicing.
      */
     public function getCurrency(): ?string
     {
@@ -55,10 +55,10 @@ class PriceModel implements \JsonSerializable
 
     /**
      * Sets Currency.
-     * ISO 4217 code for the Currency.
+     * An ISO 4217 code for a currency to use for order invoicing.
      *
      * @maps currency
-     * @factory \HAPILib\Models\CurrencyEnum::checkValue
+     * @factory \HAPILib\Models\AcceptedCurrencyEnum::checkValue
      */
     public function setCurrency(?string $currency): void
     {
@@ -94,7 +94,7 @@ class PriceModel implements \JsonSerializable
             $json['amount']   = $this->amount;
         }
         if (isset($this->currency)) {
-            $json['currency'] = CurrencyEnum::checkValue($this->currency);
+            $json['currency'] = AcceptedCurrencyEnum::checkValue($this->currency);
         }
         $json = array_merge($json, $this->additionalProperties);
 

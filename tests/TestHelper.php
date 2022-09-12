@@ -43,35 +43,51 @@ class TestHelper
     }
 
     /**
-     * Recursively check whether the leftTree is a proper subset of the right tree
-     * @param   array   $leftTree       Left tree
-     * @param   array   $rightTree      Right tree
-     * @param   boolean $checkValues    Check primitive values for equality?
-     * @param   boolean $allowExtra     Are extra elements allowed in right array?
-     * @param   boolean $isOrdered      Should elements in right be compared in order to left?
-     * @return  boolean                 True if leftTree is a subset of rightTree
+     * Recursively check whether the left value is a proper subset of the right value
+     *
+     * @param   mixed   $left        Left value
+     * @param   mixed   $right       Right value
+     * @param   boolean $checkValues Check primitive values for equality?
+     * @param   boolean $allowExtra  Are extra elements allowed in right array?
+     * @param   boolean $isOrdered   Should elements in right be compared in order to the left array?
+     *
+     * @return  boolean True if leftTree is a subset of rightTree
      */
     public static function isProperSubsetOf(
-        array $leftTree = null,
-        array $rightTree = null,
+        $left,
+        $right,
         $checkValues,
         $allowExtra,
         $isOrdered
     ) {
-    
-        if ($leftTree == null) {
+        if ($left === null) {
             return true;
         }
 
-        for ($iterator = new \ArrayIterator($leftTree); $iterator->valid(); $iterator->next()) {
+        if ($right === null) {
+            return false;
+        }
+
+        // If both values are primitive, check if they are equal
+        if (!is_array($left) && !is_array($right)) {
+            return $left === $right;
+        }
+
+        // Check if one of the values is primitive and the other is not
+        if (!is_array($left) || !is_array($right)) {
+            return false;
+        }
+
+        for ($iterator = new \ArrayIterator($left); $iterator->valid(); $iterator->next()) {
             $key = $iterator->key();
-            $leftVal = $leftTree[$key];
-            $rightVal = $rightTree[$key];
+            $leftVal = $left[$key];
+            $rightVal = $right[$key];
 
             // Check if key exists
-            if (!array_key_exists($key, $rightTree)) {
+            if (!array_key_exists($key, $right)) {
                 return false;
             }
+
             if (static::isAssoc($leftVal)) {
                 // If left value is tree, right value should be be tree too
                 if (static::isAssoc($rightVal)) {
@@ -87,47 +103,52 @@ class TestHelper
                 } else {
                     return false;
                 }
-            } else {
-                // Value comparison if checkValues
-                if ($checkValues) {
-                    // If left value is a primitive, check if it equals right value
-                    if (is_array($leftVal)) {
-                        if (!is_array($rightVal)) {
-                            return false;
-                        }
-                        if (count($leftVal) > 0 && static::isAssoc($leftVal[0])) {
-                            if (!static::isArrayOfJsonObjectsProperSubsetOf(
-                                $leftVal,
-                                $rightVal,
-                                $checkValues,
-                                $allowExtra,
-                                $isOrdered
-                            )) {
-                                return false;
-                            }
-                        } else {
-                            if (!static::isListProperSubsetOf(
-                                $leftVal,
-                                $rightVal,
-                                $allowExtra,
-                                $isOrdered
-                            )) {
-                                return false;
-                            }
-                        }
-                    } elseif (!$leftVal == $rightTree[$key] && !$leftVal == null) {
+            } elseif ($checkValues) {
+                if (is_array($leftVal)) {
+                    if (!is_array($rightVal)) {
                         return false;
                     }
+                    if (count($leftVal) > 0 && static::isAssoc($leftVal[0])) {
+                        if (!static::isArrayOfJsonObjectsProperSubsetOf(
+                            $leftVal,
+                            $rightVal,
+                            $checkValues,
+                            $allowExtra,
+                            $isOrdered
+                        )) {
+                            return false;
+                        }
+                    } else {
+                        if (!static::isListProperSubsetOf(
+                            $leftVal,
+                            $rightVal,
+                            $allowExtra,
+                            $isOrdered
+                        )) {
+                            return false;
+                        }
+                    }
+                } elseif (
+                    !static::isProperSubsetOf(
+                        $leftVal,
+                        $rightVal,
+                        $checkValues,
+                        $allowExtra,
+                        $isOrdered
+                    )
+                ) {
+                    return false;
                 }
             }
         }
+
         return true;
     }
     
     /**
      * Recursively check whether the left JSON object is a proper subset of the right JSON object
-     * @param   array   $leftObject     Left JSON object as string
-     * @param   array   $rightObject    Right JSON object as string
+     * @param   string  $leftObject     Left JSON object as string
+     * @param   string  $rightObject    Right JSON object as string
      * @param   boolean $checkValues    Check primitive values for equality?
      * @param   boolean $allowExtra     Are extra elements allowed in right array?
      * @param   boolean $isOrdered      Should elements in right be compared in order to left?

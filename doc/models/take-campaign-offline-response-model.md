@@ -9,13 +9,13 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `campaignId` | `?string` | Optional | - | getCampaignId(): ?string | setCampaignId(?string campaignId): void |
+| `campaignId` | `string` | Required | Id of the Campaign you've taken offline | getCampaignId(): string | setCampaignId(string campaignId): void |
 
 ## Example (as JSON)
 
 ```json
 {
-  "campaignId": null
+  "campaignId": "campaignId0"
 }
 ```
 

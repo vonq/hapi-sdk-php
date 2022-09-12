@@ -17,10 +17,13 @@ use HAPILib\Controllers;
  */
 class HAPIClient implements ConfigurationInterface
 {
-    private $portfolio;
-    private $contracts;
     private $campaigns;
+    private $channels;
+    private $contractGroups;
+    private $contracts;
+    private $products;
     private $taxonomy;
+    private $wallets;
 
     private $timeout = ConfigurationDefaults::TIMEOUT;
     private $enableRetries = ConfigurationDefaults::ENABLE_RETRIES;
@@ -33,6 +36,8 @@ class HAPIClient implements ConfigurationInterface
     private $httpMethodsToRetry = ConfigurationDefaults::HTTP_METHODS_TO_RETRY;
     private $skipSslVerification = ConfigurationDefaults::SKIP_SSL_VERIFICATION;
     private $environment = ConfigurationDefaults::ENVIRONMENT;
+    private $xAuthToken = ConfigurationDefaults::X_AUTH_TOKEN;
+    private $customHeaderAuthenticationManager;
     private $authManagers = [];
     private $httpCallback;
 
@@ -71,9 +76,15 @@ class HAPIClient implements ConfigurationInterface
         if (isset($configOptions['environment'])) {
             $this->environment = $configOptions['environment'];
         }
+        if (isset($configOptions['xAuthToken'])) {
+            $this->xAuthToken = $configOptions['xAuthToken'];
+        }
         if (isset($configOptions['httpCallback'])) {
             $this->httpCallback = $configOptions['httpCallback'];
         }
+
+        $this->customHeaderAuthenticationManager = new CustomHeaderAuthenticationManager($this->xAuthToken);
+        $this->authManagers['global'] = $this->customHeaderAuthenticationManager;
     }
 
     /**
@@ -115,6 +126,9 @@ class HAPIClient implements ConfigurationInterface
         }
         if (isset($this->environment)) {
             $configMap['environment'] = $this->environment;
+        }
+        if ($this->customHeaderAuthenticationManager->getXAuthToken() !== null) {
+            $configMap['xAuthToken'] = $this->customHeaderAuthenticationManager->getXAuthToken();
         }
         if (isset($this->httpCallback)) {
             $configMap['httpCallback'] = $this->httpCallback;
@@ -186,6 +200,11 @@ class HAPIClient implements ConfigurationInterface
         return $this->environment;
     }
 
+    public function getCustomHeaderAuthenticationCredentials(): ?CustomHeaderAuthenticationCredentials
+    {
+        return $this->customHeaderAuthenticationManager;
+    }
+
     /**
      * Get the base uri for a given server in the current environment
      *
@@ -196,36 +215,6 @@ class HAPIClient implements ConfigurationInterface
     public function getBaseUri(string $server = Server::DEFAULT_): string
     {
         return static::ENVIRONMENT_MAP[$this->environment][$server];
-    }
-
-    /**
-     * Returns Portfolio Controller
-     */
-    public function getPortfolioController(): Controllers\PortfolioController
-    {
-        if ($this->portfolio == null) {
-            $this->portfolio = new Controllers\PortfolioController(
-                $this,
-                $this->authManagers,
-                $this->httpCallback
-            );
-        }
-        return $this->portfolio;
-    }
-
-    /**
-     * Returns Contracts Controller
-     */
-    public function getContractsController(): Controllers\ContractsController
-    {
-        if ($this->contracts == null) {
-            $this->contracts = new Controllers\ContractsController(
-                $this,
-                $this->authManagers,
-                $this->httpCallback
-            );
-        }
-        return $this->contracts;
     }
 
     /**
@@ -244,6 +233,66 @@ class HAPIClient implements ConfigurationInterface
     }
 
     /**
+     * Returns Channels Controller
+     */
+    public function getChannelsController(): Controllers\ChannelsController
+    {
+        if ($this->channels == null) {
+            $this->channels = new Controllers\ChannelsController(
+                $this,
+                $this->authManagers,
+                $this->httpCallback
+            );
+        }
+        return $this->channels;
+    }
+
+    /**
+     * Returns Contract Groups Controller
+     */
+    public function getContractGroupsController(): Controllers\ContractGroupsController
+    {
+        if ($this->contractGroups == null) {
+            $this->contractGroups = new Controllers\ContractGroupsController(
+                $this,
+                $this->authManagers,
+                $this->httpCallback
+            );
+        }
+        return $this->contractGroups;
+    }
+
+    /**
+     * Returns Contracts Controller
+     */
+    public function getContractsController(): Controllers\ContractsController
+    {
+        if ($this->contracts == null) {
+            $this->contracts = new Controllers\ContractsController(
+                $this,
+                $this->authManagers,
+                $this->httpCallback
+            );
+        }
+        return $this->contracts;
+    }
+
+    /**
+     * Returns Products Controller
+     */
+    public function getProductsController(): Controllers\ProductsController
+    {
+        if ($this->products == null) {
+            $this->products = new Controllers\ProductsController(
+                $this,
+                $this->authManagers,
+                $this->httpCallback
+            );
+        }
+        return $this->products;
+    }
+
+    /**
      * Returns Taxonomy Controller
      */
     public function getTaxonomyController(): Controllers\TaxonomyController
@@ -259,16 +308,31 @@ class HAPIClient implements ConfigurationInterface
     }
 
     /**
+     * Returns Wallets Controller
+     */
+    public function getWalletsController(): Controllers\WalletsController
+    {
+        if ($this->wallets == null) {
+            $this->wallets = new Controllers\WalletsController(
+                $this,
+                $this->authManagers,
+                $this->httpCallback
+            );
+        }
+        return $this->wallets;
+    }
+
+    /**
      * A map of all baseurls used in different environments and servers
      *
      * @var array
      */
     private const ENVIRONMENT_MAP = [
         Environment::SANDBOX => [
-            Server::DEFAULT_ => 'https://marketplace-sandbox.api.vonq.com/',
+            Server::DEFAULT_ => 'https://marketplace-sandbox.api.vonq.com',
         ],
         Environment::PRODUCTION => [
-            Server::DEFAULT_ => 'https://marketplace.api.vonq.com/',
+            Server::DEFAULT_ => 'https://marketplace.api.vonq.com',
         ],
     ];
 }

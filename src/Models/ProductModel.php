@@ -20,12 +20,12 @@ class ProductModel implements \JsonSerializable
     private $title;
 
     /**
-     * @var LocationModel[]
+     * @var LimitedLocationModel[]
      */
     private $locations;
 
     /**
-     * @var JobFunctionModel[]
+     * @var LimitedJobFunctionModel[]
      */
     private $jobFunctions;
 
@@ -45,32 +45,32 @@ class ProductModel implements \JsonSerializable
     private $homepage;
 
     /**
-     * @var string|null
+     * @var ProductLogoModel[]|null
      */
     private $logoUrl;
 
     /**
-     * @var string|null
+     * @var ProductLogoWithSizeModel[]
      */
     private $logoSquareUrl;
 
     /**
-     * @var string|null
+     * @var ProductLogoWithSizeModel[]
      */
     private $logoRectangleUrl;
 
     /**
-     * @var array|null
+     * @var DurationInDaysModel
      */
     private $duration;
 
     /**
-     * @var TimeToProcessModel
+     * @var DurationInHoursModel
      */
     private $timeToProcess;
 
     /**
-     * @var TimeToSetupModel
+     * @var DurationInHoursModel
      */
     private $timeToSetup;
 
@@ -100,7 +100,7 @@ class ProductModel implements \JsonSerializable
     private $crossPostings;
 
     /**
-     * @var ChannelModel
+     * @var ListChannelModel
      */
     private $channel;
 
@@ -126,17 +126,20 @@ class ProductModel implements \JsonSerializable
 
     /**
      * @param string $title
-     * @param LocationModel[] $locations
-     * @param JobFunctionModel[] $jobFunctions
+     * @param LimitedLocationModel[] $locations
+     * @param LimitedJobFunctionModel[] $jobFunctions
      * @param IndustryModel[] $industries
-     * @param TimeToProcessModel $timeToProcess
-     * @param TimeToSetupModel $timeToSetup
+     * @param ProductLogoWithSizeModel[] $logoSquareUrl
+     * @param ProductLogoWithSizeModel[] $logoRectangleUrl
+     * @param DurationInDaysModel $duration
+     * @param DurationInHoursModel $timeToProcess
+     * @param DurationInHoursModel $timeToSetup
      * @param string $productId
      * @param PriceModel[] $vonqPrice
      * @param PriceModel[] $ratecardPrice
      * @param string $type
      * @param string[] $crossPostings
-     * @param ChannelModel $channel
+     * @param ListChannelModel $channel
      * @param string $audienceGroup
      * @param bool $mcEnabled
      * @param bool $mcOnly
@@ -147,14 +150,17 @@ class ProductModel implements \JsonSerializable
         array $locations,
         array $jobFunctions,
         array $industries,
-        TimeToProcessModel $timeToProcess,
-        TimeToSetupModel $timeToSetup,
+        array $logoSquareUrl,
+        array $logoRectangleUrl,
+        DurationInDaysModel $duration,
+        DurationInHoursModel $timeToProcess,
+        DurationInHoursModel $timeToSetup,
         string $productId,
         array $vonqPrice,
         array $ratecardPrice,
         string $type,
         array $crossPostings,
-        ChannelModel $channel,
+        ListChannelModel $channel,
         string $audienceGroup,
         bool $mcEnabled,
         bool $mcOnly,
@@ -164,6 +170,9 @@ class ProductModel implements \JsonSerializable
         $this->locations = $locations;
         $this->jobFunctions = $jobFunctions;
         $this->industries = $industries;
+        $this->logoSquareUrl = $logoSquareUrl;
+        $this->logoRectangleUrl = $logoRectangleUrl;
+        $this->duration = $duration;
         $this->timeToProcess = $timeToProcess;
         $this->timeToSetup = $timeToSetup;
         $this->productId = $productId;
@@ -200,7 +209,7 @@ class ProductModel implements \JsonSerializable
     /**
      * Returns Locations.
      *
-     * @return LocationModel[]
+     * @return LimitedLocationModel[]
      */
     public function getLocations(): array
     {
@@ -213,7 +222,7 @@ class ProductModel implements \JsonSerializable
      * @required
      * @maps locations
      *
-     * @param LocationModel[] $locations
+     * @param LimitedLocationModel[] $locations
      */
     public function setLocations(array $locations): void
     {
@@ -223,7 +232,7 @@ class ProductModel implements \JsonSerializable
     /**
      * Returns Job Functions.
      *
-     * @return JobFunctionModel[]
+     * @return LimitedJobFunctionModel[]
      */
     public function getJobFunctions(): array
     {
@@ -236,7 +245,7 @@ class ProductModel implements \JsonSerializable
      * @required
      * @maps job_functions
      *
-     * @param JobFunctionModel[] $jobFunctions
+     * @param LimitedJobFunctionModel[] $jobFunctions
      */
     public function setJobFunctions(array $jobFunctions): void
     {
@@ -304,8 +313,10 @@ class ProductModel implements \JsonSerializable
 
     /**
      * Returns Logo Url.
+     *
+     * @return ProductLogoModel[]|null
      */
-    public function getLogoUrl(): ?string
+    public function getLogoUrl(): ?array
     {
         return $this->logoUrl;
     }
@@ -314,16 +325,20 @@ class ProductModel implements \JsonSerializable
      * Sets Logo Url.
      *
      * @maps logo_url
+     *
+     * @param ProductLogoModel[]|null $logoUrl
      */
-    public function setLogoUrl(?string $logoUrl): void
+    public function setLogoUrl(?array $logoUrl): void
     {
         $this->logoUrl = $logoUrl;
     }
 
     /**
      * Returns Logo Square Url.
+     *
+     * @return ProductLogoWithSizeModel[]
      */
-    public function getLogoSquareUrl(): ?string
+    public function getLogoSquareUrl(): array
     {
         return $this->logoSquareUrl;
     }
@@ -331,17 +346,22 @@ class ProductModel implements \JsonSerializable
     /**
      * Sets Logo Square Url.
      *
+     * @required
      * @maps logo_square_url
+     *
+     * @param ProductLogoWithSizeModel[] $logoSquareUrl
      */
-    public function setLogoSquareUrl(?string $logoSquareUrl): void
+    public function setLogoSquareUrl(array $logoSquareUrl): void
     {
         $this->logoSquareUrl = $logoSquareUrl;
     }
 
     /**
      * Returns Logo Rectangle Url.
+     *
+     * @return ProductLogoWithSizeModel[]
      */
-    public function getLogoRectangleUrl(): ?string
+    public function getLogoRectangleUrl(): array
     {
         return $this->logoRectangleUrl;
     }
@@ -349,9 +369,12 @@ class ProductModel implements \JsonSerializable
     /**
      * Sets Logo Rectangle Url.
      *
+     * @required
      * @maps logo_rectangle_url
+     *
+     * @param ProductLogoWithSizeModel[] $logoRectangleUrl
      */
-    public function setLogoRectangleUrl(?string $logoRectangleUrl): void
+    public function setLogoRectangleUrl(array $logoRectangleUrl): void
     {
         $this->logoRectangleUrl = $logoRectangleUrl;
     }
@@ -359,7 +382,7 @@ class ProductModel implements \JsonSerializable
     /**
      * Returns Duration.
      */
-    public function getDuration(): ?array
+    public function getDuration(): DurationInDaysModel
     {
         return $this->duration;
     }
@@ -367,9 +390,10 @@ class ProductModel implements \JsonSerializable
     /**
      * Sets Duration.
      *
+     * @required
      * @maps duration
      */
-    public function setDuration(?array $duration): void
+    public function setDuration(DurationInDaysModel $duration): void
     {
         $this->duration = $duration;
     }
@@ -377,7 +401,7 @@ class ProductModel implements \JsonSerializable
     /**
      * Returns Time to Process.
      */
-    public function getTimeToProcess(): TimeToProcessModel
+    public function getTimeToProcess(): DurationInHoursModel
     {
         return $this->timeToProcess;
     }
@@ -388,7 +412,7 @@ class ProductModel implements \JsonSerializable
      * @required
      * @maps time_to_process
      */
-    public function setTimeToProcess(TimeToProcessModel $timeToProcess): void
+    public function setTimeToProcess(DurationInHoursModel $timeToProcess): void
     {
         $this->timeToProcess = $timeToProcess;
     }
@@ -396,7 +420,7 @@ class ProductModel implements \JsonSerializable
     /**
      * Returns Time to Setup.
      */
-    public function getTimeToSetup(): TimeToSetupModel
+    public function getTimeToSetup(): DurationInHoursModel
     {
         return $this->timeToSetup;
     }
@@ -407,7 +431,7 @@ class ProductModel implements \JsonSerializable
      * @required
      * @maps time_to_setup
      */
-    public function setTimeToSetup(TimeToSetupModel $timeToSetup): void
+    public function setTimeToSetup(DurationInHoursModel $timeToSetup): void
     {
         $this->timeToSetup = $timeToSetup;
     }
@@ -527,7 +551,7 @@ class ProductModel implements \JsonSerializable
     /**
      * Returns Channel.
      */
-    public function getChannel(): ChannelModel
+    public function getChannel(): ListChannelModel
     {
         return $this->channel;
     }
@@ -538,7 +562,7 @@ class ProductModel implements \JsonSerializable
      * @required
      * @maps channel
      */
-    public function setChannel(ChannelModel $channel): void
+    public function setChannel(ListChannelModel $channel): void
     {
         $this->channel = $channel;
     }
@@ -661,7 +685,9 @@ class ProductModel implements \JsonSerializable
         $json['industries']         = $this->industries;
         $json['description']        = $this->description;
         $json['homepage']           = $this->homepage;
-        $json['logo_url']           = $this->logoUrl;
+        if (isset($this->logoUrl)) {
+            $json['logo_url']       = $this->logoUrl;
+        }
         $json['logo_square_url']    = $this->logoSquareUrl;
         $json['logo_rectangle_url'] = $this->logoRectangleUrl;
         $json['duration']           = $this->duration;

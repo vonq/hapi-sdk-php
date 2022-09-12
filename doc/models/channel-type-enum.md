@@ -16,6 +16,7 @@ The type of a channel
 | `COMMUNITY` |
 | `PUBLICATION` |
 | `AGGREGATOR` |
+| `SERVICE` |
 
 ## Example
 

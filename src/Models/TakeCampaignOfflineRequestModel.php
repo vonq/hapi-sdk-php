@@ -26,16 +26,15 @@ class TakeCampaignOfflineRequestModel implements \JsonSerializable
 
     /**
      * @param string $campaignId
-     * @param string $status
      */
-    public function __construct(string $campaignId, string $status)
+    public function __construct(string $campaignId)
     {
         $this->campaignId = $campaignId;
-        $this->status = $status;
     }
 
     /**
      * Returns Campaign Id.
+     * Id of the Campaign you want to take offline
      */
     public function getCampaignId(): string
     {
@@ -44,6 +43,7 @@ class TakeCampaignOfflineRequestModel implements \JsonSerializable
 
     /**
      * Sets Campaign Id.
+     * Id of the Campaign you want to take offline
      *
      * @required
      * @maps campaignId
@@ -55,6 +55,7 @@ class TakeCampaignOfflineRequestModel implements \JsonSerializable
 
     /**
      * Returns Status.
+     * The new status you want the campaign to have.
      */
     public function getStatus(): string
     {
@@ -63,8 +64,8 @@ class TakeCampaignOfflineRequestModel implements \JsonSerializable
 
     /**
      * Sets Status.
+     * The new status you want the campaign to have.
      *
-     * @required
      * @maps status
      */
     public function setStatus(string $status): void

@@ -21,7 +21,7 @@ class ClientFactory
 
     public static function getTestConfiguration(HttpCallBackCatcher $httpCallback): array
     {
-        return ['httpCallback' => $httpCallback];
+        return ['environment' => \HAPILib\Environment::SANDBOX, 'httpCallback' => $httpCallback];
     }
 
     public static function getConfigurationFromEnvironment(): array
@@ -31,6 +31,7 @@ class ClientFactory
         $numberOfRetries = getenv('HAPI_NUMBER_OF_RETRIES');
         $maximumRetryWaitTime = getenv('HAPI_MAXIMUM_RETRY_WAIT_TIME');
         $environment = getenv('HAPI_ENVIRONMENT');
+        $xAuthToken = getenv('HAPI_X_AUTH_TOKEN');
 
         if ($timeout !== false && \is_numeric($timeout)) {
             $config['timeout'] = intval($timeout);
@@ -46,6 +47,10 @@ class ClientFactory
 
         if ($environment !== false) {
             $config['environment'] = $environment;
+        }
+
+        if ($xAuthToken !== false) {
+            $config['xAuthToken'] = $xAuthToken;
         }
 
         return $config;

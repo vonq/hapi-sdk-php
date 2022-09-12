@@ -20,7 +20,7 @@ class CampaignStatusModel implements \JsonSerializable
     private $campaignId;
 
     /**
-     * @var string|null
+     * @var string
      */
     private $status;
 
@@ -31,10 +31,12 @@ class CampaignStatusModel implements \JsonSerializable
 
     /**
      * @param string $campaignId
+     * @param string $status
      */
-    public function __construct(string $campaignId)
+    public function __construct(string $campaignId, string $status)
     {
         $this->campaignId = $campaignId;
+        $this->status = $status;
     }
 
     /**
@@ -60,7 +62,7 @@ class CampaignStatusModel implements \JsonSerializable
      * Returns Status.
      * Status of the campaign. One of the following
      */
-    public function getStatus(): ?string
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -69,10 +71,11 @@ class CampaignStatusModel implements \JsonSerializable
      * Sets Status.
      * Status of the campaign. One of the following
      *
+     * @required
      * @maps status
      * @factory \HAPILib\Models\StatusEnum::checkValue
      */
-    public function setStatus(?string $status): void
+    public function setStatus(string $status): void
     {
         $this->status = $status;
     }
@@ -125,9 +128,7 @@ class CampaignStatusModel implements \JsonSerializable
     {
         $json = [];
         $json['campaignId']                  = $this->campaignId;
-        if (isset($this->status)) {
-            $json['status']                  = StatusEnum::checkValue($this->status);
-        }
+        $json['status']                      = StatusEnum::checkValue($this->status);
         if (isset($this->orderedProductsStatuses)) {
             $json['orderedProductsStatuses'] = $this->orderedProductsStatuses;
         }

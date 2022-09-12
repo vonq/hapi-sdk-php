@@ -25,7 +25,7 @@ class PostingDetailsModel implements \JsonSerializable
     private $description;
 
     /**
-     * @var PostingOrganizationModel
+     * @var PostingDetailsOrganizationModel
      */
     private $organization;
 
@@ -35,12 +35,12 @@ class PostingDetailsModel implements \JsonSerializable
     private $workingLocation;
 
     /**
-     * @var PostingContactInfoModel|null
+     * @var PostingContactInfoModel
      */
     private $contactInfo;
 
     /**
-     * @var float
+     * @var int
      */
     private $yearsOfExperience;
 
@@ -72,9 +72,10 @@ class PostingDetailsModel implements \JsonSerializable
     /**
      * @param string $title
      * @param string $description
-     * @param PostingOrganizationModel $organization
+     * @param PostingDetailsOrganizationModel $organization
      * @param PostingWorkingLocationModel $workingLocation
-     * @param float $yearsOfExperience
+     * @param PostingContactInfoModel $contactInfo
+     * @param int $yearsOfExperience
      * @param string $employmentType
      * @param PostingWeeklyWorkingHoursModel $weeklyWorkingHours
      * @param PostingSalaryIndicationModel $salaryIndication
@@ -84,9 +85,10 @@ class PostingDetailsModel implements \JsonSerializable
     public function __construct(
         string $title,
         string $description,
-        PostingOrganizationModel $organization,
+        PostingDetailsOrganizationModel $organization,
         PostingWorkingLocationModel $workingLocation,
-        float $yearsOfExperience,
+        PostingContactInfoModel $contactInfo,
+        int $yearsOfExperience,
         string $employmentType,
         PostingWeeklyWorkingHoursModel $weeklyWorkingHours,
         PostingSalaryIndicationModel $salaryIndication,
@@ -97,6 +99,7 @@ class PostingDetailsModel implements \JsonSerializable
         $this->description = $description;
         $this->organization = $organization;
         $this->workingLocation = $workingLocation;
+        $this->contactInfo = $contactInfo;
         $this->yearsOfExperience = $yearsOfExperience;
         $this->employmentType = $employmentType;
         $this->weeklyWorkingHours = $weeklyWorkingHours;
@@ -154,7 +157,7 @@ class PostingDetailsModel implements \JsonSerializable
     /**
      * Returns Organization.
      */
-    public function getOrganization(): PostingOrganizationModel
+    public function getOrganization(): PostingDetailsOrganizationModel
     {
         return $this->organization;
     }
@@ -165,7 +168,7 @@ class PostingDetailsModel implements \JsonSerializable
      * @required
      * @maps organization
      */
-    public function setOrganization(PostingOrganizationModel $organization): void
+    public function setOrganization(PostingDetailsOrganizationModel $organization): void
     {
         $this->organization = $organization;
     }
@@ -192,9 +195,11 @@ class PostingDetailsModel implements \JsonSerializable
     /**
      * Returns Contact Info.
      * Contact is whom to contact about the job. This may be part of the posting info for candidates to
-     * know whom they can reach out to learn more about the vacancy.
+     * know whom they can reach out to in order to learn more about the vacancy. As a minimum, a contact
+     * name is required to be able to offer a standardized check out experience for all 5000+ channels we
+     * offer, and to enable fast campaign delivery.
      */
-    public function getContactInfo(): ?PostingContactInfoModel
+    public function getContactInfo(): PostingContactInfoModel
     {
         return $this->contactInfo;
     }
@@ -202,11 +207,14 @@ class PostingDetailsModel implements \JsonSerializable
     /**
      * Sets Contact Info.
      * Contact is whom to contact about the job. This may be part of the posting info for candidates to
-     * know whom they can reach out to learn more about the vacancy.
+     * know whom they can reach out to in order to learn more about the vacancy. As a minimum, a contact
+     * name is required to be able to offer a standardized check out experience for all 5000+ channels we
+     * offer, and to enable fast campaign delivery.
      *
+     * @required
      * @maps contactInfo
      */
-    public function setContactInfo(?PostingContactInfoModel $contactInfo): void
+    public function setContactInfo(PostingContactInfoModel $contactInfo): void
     {
         $this->contactInfo = $contactInfo;
     }
@@ -215,7 +223,7 @@ class PostingDetailsModel implements \JsonSerializable
      * Returns Years of Experience.
      * Numbers of years of experience required for this position
      */
-    public function getYearsOfExperience(): float
+    public function getYearsOfExperience(): int
     {
         return $this->yearsOfExperience;
     }
@@ -227,7 +235,7 @@ class PostingDetailsModel implements \JsonSerializable
      * @required
      * @maps yearsOfExperience
      */
-    public function setYearsOfExperience(float $yearsOfExperience): void
+    public function setYearsOfExperience(int $yearsOfExperience): void
     {
         $this->yearsOfExperience = $yearsOfExperience;
     }
@@ -275,6 +283,9 @@ class PostingDetailsModel implements \JsonSerializable
 
     /**
      * Returns Salary Indication.
+     * Most job boards require a salary indication to be provided. This is a required field to be able to
+     * offer a standardized check out experience for all 5000+ channels we offer, and to enable fast
+     * campaign delivery.
      */
     public function getSalaryIndication(): PostingSalaryIndicationModel
     {
@@ -283,6 +294,9 @@ class PostingDetailsModel implements \JsonSerializable
 
     /**
      * Sets Salary Indication.
+     * Most job boards require a salary indication to be provided. This is a required field to be able to
+     * offer a standardized check out experience for all 5000+ channels we offer, and to enable fast
+     * campaign delivery.
      *
      * @required
      * @maps salaryIndication
@@ -363,9 +377,7 @@ class PostingDetailsModel implements \JsonSerializable
         $json['description']        = $this->description;
         $json['organization']       = $this->organization;
         $json['workingLocation']    = $this->workingLocation;
-        if (isset($this->contactInfo)) {
-            $json['contactInfo']    = $this->contactInfo;
-        }
+        $json['contactInfo']        = $this->contactInfo;
         $json['yearsOfExperience']  = $this->yearsOfExperience;
         $json['employmentType']     = EmploymentTypeEnum::checkValue($this->employmentType);
         $json['weeklyWorkingHours'] = $this->weeklyWorkingHours;

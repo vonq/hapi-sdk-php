@@ -12,14 +12,10 @@ namespace HAPILib\Models;
 
 use stdClass;
 
-/**
- * Location(id, canonical_name, desq_name_en, desq_country_code, country_code, mapbox_id, mapbox_text,
- * mapbox_placename, mapbox_context, mapbox_place_type, mapbox_shortcode, mapbox_within)
- */
 class LocationModel implements \JsonSerializable
 {
     /**
-     * @var float
+     * @var int
      */
     private $id;
 
@@ -39,12 +35,12 @@ class LocationModel implements \JsonSerializable
     private $boundingBox;
 
     /**
-     * @var float
+     * @var int|null
      */
     private $area;
 
     /**
-     * @var string
+     * @var string[]
      */
     private $placeType;
 
@@ -54,28 +50,25 @@ class LocationModel implements \JsonSerializable
     private $within;
 
     /**
-     * @param float $id
+     * @param int $id
      * @param string $fullyQualifiedPlaceName
      * @param string $canonicalName
      * @param float[] $boundingBox
-     * @param float $area
-     * @param string $placeType
+     * @param string[] $placeType
      * @param LocationModel $within
      */
     public function __construct(
-        float $id,
+        int $id,
         string $fullyQualifiedPlaceName,
         string $canonicalName,
         array $boundingBox,
-        float $area,
-        string $placeType,
+        array $placeType,
         LocationModel $within
     ) {
         $this->id = $id;
         $this->fullyQualifiedPlaceName = $fullyQualifiedPlaceName;
         $this->canonicalName = $canonicalName;
         $this->boundingBox = $boundingBox;
-        $this->area = $area;
         $this->placeType = $placeType;
         $this->within = $within;
     }
@@ -83,7 +76,7 @@ class LocationModel implements \JsonSerializable
     /**
      * Returns Id.
      */
-    public function getId(): float
+    public function getId(): int
     {
         return $this->id;
     }
@@ -94,7 +87,7 @@ class LocationModel implements \JsonSerializable
      * @required
      * @maps id
      */
-    public function setId(float $id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
@@ -139,6 +132,7 @@ class LocationModel implements \JsonSerializable
 
     /**
      * Returns Bounding Box.
+     * The bounding box of the location on a world map
      *
      * @return float[]
      */
@@ -149,6 +143,7 @@ class LocationModel implements \JsonSerializable
 
     /**
      * Sets Bounding Box.
+     * The bounding box of the location on a world map
      *
      * @required
      * @maps bounding_box
@@ -162,27 +157,30 @@ class LocationModel implements \JsonSerializable
 
     /**
      * Returns Area.
+     * Location area, in square kilometers
      */
-    public function getArea(): float
+    public function getArea(): ?int
     {
         return $this->area;
     }
 
     /**
      * Sets Area.
+     * Location area, in square kilometers
      *
-     * @required
      * @maps area
      */
-    public function setArea(float $area): void
+    public function setArea(?int $area): void
     {
         $this->area = $area;
     }
 
     /**
      * Returns Place Type.
+     *
+     * @return string[]
      */
-    public function getPlaceType(): string
+    public function getPlaceType(): array
     {
         return $this->placeType;
     }
@@ -193,8 +191,10 @@ class LocationModel implements \JsonSerializable
      * @required
      * @maps place_type
      * @factory \HAPILib\Models\PlaceTypeEnum::checkValue
+     *
+     * @param string[] $placeType
      */
-    public function setPlaceType(string $placeType): void
+    public function setPlaceType(array $placeType): void
     {
         $this->placeType = $placeType;
     }
@@ -247,7 +247,9 @@ class LocationModel implements \JsonSerializable
         $json['fully_qualified_place_name'] = $this->fullyQualifiedPlaceName;
         $json['canonical_name']             = $this->canonicalName;
         $json['bounding_box']               = $this->boundingBox;
-        $json['area']                       = $this->area;
+        if (isset($this->area)) {
+            $json['area']                   = $this->area;
+        }
         $json['place_type']                 = PlaceTypeEnum::checkValue($this->placeType);
         $json['within']                     = $this->within;
         $json = array_merge($json, $this->additionalProperties);

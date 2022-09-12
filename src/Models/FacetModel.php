@@ -40,19 +40,24 @@ class FacetModel implements \JsonSerializable
     private $type;
 
     /**
-     * @var FacetOptionModel[]
+     * @var OptionsFacetModel[]
      */
     private $options;
 
     /**
-     * @var FacetRuleModel[]|null
+     * @var RuleModel[]|null
      */
     private $rules;
 
     /**
-     * @var AutocompleteModel|null
+     * @var CustomFacetModel|null
      */
     private $autocomplete;
+
+    /**
+     * @var FacetDisplayRulesModel|null
+     */
+    private $displayRules;
 
     /**
      * @param string $name
@@ -60,7 +65,7 @@ class FacetModel implements \JsonSerializable
      * @param string $sort
      * @param bool $required
      * @param string $type
-     * @param FacetOptionModel[] $options
+     * @param OptionsFacetModel[] $options
      */
     public function __construct(
         string $name,
@@ -147,7 +152,7 @@ class FacetModel implements \JsonSerializable
 
     /**
      * Returns Required.
-     * Whether the Facet is required when ordering a Campaign.
+     * Whether the Facet is required when ordering a Campaign. 0 and 1 are equivalent to `true` or `false`
      */
     public function getRequired(): bool
     {
@@ -156,7 +161,7 @@ class FacetModel implements \JsonSerializable
 
     /**
      * Sets Required.
-     * Whether the Facet is required when ordering a Campaign.
+     * Whether the Facet is required when ordering a Campaign. 0 and 1 are equivalent to `true` or `false`
      *
      * @required
      * @maps required
@@ -181,7 +186,7 @@ class FacetModel implements \JsonSerializable
      *
      * @required
      * @maps type
-     * @factory \HAPILib\Models\TypeEnum::checkValue
+     * @factory \HAPILib\Models\FacetTypeEnum::checkValue
      */
     public function setType(string $type): void
     {
@@ -192,7 +197,7 @@ class FacetModel implements \JsonSerializable
      * Returns Options.
      * list of choices for this Facet's value.
      *
-     * @return FacetOptionModel[]
+     * @return OptionsFacetModel[]
      */
     public function getOptions(): array
     {
@@ -206,7 +211,7 @@ class FacetModel implements \JsonSerializable
      * @required
      * @maps options
      *
-     * @param FacetOptionModel[] $options
+     * @param OptionsFacetModel[] $options
      */
     public function setOptions(array $options): void
     {
@@ -217,7 +222,7 @@ class FacetModel implements \JsonSerializable
      * Returns Rules.
      * special validation rules that apply for this Facet's value
      *
-     * @return FacetRuleModel[]|null
+     * @return RuleModel[]|null
      */
     public function getRules(): ?array
     {
@@ -230,7 +235,7 @@ class FacetModel implements \JsonSerializable
      *
      * @maps rules
      *
-     * @param FacetRuleModel[]|null $rules
+     * @param RuleModel[]|null $rules
      */
     public function setRules(?array $rules): void
     {
@@ -239,26 +244,50 @@ class FacetModel implements \JsonSerializable
 
     /**
      * Returns Autocomplete.
-     * Used for Facets whose value choices need to be fetched through an additional call to the [List
-     * autocomplete values for posting requirements](https://vonq.stoplight.io/docs/hapi/b3A6MzM2MDEzODk-
-     * list-autocomplete-values-for-posting-requirement) endpoint.
      */
-    public function getAutocomplete(): ?AutocompleteModel
+    public function getAutocomplete(): ?CustomFacetModel
     {
         return $this->autocomplete;
     }
 
     /**
      * Sets Autocomplete.
-     * Used for Facets whose value choices need to be fetched through an additional call to the [List
-     * autocomplete values for posting requirements](https://vonq.stoplight.io/docs/hapi/b3A6MzM2MDEzODk-
-     * list-autocomplete-values-for-posting-requirement) endpoint.
      *
      * @maps autocomplete
      */
-    public function setAutocomplete(?AutocompleteModel $autocomplete): void
+    public function setAutocomplete(?CustomFacetModel $autocomplete): void
     {
         $this->autocomplete = $autocomplete;
+    }
+
+    /**
+     * Returns Display Rules.
+     * List of rules used to decide if this facet should be displayed or not.
+     *
+     * The facet is displayed when the display rules object is null or if there is a match with at least
+     * one of the show rules.
+     * Else the facet is not displayed and should not be shown to the user nor facet data be sent to the
+     * endpoint.
+     */
+    public function getDisplayRules(): ?FacetDisplayRulesModel
+    {
+        return $this->displayRules;
+    }
+
+    /**
+     * Sets Display Rules.
+     * List of rules used to decide if this facet should be displayed or not.
+     *
+     * The facet is displayed when the display rules object is null or if there is a match with at least
+     * one of the show rules.
+     * Else the facet is not displayed and should not be shown to the user nor facet data be sent to the
+     * endpoint.
+     *
+     * @maps display_rules
+     */
+    public function setDisplayRules(?FacetDisplayRulesModel $displayRules): void
+    {
+        $this->displayRules = $displayRules;
     }
 
     private $additionalProperties = [];
@@ -286,16 +315,21 @@ class FacetModel implements \JsonSerializable
     public function jsonSerialize(bool $asArrayWhenEmpty = false)
     {
         $json = [];
-        $json['name']         = $this->name;
-        $json['label']        = $this->label;
-        $json['sort']         = $this->sort;
-        $json['required']     = $this->required;
-        $json['type']         = TypeEnum::checkValue($this->type);
-        $json['options']      = $this->options;
+        $json['name']              = $this->name;
+        $json['label']             = $this->label;
+        $json['sort']              = $this->sort;
+        $json['required']          = $this->required;
+        $json['type']              = FacetTypeEnum::checkValue($this->type);
+        $json['options']           = $this->options;
         if (isset($this->rules)) {
-            $json['rules']    = $this->rules;
+            $json['rules']         = $this->rules;
         }
-        $json['autocomplete'] = $this->autocomplete;
+        if (isset($this->autocomplete)) {
+            $json['autocomplete']  = $this->autocomplete;
+        }
+        if (isset($this->displayRules)) {
+            $json['display_rules'] = $this->displayRules;
+        }
         $json = array_merge($json, $this->additionalProperties);
 
         return (!$asArrayWhenEmpty && empty($json)) ? new stdClass() : $json;

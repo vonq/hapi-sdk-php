@@ -9,8 +9,8 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `from` | `?float` | Optional | - | getFrom(): ?float | setFrom(?float from): void |
-| `to` | `float` | Required | This value needs to be an positive integer | getTo(): float | setTo(float to): void |
+| `from` | `?int` | Optional | Minimum amount of Working Hours<br>**Constraints**: `>= 0` | getFrom(): ?int | setFrom(?int from): void |
+| `to` | `int` | Required | Maximum amount of Working Hours<br>**Constraints**: `>= 1`, `<= 168` | getTo(): int | setTo(int to): void |
 
 ## Example (as JSON)
 

@@ -15,58 +15,60 @@ use stdClass;
 class PostingWeeklyWorkingHoursModel implements \JsonSerializable
 {
     /**
-     * @var float|null
+     * @var int|null
      */
     private $from;
 
     /**
-     * @var float
+     * @var int
      */
     private $to;
 
     /**
-     * @param float $to
+     * @param int $to
      */
-    public function __construct(float $to)
+    public function __construct(int $to)
     {
         $this->to = $to;
     }
 
     /**
      * Returns From.
+     * Minimum amount of Working Hours
      */
-    public function getFrom(): ?float
+    public function getFrom(): ?int
     {
         return $this->from;
     }
 
     /**
      * Sets From.
+     * Minimum amount of Working Hours
      *
      * @maps from
      */
-    public function setFrom(?float $from): void
+    public function setFrom(?int $from): void
     {
         $this->from = $from;
     }
 
     /**
      * Returns To.
-     * This value needs to be an positive integer
+     * Maximum amount of Working Hours
      */
-    public function getTo(): float
+    public function getTo(): int
     {
         return $this->to;
     }
 
     /**
      * Sets To.
-     * This value needs to be an positive integer
+     * Maximum amount of Working Hours
      *
      * @required
      * @maps to
      */
-    public function setTo(float $to): void
+    public function setTo(int $to): void
     {
         $this->to = $to;
     }

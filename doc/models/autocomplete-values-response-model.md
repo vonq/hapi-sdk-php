@@ -16,8 +16,8 @@
 
 ```json
 {
-  "key": "A key",
-  "label": "A label"
+  "key": "key0",
+  "label": "label0"
 }
 ```
 

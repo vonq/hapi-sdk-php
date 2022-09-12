@@ -12,9 +12,6 @@ namespace HAPILib\Models;
 
 use stdClass;
 
-/**
- * JobTitle(id, name, job_function, industry, frequency, canonical, alias_of, active)
- */
 class JobTitleModel implements \JsonSerializable
 {
     /**
@@ -28,13 +25,20 @@ class JobTitleModel implements \JsonSerializable
     private $name;
 
     /**
+     * @var LimitedJobFunctionModel
+     */
+    private $jobFunction;
+
+    /**
      * @param int $id
      * @param string $name
+     * @param LimitedJobFunctionModel $jobFunction
      */
-    public function __construct(int $id, string $name)
+    public function __construct(int $id, string $name, LimitedJobFunctionModel $jobFunction)
     {
         $this->id = $id;
         $this->name = $name;
+        $this->jobFunction = $jobFunction;
     }
 
     /**
@@ -75,6 +79,29 @@ class JobTitleModel implements \JsonSerializable
         $this->name = $name;
     }
 
+    /**
+     * Returns Job Function.
+     * JobFunction object that doesn't
+     * follow nested relationships
+     */
+    public function getJobFunction(): LimitedJobFunctionModel
+    {
+        return $this->jobFunction;
+    }
+
+    /**
+     * Sets Job Function.
+     * JobFunction object that doesn't
+     * follow nested relationships
+     *
+     * @required
+     * @maps job_function
+     */
+    public function setJobFunction(LimitedJobFunctionModel $jobFunction): void
+    {
+        $this->jobFunction = $jobFunction;
+    }
+
     private $additionalProperties = [];
 
     /**
@@ -100,8 +127,9 @@ class JobTitleModel implements \JsonSerializable
     public function jsonSerialize(bool $asArrayWhenEmpty = false)
     {
         $json = [];
-        $json['id']   = $this->id;
-        $json['name'] = $this->name;
+        $json['id']           = $this->id;
+        $json['name']         = $this->name;
+        $json['job_function'] = $this->jobFunction;
         $json = array_merge($json, $this->additionalProperties);
 
         return (!$asArrayWhenEmpty && empty($json)) ? new stdClass() : $json;

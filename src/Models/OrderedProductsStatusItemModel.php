@@ -15,12 +15,12 @@ use stdClass;
 class OrderedProductsStatusItemModel implements \JsonSerializable
 {
     /**
-     * @var string|null
+     * @var string
      */
     private $productId;
 
     /**
-     * @var string|null
+     * @var string
      */
     private $status;
 
@@ -30,9 +30,19 @@ class OrderedProductsStatusItemModel implements \JsonSerializable
     private $statusDescription;
 
     /**
+     * @param string $productId
+     * @param string $status
+     */
+    public function __construct(string $productId, string $status)
+    {
+        $this->productId = $productId;
+        $this->status = $status;
+    }
+
+    /**
      * Returns Product Id.
      */
-    public function getProductId(): ?string
+    public function getProductId(): string
     {
         return $this->productId;
     }
@@ -40,9 +50,10 @@ class OrderedProductsStatusItemModel implements \JsonSerializable
     /**
      * Sets Product Id.
      *
+     * @required
      * @maps productId
      */
-    public function setProductId(?string $productId): void
+    public function setProductId(string $productId): void
     {
         $this->productId = $productId;
     }
@@ -51,7 +62,7 @@ class OrderedProductsStatusItemModel implements \JsonSerializable
      * Returns Status.
      * Status of the product. One of the following
      */
-    public function getStatus(): ?string
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -60,10 +71,11 @@ class OrderedProductsStatusItemModel implements \JsonSerializable
      * Sets Status.
      * Status of the product. One of the following
      *
+     * @required
      * @maps status
-     * @factory \HAPILib\Models\ChannelStatusEnum::checkValue
+     * @factory \HAPILib\Models\OrderedProductStatusEnum::checkValue
      */
-    public function setStatus(?string $status): void
+    public function setStatus(string $status): void
     {
         $this->status = $status;
     }
@@ -113,15 +125,9 @@ class OrderedProductsStatusItemModel implements \JsonSerializable
     public function jsonSerialize(bool $asArrayWhenEmpty = false)
     {
         $json = [];
-        if (isset($this->productId)) {
-            $json['productId']         = $this->productId;
-        }
-        if (isset($this->status)) {
-            $json['status']            = ChannelStatusEnum::checkValue($this->status);
-        }
-        if (isset($this->statusDescription)) {
-            $json['statusDescription'] = $this->statusDescription;
-        }
+        $json['productId']         = $this->productId;
+        $json['status']            = OrderedProductStatusEnum::checkValue($this->status);
+        $json['statusDescription'] = $this->statusDescription;
         $json = array_merge($json, $this->additionalProperties);
 
         return (!$asArrayWhenEmpty && empty($json)) ? new stdClass() : $json;
