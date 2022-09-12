@@ -19,7 +19,7 @@ use stdClass;
 class RecruiterInfoModel implements \JsonSerializable
 {
     /**
-     * @var string|null
+     * @var string
      */
     private $id;
 
@@ -29,23 +29,27 @@ class RecruiterInfoModel implements \JsonSerializable
     private $name;
 
     /**
-     * @var string|null
+     * @var string
      */
     private $emailAddress;
 
     /**
+     * @param string $id
      * @param string $name
+     * @param string $emailAddress
      */
-    public function __construct(string $name)
+    public function __construct(string $id, string $name, string $emailAddress)
     {
+        $this->id = $id;
         $this->name = $name;
+        $this->emailAddress = $emailAddress;
     }
 
     /**
      * Returns Id.
      * A vendor-related unique identification for the Recruiter
      */
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -54,9 +58,10 @@ class RecruiterInfoModel implements \JsonSerializable
      * Sets Id.
      * A vendor-related unique identification for the Recruiter
      *
+     * @required
      * @maps id
      */
-    public function setId(?string $id): void
+    public function setId(string $id): void
     {
         $this->id = $id;
     }
@@ -83,7 +88,7 @@ class RecruiterInfoModel implements \JsonSerializable
     /**
      * Returns Email Address.
      */
-    public function getEmailAddress(): ?string
+    public function getEmailAddress(): string
     {
         return $this->emailAddress;
     }
@@ -91,9 +96,10 @@ class RecruiterInfoModel implements \JsonSerializable
     /**
      * Sets Email Address.
      *
+     * @required
      * @maps emailAddress
      */
-    public function setEmailAddress(?string $emailAddress): void
+    public function setEmailAddress(string $emailAddress): void
     {
         $this->emailAddress = $emailAddress;
     }
@@ -123,13 +129,9 @@ class RecruiterInfoModel implements \JsonSerializable
     public function jsonSerialize(bool $asArrayWhenEmpty = false)
     {
         $json = [];
-        if (isset($this->id)) {
-            $json['id']           = $this->id;
-        }
-        $json['name']             = $this->name;
-        if (isset($this->emailAddress)) {
-            $json['emailAddress'] = $this->emailAddress;
-        }
+        $json['id']           = $this->id;
+        $json['name']         = $this->name;
+        $json['emailAddress'] = $this->emailAddress;
         $json = array_merge($json, $this->additionalProperties);
 
         return (!$asArrayWhenEmpty && empty($json)) ? new stdClass() : $json;

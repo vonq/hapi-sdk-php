@@ -20,7 +20,7 @@ class EducationLevelModel implements \JsonSerializable
     private $id;
 
     /**
-     * @var NameModel[]|null
+     * @var TaxonomyNameModel[]|null
      */
     private $name;
 
@@ -47,7 +47,7 @@ class EducationLevelModel implements \JsonSerializable
     /**
      * Returns Name.
      *
-     * @return NameModel[]|null
+     * @return TaxonomyNameModel[]|null
      */
     public function getName(): ?array
     {
@@ -59,7 +59,7 @@ class EducationLevelModel implements \JsonSerializable
      *
      * @maps name
      *
-     * @param NameModel[]|null $name
+     * @param TaxonomyNameModel[]|null $name
      */
     public function setName(?array $name): void
     {

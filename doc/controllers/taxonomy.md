@@ -25,16 +25,22 @@ Use the `id` key of any Industry in the response to search for a product.
 Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
 
 ```php
-function listIndustries(?float $limit = null, ?float $offset = null, ?string $acceptLanguage = null): array
+function listIndustries(
+    ?int $limit = 50,
+    ?int $offset = 0,
+    ?string $acceptLanguage = null,
+    ?string $xCustomerId = null
+): array
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `limit` | `?float` | Query, Optional | Number of results to return per page. |
-| `offset` | `?float` | Query, Optional | The initial index from which to return the results. |
-| `acceptLanguage` | [`?string (AcceptLanguageEnum)`](../../doc/models/accept-language-enum.md) | Header, Optional | - |
+| `limit` | `?int` | Query, Optional | Number of results to return per page.<br>**Default**: `50`<br>**Constraints**: `>= 0`, `<= 100` |
+| `offset` | `?int` | Query, Optional | The initial index from which to return the results.<br>**Default**: `0`<br>**Constraints**: `>= 0` |
+| `acceptLanguage` | [`?string (AcceptLanguageEnum)`](../../doc/models/accept-language-enum.md) | Header, Optional | The language the client prefers |
+| `xCustomerId` | `?string` | Header, Optional | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
 
 ## Response Type
 
@@ -43,9 +49,205 @@ function listIndustries(?float $limit = null, ?float $offset = null, ?string $ac
 ## Example Usage
 
 ```php
-$acceptLanguage = Models\AcceptLanguageEnum::EN;
+$limit = 10;
+$offset = 0;
 
-$result = $taxonomyController->listIndustries(null, null, $acceptLanguage);
+$result = $taxonomyController->listIndustries($limit, $offset);
+```
+
+## Example Response *(as JSON)*
+
+```json
+[
+  {
+    "id": 48,
+    "name": "Academic"
+  },
+  {
+    "id": 20,
+    "name": "Accounting"
+  },
+  {
+    "id": 10,
+    "name": "Advertising"
+  },
+  {
+    "id": 32,
+    "name": "Aerospace"
+  },
+  {
+    "id": 17,
+    "name": "Agriculture"
+  },
+  {
+    "id": 5,
+    "name": "Arts & Culture"
+  },
+  {
+    "id": 22,
+    "name": "Automotive"
+  },
+  {
+    "id": 33,
+    "name": "Aviation"
+  },
+  {
+    "id": 19,
+    "name": "Banking"
+  },
+  {
+    "id": 16,
+    "name": "Building and Construction"
+  },
+  {
+    "id": 6,
+    "name": "Charity and Not for Profit"
+  },
+  {
+    "id": 2,
+    "name": "Communications"
+  },
+  {
+    "id": 52,
+    "name": "E-commerce"
+  },
+  {
+    "id": 24,
+    "name": "Education"
+  },
+  {
+    "id": 4,
+    "name": "Energy"
+  },
+  {
+    "id": 30,
+    "name": "Engineering"
+  },
+  {
+    "id": 15,
+    "name": "Entertainment"
+  },
+  {
+    "id": 49,
+    "name": "Facility Management"
+  },
+  {
+    "id": 9,
+    "name": "Fashion"
+  },
+  {
+    "id": 43,
+    "name": "Fast Moving Consumer Goods"
+  },
+  {
+    "id": 21,
+    "name": "Finance"
+  },
+  {
+    "id": 42,
+    "name": "Food"
+  },
+  {
+    "id": 29,
+    "name": "Generic"
+  },
+  {
+    "id": 8,
+    "name": "Government and Public Sector"
+  },
+  {
+    "id": 37,
+    "name": "Health and Safety"
+  },
+  {
+    "id": 12,
+    "name": "Healthcare"
+  },
+  {
+    "id": 40,
+    "name": "Hospitality"
+  },
+  {
+    "id": 1,
+    "name": "Information Technology"
+  },
+  {
+    "id": 18,
+    "name": "Insurance"
+  },
+  {
+    "id": 38,
+    "name": "Language"
+  },
+  {
+    "id": 14,
+    "name": "Legal"
+  },
+  {
+    "id": 7,
+    "name": "Leisure and Sport"
+  },
+  {
+    "id": 44,
+    "name": "Logistics & Supply Chain"
+  },
+  {
+    "id": 3,
+    "name": "Manufacturing"
+  },
+  {
+    "id": 39,
+    "name": "Maritime"
+  },
+  {
+    "id": 26,
+    "name": "Media"
+  },
+  {
+    "id": 47,
+    "name": "Multilingual"
+  },
+  {
+    "id": 31,
+    "name": "Pharmaceuticals"
+  },
+  {
+    "id": 28,
+    "name": "Property and Housing"
+  },
+  {
+    "id": 11,
+    "name": "Real Estate"
+  },
+  {
+    "id": 13,
+    "name": "Recruitment"
+  },
+  {
+    "id": 35,
+    "name": "Retail"
+  },
+  {
+    "id": 23,
+    "name": "Science & Research"
+  },
+  {
+    "id": 41,
+    "name": "Sustainability"
+  },
+  {
+    "id": 36,
+    "name": "Telecommunications"
+  },
+  {
+    "id": 27,
+    "name": "Transport and Rail"
+  },
+  {
+    "id": 34,
+    "name": "Travel and Tourism"
+  }
+]
 ```
 
 
@@ -92,25 +294,24 @@ Each Job Function is associated with [**`Job Titles`**](b3A6MzM0NDA3MzY-job-titl
 Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
 
 ```php
-function retrieveJobFunctionsTree(?string $acceptLanguage = null): array
+function retrieveJobFunctionsTree(?string $acceptLanguage = null, ?string $xCustomerId = null): array
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `acceptLanguage` | [`?string (AcceptLanguageEnum)`](../../doc/models/accept-language-enum.md) | Header, Optional | - |
+| `acceptLanguage` | [`?string (AcceptLanguageEnum)`](../../doc/models/accept-language-enum.md) | Header, Optional | The language the client prefers |
+| `xCustomerId` | `?string` | Header, Optional | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
 
 ## Response Type
 
-[`JobFunctionModel[]`](../../doc/models/job-function-model.md)
+[`JobFunctionTreeModel[]`](../../doc/models/job-function-tree-model.md)
 
 ## Example Usage
 
 ```php
-$acceptLanguage = Models\AcceptLanguageEnum::EN;
-
-$result = $taxonomyController->retrieveJobFunctionsTree($acceptLanguage);
+$result = $taxonomyController->retrieveJobFunctionsTree();
 ```
 
 ## Example Response *(as JSON)*
@@ -155,11 +356,87 @@ $result = $taxonomyController->retrieveSeniorities();
 ```json
 [
   {
-    "id": 3,
+    "id": 1,
     "name": [
+      {
+        "languageCode": "de_DE",
+        "value": "Geschäftsführer / C-Level"
+      },
+      {
+        "languageCode": "en_GB",
+        "value": "Executive/Director"
+      },
+      {
+        "languageCode": "nl_NL",
+        "value": "Executive/Director"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": [
+      {
+        "languageCode": "de_DE",
+        "value": "Manager"
+      },
       {
         "languageCode": "en_GB",
         "value": "Manager"
+      },
+      {
+        "languageCode": "nl_NL",
+        "value": "Manager"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": [
+      {
+        "languageCode": "de_DE",
+        "value": "Professional"
+      },
+      {
+        "languageCode": "en_GB",
+        "value": "Mid-Senior level"
+      },
+      {
+        "languageCode": "nl_NL",
+        "value": "Professional"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": [
+      {
+        "languageCode": "de_DE",
+        "value": "Berufseinsteiger"
+      },
+      {
+        "languageCode": "en_GB",
+        "value": "Entry level/Graduate"
+      },
+      {
+        "languageCode": "nl_NL",
+        "value": "Entry level/Graduate"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": [
+      {
+        "languageCode": "de_DE",
+        "value": "Student/Trainee"
+      },
+      {
+        "languageCode": "en_GB",
+        "value": "Student/Trainee"
+      },
+      {
+        "languageCode": "nl_NL",
+        "value": "Student/Trainee"
       }
     ]
   }
@@ -178,10 +455,11 @@ Besides the default English, German and Dutch result translations can be request
 ```php
 function searchJobTitles(
     string $text,
-    ?float $limit = null,
-    ?float $offset = null,
-    ?string $acceptLanguage = null
-): array
+    ?int $limit = 50,
+    ?int $offset = 0,
+    ?string $acceptLanguage = null,
+    ?string $xCustomerId = null
+): PaginatedJobTitleListModel
 ```
 
 ## Parameters
@@ -189,21 +467,23 @@ function searchJobTitles(
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `text` | `string` | Query, Required | Search text for a job title name |
-| `limit` | `?float` | Query, Optional | Number of results to return per page. |
-| `offset` | `?float` | Query, Optional | The initial index from which to return the results. |
-| `acceptLanguage` | [`?string (AcceptLanguageEnum)`](../../doc/models/accept-language-enum.md) | Header, Optional | - |
+| `limit` | `?int` | Query, Optional | Number of results to return per page.<br>**Default**: `50`<br>**Constraints**: `>= 0`, `<= 100` |
+| `offset` | `?int` | Query, Optional | The initial index from which to return the results.<br>**Default**: `0`<br>**Constraints**: `>= 0` |
+| `acceptLanguage` | [`?string (AcceptLanguageEnum)`](../../doc/models/accept-language-enum.md) | Header, Optional | The language the client prefers |
+| `xCustomerId` | `?string` | Header, Optional | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
 
 ## Response Type
 
-[`JobTitleModel[]`](../../doc/models/job-title-model.md)
+[`PaginatedJobTitleListModel`](../../doc/models/paginated-job-title-list-model.md)
 
 ## Example Usage
 
 ```php
 $text = 'text0';
-$acceptLanguage = Models\AcceptLanguageEnum::EN;
+$limit = 10;
+$offset = 0;
 
-$result = $taxonomyController->searchJobTitles($text, null, null, $acceptLanguage);
+$result = $taxonomyController->searchJobTitles($text, $limit, $offset);
 ```
 
 
@@ -215,7 +495,7 @@ Use the `id` key of each object in the response to search for a Product.
 Supports text input in English, Dutch and German.
 
 ```php
-function searchLocations(string $text): array
+function searchLocations(string $text, ?string $acceptLanguage = null, ?string $xCustomerId = null): array
 ```
 
 ## Parameters
@@ -223,6 +503,8 @@ function searchLocations(string $text): array
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `text` | `string` | Query, Required | Search text for a location name in either English, Dutch, German, French and Italian. Partial recognition of 20 other languages. |
+| `acceptLanguage` | [`?string (AcceptLanguageEnum)`](../../doc/models/accept-language-enum.md) | Header, Optional | The language the client prefers |
+| `xCustomerId` | `?string` | Header, Optional | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
 
 ## Response Type
 
@@ -235,4 +517,10 @@ $text = 'text0';
 
 $result = $taxonomyController->searchLocations($text);
 ```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Bad Request | [`GenericErrorException`](../../doc/models/generic-error-exception.md) |
 

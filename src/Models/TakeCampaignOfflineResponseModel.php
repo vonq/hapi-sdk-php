@@ -15,24 +15,35 @@ use stdClass;
 class TakeCampaignOfflineResponseModel implements \JsonSerializable
 {
     /**
-     * @var string|null
+     * @var string
      */
     private $campaignId;
 
     /**
-     * Returns Campaign Id.
+     * @param string $campaignId
      */
-    public function getCampaignId(): ?string
+    public function __construct(string $campaignId)
+    {
+        $this->campaignId = $campaignId;
+    }
+
+    /**
+     * Returns Campaign Id.
+     * Id of the Campaign you've taken offline
+     */
+    public function getCampaignId(): string
     {
         return $this->campaignId;
     }
 
     /**
      * Sets Campaign Id.
+     * Id of the Campaign you've taken offline
      *
+     * @required
      * @maps campaignId
      */
-    public function setCampaignId(?string $campaignId): void
+    public function setCampaignId(string $campaignId): void
     {
         $this->campaignId = $campaignId;
     }
@@ -62,9 +73,7 @@ class TakeCampaignOfflineResponseModel implements \JsonSerializable
     public function jsonSerialize(bool $asArrayWhenEmpty = false)
     {
         $json = [];
-        if (isset($this->campaignId)) {
-            $json['campaignId'] = $this->campaignId;
-        }
+        $json['campaignId'] = $this->campaignId;
         $json = array_merge($json, $this->additionalProperties);
 
         return (!$asArrayWhenEmpty && empty($json)) ? new stdClass() : $json;

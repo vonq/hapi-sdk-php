@@ -13,9 +13,3 @@ The range of the time to process
 |  --- |
 | `HOURS` |
 
-## Example
-
-```
-hours
-```
-

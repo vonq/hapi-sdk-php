@@ -12,7 +12,39 @@ namespace HAPILib\Models;
 
 use Exception;
 use HAPILib\ApiHelper;
+use stdClass;
 
+/**
+ * lower/higher: value for this facet should be lower/higher than or equal to the value for referred
+ * facet
+ *
+ * before/after: value for this facet should be before/after than or equal to the value for referred
+ * facet. Both facets are dates
+ *
+ * url: value should be a valid URL
+ *
+ * be-pc: Belgium postal code
+ *
+ * belgium/de/dutch-city: Belgium/German/Dutch city
+ *
+ * nl-pc, np-pc-straat: Dutch postal code, for nl-pc PO-boxes are not valid
+ *
+ * isodateoptional: date formatted "Y-m-d", "Y-md H:i" or "Y-m-d H:i:s"
+ *
+ * maxlengthcombined: (only used for type TEXTEXPAND) maximum length for all inputs combined to one
+ * string
+ *
+ * separator: (only used for type TEXTEXPAND) string used to combine
+ *
+ * maxlevels: maximum depth of a HIER
+ *
+ * propertyId: only used internally
+ *
+ * pushvalue: only used internally
+ *
+ * validator:notEmptyIf: facet depends on vacancyvalue (exposed in API by required-tag in
+ * [OptionsFacet](https://vonq.stoplight.io/docs/hapi/branches/2.1/6f1768e932ab5-facet-option) )
+ */
 class RuleEnum
 {
     public const DATE = 'date';
@@ -83,6 +115,12 @@ class RuleEnum
 
     public const ENUM_VALIDATORNOTEMPTYIF = 'validator:notEmptyIf';
 
+    public const NOTEMPTY = 'notempty';
+
+    public const EQUAL = 'equal';
+
+    public const IN = 'in';
+
     private const _ALL_VALUES = [
         self::DATE,
         self::EMAIL,
@@ -118,12 +156,15 @@ class RuleEnum
         self::ENUM_VALIDATORINRANGE,
         self::ENUM_VALIDATORKRUISPUNT,
         self::ENUM_VALIDATORNOTEMPTYIF,
+        self::NOTEMPTY,
+        self::EQUAL,
+        self::IN,
     ];
 
     /**
      * Ensures that all the given values are present in this Enum.
      *
-     * @param array|null|string $value Value or a list of values to be checked
+     * @param array|stdClass|null|string $value Value or a list/map of values to be checked
      *
      * @return array|null|string Input value(s), if all are a part of this Enum
      *
@@ -131,6 +172,7 @@ class RuleEnum
      */
     public static function checkValue($value)
     {
+        $value = json_decode(json_encode($value), true); // converts stdClass into array
         ApiHelper::checkValueInEnum($value, self::class, self::_ALL_VALUES);
         return $value;
     }

@@ -40,9 +40,9 @@ class PostingWorkingLocationModel implements \JsonSerializable
     private $country;
 
     /**
-     * @var float|null
+     * @var array
      */
-    private $allowsRemoteWork;
+    private $allowsRemoteWork = [];
 
     /**
      * @param string $addressLine1
@@ -156,9 +156,12 @@ class PostingWorkingLocationModel implements \JsonSerializable
      * Returns Allows Remote Work.
      * Optional parameter allowing remote work, possible values are 0 and 1, defaults to 0
      */
-    public function getAllowsRemoteWork(): ?float
+    public function getAllowsRemoteWork(): ?int
     {
-        return $this->allowsRemoteWork;
+        if (count($this->allowsRemoteWork) == 0) {
+            return null;
+        }
+        return $this->allowsRemoteWork['value'];
     }
 
     /**
@@ -167,9 +170,18 @@ class PostingWorkingLocationModel implements \JsonSerializable
      *
      * @maps allowsRemoteWork
      */
-    public function setAllowsRemoteWork(?float $allowsRemoteWork): void
+    public function setAllowsRemoteWork(?int $allowsRemoteWork): void
     {
-        $this->allowsRemoteWork = $allowsRemoteWork;
+        $this->allowsRemoteWork['value'] = $allowsRemoteWork;
+    }
+
+    /**
+     * Unsets Allows Remote Work.
+     * Optional parameter allowing remote work, possible values are 0 and 1, defaults to 0
+     */
+    public function unsetAllowsRemoteWork(): void
+    {
+        $this->allowsRemoteWork = [];
     }
 
     private $additionalProperties = [];
@@ -204,8 +216,8 @@ class PostingWorkingLocationModel implements \JsonSerializable
         $json['postcode']             = $this->postcode;
         $json['city']                 = $this->city;
         $json['country']              = $this->country;
-        if (isset($this->allowsRemoteWork)) {
-            $json['allowsRemoteWork'] = $this->allowsRemoteWork;
+        if (!empty($this->allowsRemoteWork)) {
+            $json['allowsRemoteWork'] = $this->allowsRemoteWork['value'];
         }
         $json = array_merge($json, $this->additionalProperties);
 

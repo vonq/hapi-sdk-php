@@ -15,43 +15,42 @@ use stdClass;
 class ContractCredentialModel implements \JsonSerializable
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $label;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $sort;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $description;
 
     /**
-     * @param string $name
-     * @param string $label
-     * @param string $sort
-     * @param string $description
+     * @var string
      */
-    public function __construct(string $name, string $label, string $sort, string $description)
+    private $url;
+
+    /**
+     * @param string $url
+     */
+    public function __construct(string $url)
     {
-        $this->name = $name;
-        $this->label = $label;
-        $this->sort = $sort;
-        $this->description = $description;
+        $this->url = $url;
     }
 
     /**
      * Returns Name.
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -59,10 +58,9 @@ class ContractCredentialModel implements \JsonSerializable
     /**
      * Sets Name.
      *
-     * @required
      * @maps name
      */
-    public function setName(string $name): void
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
@@ -70,7 +68,7 @@ class ContractCredentialModel implements \JsonSerializable
     /**
      * Returns Label.
      */
-    public function getLabel(): string
+    public function getLabel(): ?string
     {
         return $this->label;
     }
@@ -78,10 +76,9 @@ class ContractCredentialModel implements \JsonSerializable
     /**
      * Sets Label.
      *
-     * @required
      * @maps label
      */
-    public function setLabel(string $label): void
+    public function setLabel(?string $label): void
     {
         $this->label = $label;
     }
@@ -89,7 +86,7 @@ class ContractCredentialModel implements \JsonSerializable
     /**
      * Returns Sort.
      */
-    public function getSort(): string
+    public function getSort(): ?string
     {
         return $this->sort;
     }
@@ -97,10 +94,9 @@ class ContractCredentialModel implements \JsonSerializable
     /**
      * Sets Sort.
      *
-     * @required
      * @maps sort
      */
-    public function setSort(string $sort): void
+    public function setSort(?string $sort): void
     {
         $this->sort = $sort;
     }
@@ -108,7 +104,7 @@ class ContractCredentialModel implements \JsonSerializable
     /**
      * Returns Description.
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -116,12 +112,30 @@ class ContractCredentialModel implements \JsonSerializable
     /**
      * Sets Description.
      *
-     * @required
      * @maps description
      */
-    public function setDescription(string $description): void
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
+    }
+
+    /**
+     * Returns Url.
+     */
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    /**
+     * Sets Url.
+     *
+     * @required
+     * @maps url
+     */
+    public function setUrl(string $url): void
+    {
+        $this->url = $url;
     }
 
     private $additionalProperties = [];
@@ -153,6 +167,7 @@ class ContractCredentialModel implements \JsonSerializable
         $json['label']       = $this->label;
         $json['sort']        = $this->sort;
         $json['description'] = $this->description;
+        $json['url']         = $this->url;
         $json = array_merge($json, $this->additionalProperties);
 
         return (!$asArrayWhenEmpty && empty($json)) ? new stdClass() : $json;

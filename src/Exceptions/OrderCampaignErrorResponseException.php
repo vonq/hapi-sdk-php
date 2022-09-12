@@ -13,72 +13,61 @@ namespace HAPILib\Exceptions;
 class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiException
 {
     /**
-     * @var string[]
+     * @var string[]|null
      */
     private $companyId;
 
     /**
-     * @var \HAPILib\Models\PostingDetailsErrorsModel
+     * @var \HAPILib\Models\PostingDetailsValidationErrorModel|null
      */
     private $postingDetails;
 
     /**
-     * @var string[]
+     * @var \HAPILib\Models\TargetGroupValidationErrorModel|null
      */
     private $targetGroup;
 
     /**
-     * @var \HAPILib\Models\RecruiterInfoErrorsModel
+     * @var \HAPILib\Models\RecruiterInfoValidationErrorModel|null
      */
     private $recruiterInfo;
 
     /**
-     * @var string[]
+     * @var string[]|null
      */
     private $orderedProducts;
 
     /**
-     * @var \HAPILib\Models\OrderedProductsSpecModel[]
+     * @var \HAPILib\Models\OrderedProductsSpecValidationErrorModel[]|null
      */
     private $orderedProductsSpecs;
 
     /**
-     * @param string $reason
-     * @param \HAPILib\Http\HttpRequest $request
-     * @param \HAPILib\Http\HttpResponse $response
-     * @param string[] $companyId
-     * @param \HAPILib\Models\PostingDetailsErrorsModel $postingDetails
-     * @param string[] $targetGroup
-     * @param \HAPILib\Models\RecruiterInfoErrorsModel $recruiterInfo
-     * @param string[] $orderedProducts
-     * @param \HAPILib\Models\OrderedProductsSpecModel[] $orderedProductsSpecs
+     * @var string[]|null
      */
-    public function __construct(
-        string $reason,
-        \HAPILib\Http\HttpRequest $request,
-        \HAPILib\Http\HttpResponse $response,
-        array $companyId,
-        \HAPILib\Models\PostingDetailsErrorsModel $postingDetails,
-        array $targetGroup,
-        \HAPILib\Models\RecruiterInfoErrorsModel $recruiterInfo,
-        array $orderedProducts,
-        array $orderedProductsSpecs
-    ) {
-        parent::__construct($reason, $request, $response);
-        $this->companyId = $companyId;
-        $this->postingDetails = $postingDetails;
-        $this->targetGroup = $targetGroup;
-        $this->recruiterInfo = $recruiterInfo;
-        $this->orderedProducts = $orderedProducts;
-        $this->orderedProductsSpecs = $orderedProductsSpecs;
-    }
+    private $orderReference;
+
+    /**
+     * @var string[]|null
+     */
+    private $campaignName;
+
+    /**
+     * @var string[]|null
+     */
+    private $walletId;
+
+    /**
+     * @var string[]|null
+     */
+    private $currency;
 
     /**
      * Returns Company Id.
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getCompanyId(): array
+    public function getCompanyId(): ?array
     {
         return $this->companyId;
     }
@@ -86,12 +75,11 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Sets Company Id.
      *
-     * @required
      * @maps companyId
      *
-     * @param string[] $companyId
+     * @param string[]|null $companyId
      */
-    public function setCompanyId(array $companyId): void
+    public function setCompanyId(?array $companyId): void
     {
         $this->companyId = $companyId;
     }
@@ -99,7 +87,7 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Returns Posting Details.
      */
-    public function getPostingDetails(): \HAPILib\Models\PostingDetailsErrorsModel
+    public function getPostingDetails(): ?\HAPILib\Models\PostingDetailsValidationErrorModel
     {
         return $this->postingDetails;
     }
@@ -107,20 +95,17 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Sets Posting Details.
      *
-     * @required
      * @maps postingDetails
      */
-    public function setPostingDetails(\HAPILib\Models\PostingDetailsErrorsModel $postingDetails): void
+    public function setPostingDetails(?\HAPILib\Models\PostingDetailsValidationErrorModel $postingDetails): void
     {
         $this->postingDetails = $postingDetails;
     }
 
     /**
      * Returns Target Group.
-     *
-     * @return string[]
      */
-    public function getTargetGroup(): array
+    public function getTargetGroup(): ?\HAPILib\Models\TargetGroupValidationErrorModel
     {
         return $this->targetGroup;
     }
@@ -128,12 +113,9 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Sets Target Group.
      *
-     * @required
      * @maps targetGroup
-     *
-     * @param string[] $targetGroup
      */
-    public function setTargetGroup(array $targetGroup): void
+    public function setTargetGroup(?\HAPILib\Models\TargetGroupValidationErrorModel $targetGroup): void
     {
         $this->targetGroup = $targetGroup;
     }
@@ -141,7 +123,7 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Returns Recruiter Info.
      */
-    public function getRecruiterInfo(): \HAPILib\Models\RecruiterInfoErrorsModel
+    public function getRecruiterInfo(): ?\HAPILib\Models\RecruiterInfoValidationErrorModel
     {
         return $this->recruiterInfo;
     }
@@ -149,10 +131,9 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Sets Recruiter Info.
      *
-     * @required
      * @maps recruiterInfo
      */
-    public function setRecruiterInfo(\HAPILib\Models\RecruiterInfoErrorsModel $recruiterInfo): void
+    public function setRecruiterInfo(?\HAPILib\Models\RecruiterInfoValidationErrorModel $recruiterInfo): void
     {
         $this->recruiterInfo = $recruiterInfo;
     }
@@ -160,9 +141,9 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Returns Ordered Products.
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getOrderedProducts(): array
+    public function getOrderedProducts(): ?array
     {
         return $this->orderedProducts;
     }
@@ -170,12 +151,11 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Sets Ordered Products.
      *
-     * @required
      * @maps orderedProducts
      *
-     * @param string[] $orderedProducts
+     * @param string[]|null $orderedProducts
      */
-    public function setOrderedProducts(array $orderedProducts): void
+    public function setOrderedProducts(?array $orderedProducts): void
     {
         $this->orderedProducts = $orderedProducts;
     }
@@ -183,9 +163,9 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Returns Ordered Products Specs.
      *
-     * @return \HAPILib\Models\OrderedProductsSpecModel[]
+     * @return \HAPILib\Models\OrderedProductsSpecValidationErrorModel[]|null
      */
-    public function getOrderedProductsSpecs(): array
+    public function getOrderedProductsSpecs(): ?array
     {
         return $this->orderedProductsSpecs;
     }
@@ -193,14 +173,101 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Sets Ordered Products Specs.
      *
-     * @required
      * @maps orderedProductsSpecs
      *
-     * @param \HAPILib\Models\OrderedProductsSpecModel[] $orderedProductsSpecs
+     * @param \HAPILib\Models\OrderedProductsSpecValidationErrorModel[]|null $orderedProductsSpecs
      */
-    public function setOrderedProductsSpecs(array $orderedProductsSpecs): void
+    public function setOrderedProductsSpecs(?array $orderedProductsSpecs): void
     {
         $this->orderedProductsSpecs = $orderedProductsSpecs;
+    }
+
+    /**
+     * Returns Order Reference.
+     *
+     * @return string[]|null
+     */
+    public function getOrderReference(): ?array
+    {
+        return $this->orderReference;
+    }
+
+    /**
+     * Sets Order Reference.
+     *
+     * @maps orderReference
+     *
+     * @param string[]|null $orderReference
+     */
+    public function setOrderReference(?array $orderReference): void
+    {
+        $this->orderReference = $orderReference;
+    }
+
+    /**
+     * Returns Campaign Name.
+     *
+     * @return string[]|null
+     */
+    public function getCampaignName(): ?array
+    {
+        return $this->campaignName;
+    }
+
+    /**
+     * Sets Campaign Name.
+     *
+     * @maps campaignName
+     *
+     * @param string[]|null $campaignName
+     */
+    public function setCampaignName(?array $campaignName): void
+    {
+        $this->campaignName = $campaignName;
+    }
+
+    /**
+     * Returns Wallet Id.
+     *
+     * @return string[]|null
+     */
+    public function getWalletId(): ?array
+    {
+        return $this->walletId;
+    }
+
+    /**
+     * Sets Wallet Id.
+     *
+     * @maps walletId
+     *
+     * @param string[]|null $walletId
+     */
+    public function setWalletId(?array $walletId): void
+    {
+        $this->walletId = $walletId;
+    }
+
+    /**
+     * Returns Currency.
+     *
+     * @return string[]|null
+     */
+    public function getCurrency(): ?array
+    {
+        return $this->currency;
+    }
+
+    /**
+     * Sets Currency.
+     *
+     * @maps currency
+     *
+     * @param string[]|null $currency
+     */
+    public function setCurrency(?array $currency): void
+    {
+        $this->currency = $currency;
     }
 
     private $additionalProperties = [];

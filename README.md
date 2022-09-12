@@ -3,7 +3,7 @@
 
 ## Building
 
-The generated code has dependencies over external libraries like UniRest. These dependencies are defined in the `composer.json` file that comes with the SDK. To resolve these dependencies, we use the Composer package manager which requires PHP greater than or equal to 7.2 installed in your system. Visit [https://getcomposer.org/download/](https://getcomposer.org/download/) to download the installer file for Composer and run it in your system. Open command prompt and type `composer --version`. This should display the current version of the Composer installed if the installation was successful.
+The generated code has dependencies over external libraries like UniRest and JsonMapper. JsonMapper requires docblock annotations like `@var`, `@maps`, and `@factory` to map JSON responses with our class definitions. Hence the docblocks in generated code cannot be disabled by deactivating the PHP configurations like `opcache.save_comments`. These dependencies are defined in the `composer.json` file that comes with the SDK. To resolve these dependencies, we use the Composer package manager which requires PHP greater than or equal to 7.2 installed in your system. Visit [https://getcomposer.org/download/](https://getcomposer.org/download/) to download the installer file for Composer and run it in your system. Open command prompt and type `composer --version`. This should display the current version of the Composer installed if the installation was successful.
 
 * Using command line, navigate to the directory containing the generated files (including `composer.json`) for the SDK.
 * Run the command `composer install`. This should install all the required dependencies and create the `vendor` directory in your project directory.
@@ -121,11 +121,15 @@ The following parameters are configurable for the API Client:
 | `httpStatusCodesToRetry` | `array` | Http status codes to retry against.<br>*Default*: `408, 413, 429, 500, 502, 503, 504, 521, 522, 524` |
 | `httpMethodsToRetry` | `array` | Http methods to retry against.<br>*Default*: `'GET', 'PUT'` |
 | `skipSslVerification` | `bool` | Set to true to allow skipping ssl certificate verification<br>*Default*: `false` |
+| `xAuthToken` | `string` | In order to interact with the API, every request needs to have an API Token.  The key will be supplied by VONQ to our partners. |
 
 The API client can be initialized as follows:
 
 ```php
 $client = new HAPILib\HAPIClient([
+    // Set authentication parameters
+    'xAuthToken' => 'X-Auth-Token',
+
     // Set the environment
     'environment' => 'sandbox',
 
@@ -145,12 +149,19 @@ The SDK can be configured to use a different environment for making API calls. A
 | sandbox | **Default** Sandbox |
 | production | Production |
 
+## Authorization
+
+This API uses `Custom Header Signature`.
+
 ## List of APIs
 
 * [Campaigns](doc/controllers/campaigns.md)
+* [Channels](doc/controllers/channels.md)
+* [Contract Groups](doc/controllers/contract-groups.md)
 * [Contracts](doc/controllers/contracts.md)
-* [Portfolio](doc/controllers/portfolio.md)
+* [Products](doc/controllers/products.md)
 * [Taxonomy](doc/controllers/taxonomy.md)
+* [Wallets](doc/controllers/wallets.md)
 
 ## Classes Documentation
 

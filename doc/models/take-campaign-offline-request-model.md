@@ -9,8 +9,8 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `campaignId` | `string` | Required | - | getCampaignId(): string | setCampaignId(string campaignId): void |
-| `status` | `string` | Required | - | getStatus(): string | setStatus(string status): void |
+| `campaignId` | `string` | Required | Id of the Campaign you want to take offline | getCampaignId(): string | setCampaignId(string campaignId): void |
+| `status` | `string` | Required, Constant | The new status you want the campaign to have.<br>**Default**: `'offline'` | getStatus(): string | setStatus(string status): void |
 
 ## Example (as JSON)
 

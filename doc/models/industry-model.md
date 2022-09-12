@@ -1,8 +1,6 @@
 
 # Industry Model
 
-Industry(id, name)
-
 ## Structure
 
 `IndustryModel`
@@ -11,14 +9,14 @@ Industry(id, name)
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `id` | `?float` | Optional | - | getId(): ?float | setId(?float id): void |
+| `id` | `float` | Required | - | getId(): float | setId(float id): void |
 | `name` | `string` | Required | - | getName(): string | setName(string name): void |
 
 ## Example (as JSON)
 
 ```json
 {
-  "id": null,
+  "id": 60.0,
   "name": "name0"
 }
 ```

@@ -10,7 +10,7 @@
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `amount` | `?float` | Optional | Price amount in specified currency and 2 decimal places | getAmount(): ?float | setAmount(?float amount): void |
-| `currency` | [`?string (CurrencyEnum)`](../../doc/models/currency-enum.md) | Optional | ISO 4217 code for the Currency. | getCurrency(): ?string | setCurrency(?string currency): void |
+| `currency` | [`?string (AcceptedCurrencyEnum)`](../../doc/models/accepted-currency-enum.md) | Optional | An ISO 4217 code for a currency to use for order invoicing. | getCurrency(): ?string | setCurrency(?string currency): void |
 
 ## Example (as JSON)
 

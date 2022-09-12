@@ -10,17 +10,18 @@ declare(strict_types=1);
 
 namespace HAPILib\Models;
 
+use HAPILib\Utils\DateTimeHelper;
 use stdClass;
 
 class OrderedProductsGetElementModel implements \JsonSerializable
 {
     /**
-     * @var string|null
+     * @var string
      */
     private $productId;
 
     /**
-     * @var string|null
+     * @var string
      */
     private $status;
 
@@ -30,7 +31,7 @@ class OrderedProductsGetElementModel implements \JsonSerializable
     private $statusDescription;
 
     /**
-     * @var string|null
+     * @var \DateTime|null
      */
     private $deliveredOn;
 
@@ -40,7 +41,7 @@ class OrderedProductsGetElementModel implements \JsonSerializable
     private $duration;
 
     /**
-     * @var DurationModel|null
+     * @var DurationModel
      */
     private $durationPeriod;
 
@@ -60,15 +61,33 @@ class OrderedProductsGetElementModel implements \JsonSerializable
     private $contractId;
 
     /**
-     * @var PostingRequirementsModel|null
+     * @var PostingRequirementsModel
      */
     private $postingRequirements;
+
+    /**
+     * @param string $productId
+     * @param string $status
+     * @param DurationModel $durationPeriod
+     * @param PostingRequirementsModel $postingRequirements
+     */
+    public function __construct(
+        string $productId,
+        string $status,
+        DurationModel $durationPeriod,
+        PostingRequirementsModel $postingRequirements
+    ) {
+        $this->productId = $productId;
+        $this->status = $status;
+        $this->durationPeriod = $durationPeriod;
+        $this->postingRequirements = $postingRequirements;
+    }
 
     /**
      * Returns Product Id.
      * Product Identification
      */
-    public function getProductId(): ?string
+    public function getProductId(): string
     {
         return $this->productId;
     }
@@ -77,9 +96,10 @@ class OrderedProductsGetElementModel implements \JsonSerializable
      * Sets Product Id.
      * Product Identification
      *
+     * @required
      * @maps productId
      */
-    public function setProductId(?string $productId): void
+    public function setProductId(string $productId): void
     {
         $this->productId = $productId;
     }
@@ -88,7 +108,7 @@ class OrderedProductsGetElementModel implements \JsonSerializable
      * Returns Status.
      * Status per product
      */
-    public function getStatus(): ?string
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -97,16 +117,19 @@ class OrderedProductsGetElementModel implements \JsonSerializable
      * Sets Status.
      * Status per product
      *
+     * @required
      * @maps status
+     * @factory \HAPILib\Models\Status3Enum::checkValue
      */
-    public function setStatus(?string $status): void
+    public function setStatus(string $status): void
     {
         $this->status = $status;
     }
 
     /**
      * Returns Status Description.
-     * Status description, additional status information
+     * Status description, additional status information. For Contract based products, in case of posting
+     * error, this will include the raw job board error message, therefore is not always user-friendly
      */
     public function getStatusDescription(): ?string
     {
@@ -115,7 +138,8 @@ class OrderedProductsGetElementModel implements \JsonSerializable
 
     /**
      * Sets Status Description.
-     * Status description, additional status information
+     * Status description, additional status information. For Contract based products, in case of posting
+     * error, this will include the raw job board error message, therefore is not always user-friendly
      *
      * @maps statusDescription
      */
@@ -128,7 +152,7 @@ class OrderedProductsGetElementModel implements \JsonSerializable
      * Returns Delivered On.
      * Date when the channel went online
      */
-    public function getDeliveredOn(): ?string
+    public function getDeliveredOn(): ?\DateTime
     {
         return $this->deliveredOn;
     }
@@ -138,8 +162,9 @@ class OrderedProductsGetElementModel implements \JsonSerializable
      * Date when the channel went online
      *
      * @maps deliveredOn
+     * @factory \HAPILib\Utils\DateTimeHelper::fromRfc3339DateTime
      */
-    public function setDeliveredOn(?string $deliveredOn): void
+    public function setDeliveredOn(?\DateTime $deliveredOn): void
     {
         $this->deliveredOn = $deliveredOn;
     }
@@ -167,7 +192,7 @@ class OrderedProductsGetElementModel implements \JsonSerializable
     /**
      * Returns Duration Period.
      */
-    public function getDurationPeriod(): ?DurationModel
+    public function getDurationPeriod(): DurationModel
     {
         return $this->durationPeriod;
     }
@@ -175,9 +200,10 @@ class OrderedProductsGetElementModel implements \JsonSerializable
     /**
      * Sets Duration Period.
      *
+     * @required
      * @maps durationPeriod
      */
-    public function setDurationPeriod(?DurationModel $durationPeriod): void
+    public function setDurationPeriod(DurationModel $durationPeriod): void
     {
         $this->durationPeriod = $durationPeriod;
     }
@@ -247,7 +273,7 @@ class OrderedProductsGetElementModel implements \JsonSerializable
     /**
      * Returns Posting Requirements.
      */
-    public function getPostingRequirements(): ?PostingRequirementsModel
+    public function getPostingRequirements(): PostingRequirementsModel
     {
         return $this->postingRequirements;
     }
@@ -255,9 +281,10 @@ class OrderedProductsGetElementModel implements \JsonSerializable
     /**
      * Sets Posting Requirements.
      *
+     * @required
      * @maps postingRequirements
      */
-    public function setPostingRequirements(?PostingRequirementsModel $postingRequirements): void
+    public function setPostingRequirements(PostingRequirementsModel $postingRequirements): void
     {
         $this->postingRequirements = $postingRequirements;
     }
@@ -287,36 +314,16 @@ class OrderedProductsGetElementModel implements \JsonSerializable
     public function jsonSerialize(bool $asArrayWhenEmpty = false)
     {
         $json = [];
-        if (isset($this->productId)) {
-            $json['productId']           = $this->productId;
-        }
-        if (isset($this->status)) {
-            $json['status']              = $this->status;
-        }
-        if (isset($this->statusDescription)) {
-            $json['statusDescription']   = $this->statusDescription;
-        }
-        if (isset($this->deliveredOn)) {
-            $json['deliveredOn']         = $this->deliveredOn;
-        }
-        if (isset($this->duration)) {
-            $json['duration']            = $this->duration;
-        }
-        if (isset($this->durationPeriod)) {
-            $json['durationPeriod']      = $this->durationPeriod;
-        }
-        if (isset($this->utm)) {
-            $json['utm']                 = $this->utm;
-        }
-        if (isset($this->jobBoardLink)) {
-            $json['jobBoardLink']        = $this->jobBoardLink;
-        }
-        if (isset($this->contractId)) {
-            $json['contractId']          = $this->contractId;
-        }
-        if (isset($this->postingRequirements)) {
-            $json['postingRequirements'] = $this->postingRequirements;
-        }
+        $json['productId']           = $this->productId;
+        $json['status']              = Status3Enum::checkValue($this->status);
+        $json['statusDescription']   = $this->statusDescription;
+        $json['deliveredOn']         = DateTimeHelper::toRfc3339DateTime($this->deliveredOn);
+        $json['duration']            = $this->duration;
+        $json['durationPeriod']      = $this->durationPeriod;
+        $json['utm']                 = $this->utm;
+        $json['jobBoardLink']        = $this->jobBoardLink;
+        $json['contractId']          = $this->contractId;
+        $json['postingRequirements'] = $this->postingRequirements;
         $json = array_merge($json, $this->additionalProperties);
 
         return (!$asArrayWhenEmpty && empty($json)) ? new stdClass() : $json;

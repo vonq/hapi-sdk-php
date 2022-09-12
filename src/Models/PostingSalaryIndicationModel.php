@@ -12,6 +12,11 @@ namespace HAPILib\Models;
 
 use stdClass;
 
+/**
+ * Most job boards require a salary indication to be provided. This is a required field to be able to
+ * offer a standardized check out experience for all 5000+ channels we offer, and to enable fast
+ * campaign delivery.
+ */
 class PostingSalaryIndicationModel implements \JsonSerializable
 {
     /**
@@ -20,15 +25,15 @@ class PostingSalaryIndicationModel implements \JsonSerializable
     private $period;
 
     /**
-     * @var Range3Model
+     * @var SalaryRangeModel
      */
     private $range;
 
     /**
      * @param string $period
-     * @param Range3Model $range
+     * @param SalaryRangeModel $range
      */
-    public function __construct(string $period, Range3Model $range)
+    public function __construct(string $period, SalaryRangeModel $range)
     {
         $this->period = $period;
         $this->range = $range;
@@ -57,7 +62,7 @@ class PostingSalaryIndicationModel implements \JsonSerializable
     /**
      * Returns Range.
      */
-    public function getRange(): Range3Model
+    public function getRange(): SalaryRangeModel
     {
         return $this->range;
     }
@@ -68,7 +73,7 @@ class PostingSalaryIndicationModel implements \JsonSerializable
      * @required
      * @maps range
      */
-    public function setRange(Range3Model $range): void
+    public function setRange(SalaryRangeModel $range): void
     {
         $this->range = $range;
     }

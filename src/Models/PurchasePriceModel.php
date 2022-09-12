@@ -15,37 +15,29 @@ use stdClass;
 class PurchasePriceModel implements \JsonSerializable
 {
     /**
-     * @var string|null
-     */
-    private $currency;
-
-    /**
-     * @var int|null
+     * @var int
      */
     private $amount;
 
     /**
-     * Returns Currency.
+     * @var string
      */
-    public function getCurrency(): ?string
-    {
-        return $this->currency;
-    }
+    private $currency;
 
     /**
-     * Sets Currency.
-     *
-     * @maps currency
+     * @param int $amount
+     * @param string $currency
      */
-    public function setCurrency(?string $currency): void
+    public function __construct(int $amount, string $currency)
     {
+        $this->amount = $amount;
         $this->currency = $currency;
     }
 
     /**
      * Returns Amount.
      */
-    public function getAmount(): ?int
+    public function getAmount(): int
     {
         return $this->amount;
     }
@@ -53,11 +45,32 @@ class PurchasePriceModel implements \JsonSerializable
     /**
      * Sets Amount.
      *
+     * @required
      * @maps amount
      */
-    public function setAmount(?int $amount): void
+    public function setAmount(int $amount): void
     {
         $this->amount = $amount;
+    }
+
+    /**
+     * Returns Currency.
+     */
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    /**
+     * Sets Currency.
+     *
+     * @required
+     * @maps currency
+     * @factory \HAPILib\Models\CurrencyEnum::checkValue
+     */
+    public function setCurrency(string $currency): void
+    {
+        $this->currency = $currency;
     }
 
     private $additionalProperties = [];
@@ -85,12 +98,8 @@ class PurchasePriceModel implements \JsonSerializable
     public function jsonSerialize(bool $asArrayWhenEmpty = false)
     {
         $json = [];
-        if (isset($this->currency)) {
-            $json['currency'] = $this->currency;
-        }
-        if (isset($this->amount)) {
-            $json['amount']   = $this->amount;
-        }
+        $json['amount']   = $this->amount;
+        $json['currency'] = CurrencyEnum::checkValue($this->currency);
         $json = array_merge($json, $this->additionalProperties);
 
         return (!$asArrayWhenEmpty && empty($json)) ? new stdClass() : $json;

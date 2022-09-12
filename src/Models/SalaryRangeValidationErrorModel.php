@@ -1,0 +1,136 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * HAPI
+ *
+ * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
+ */
+
+namespace HAPILib\Models;
+
+use stdClass;
+
+class SalaryRangeValidationErrorModel implements \JsonSerializable
+{
+    /**
+     * @var string[]|null
+     */
+    private $to;
+
+    /**
+     * @var string[]|null
+     */
+    private $from;
+
+    /**
+     * @var string[]|null
+     */
+    private $currency;
+
+    /**
+     * Returns To.
+     *
+     * @return string[]|null
+     */
+    public function getTo(): ?array
+    {
+        return $this->to;
+    }
+
+    /**
+     * Sets To.
+     *
+     * @maps to
+     *
+     * @param string[]|null $to
+     */
+    public function setTo(?array $to): void
+    {
+        $this->to = $to;
+    }
+
+    /**
+     * Returns From.
+     *
+     * @return string[]|null
+     */
+    public function getFrom(): ?array
+    {
+        return $this->from;
+    }
+
+    /**
+     * Sets From.
+     *
+     * @maps from
+     *
+     * @param string[]|null $from
+     */
+    public function setFrom(?array $from): void
+    {
+        $this->from = $from;
+    }
+
+    /**
+     * Returns Currency.
+     *
+     * @return string[]|null
+     */
+    public function getCurrency(): ?array
+    {
+        return $this->currency;
+    }
+
+    /**
+     * Sets Currency.
+     *
+     * @maps currency
+     *
+     * @param string[]|null $currency
+     */
+    public function setCurrency(?array $currency): void
+    {
+        $this->currency = $currency;
+    }
+
+    private $additionalProperties = [];
+
+    /**
+     * Add an additional property to this model.
+     *
+     * @param string $name Name of property
+     * @param mixed $value Value of property
+     */
+    public function addAdditionalProperty(string $name, $value)
+    {
+        $this->additionalProperties[$name] = $value;
+    }
+
+    /**
+     * Encode this object to JSON
+     *
+     * @param bool $asArrayWhenEmpty Whether to serialize this model as an array whenever no fields
+     *        are set. (default: false)
+     *
+     * @return array|stdClass
+     */
+    #[\ReturnTypeWillChange] // @phan-suppress-current-line PhanUndeclaredClassAttribute for (php < 8.1)
+    public function jsonSerialize(bool $asArrayWhenEmpty = false)
+    {
+        $json = [];
+        if (isset($this->to)) {
+            $json['to']       = $this->to;
+        }
+        if (isset($this->from)) {
+            $json['from']     = $this->from;
+        }
+        if (isset($this->currency)) {
+            $json['currency'] = $this->currency;
+        }
+        $json = array_merge($json, $this->additionalProperties);
+
+        return (!$asArrayWhenEmpty && empty($json)) ? new stdClass() : $json;
+    }
+}

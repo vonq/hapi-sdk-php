@@ -20,7 +20,7 @@ class DurationModel implements \JsonSerializable
     private $range;
 
     /**
-     * @var float|null
+     * @var int|null
      */
     private $period;
 
@@ -38,7 +38,7 @@ class DurationModel implements \JsonSerializable
      * The range of the duration
      *
      * @maps range
-     * @factory \HAPILib\Models\RangeEnum::checkValue
+     * @factory \HAPILib\Models\DurationRangeEnum::checkValue
      */
     public function setRange(?string $range): void
     {
@@ -49,7 +49,7 @@ class DurationModel implements \JsonSerializable
      * Returns Period.
      * The duration a vacancy is actively listed on a channel
      */
-    public function getPeriod(): ?float
+    public function getPeriod(): ?int
     {
         return $this->period;
     }
@@ -60,7 +60,7 @@ class DurationModel implements \JsonSerializable
      *
      * @maps period
      */
-    public function setPeriod(?float $period): void
+    public function setPeriod(?int $period): void
     {
         $this->period = $period;
     }
@@ -91,7 +91,7 @@ class DurationModel implements \JsonSerializable
     {
         $json = [];
         if (isset($this->range)) {
-            $json['range']  = RangeEnum::checkValue($this->range);
+            $json['range']  = DurationRangeEnum::checkValue($this->range);
         }
         if (isset($this->period)) {
             $json['period'] = $this->period;

@@ -15,7 +15,7 @@ use stdClass;
 class JobFunctionTreeModel implements \JsonSerializable
 {
     /**
-     * @var float
+     * @var int
      */
     private $id;
 
@@ -30,11 +30,11 @@ class JobFunctionTreeModel implements \JsonSerializable
     private $children;
 
     /**
-     * @param float $id
+     * @param int $id
      * @param string $name
      * @param JobFunctionTreeModel[] $children
      */
-    public function __construct(float $id, string $name, array $children)
+    public function __construct(int $id, string $name, array $children)
     {
         $this->id = $id;
         $this->name = $name;
@@ -44,7 +44,7 @@ class JobFunctionTreeModel implements \JsonSerializable
     /**
      * Returns Id.
      */
-    public function getId(): float
+    public function getId(): int
     {
         return $this->id;
     }
@@ -55,7 +55,7 @@ class JobFunctionTreeModel implements \JsonSerializable
      * @required
      * @maps id
      */
-    public function setId(float $id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }

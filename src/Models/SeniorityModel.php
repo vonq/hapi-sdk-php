@@ -20,7 +20,7 @@ class SeniorityModel implements \JsonSerializable
     private $id;
 
     /**
-     * @var Name3Model[]|null
+     * @var TaxonomyNameModel[]|null
      */
     private $name;
 
@@ -47,7 +47,7 @@ class SeniorityModel implements \JsonSerializable
     /**
      * Returns Name.
      *
-     * @return Name3Model[]|null
+     * @return TaxonomyNameModel[]|null
      */
     public function getName(): ?array
     {
@@ -59,7 +59,7 @@ class SeniorityModel implements \JsonSerializable
      *
      * @maps name
      *
-     * @param Name3Model[]|null $name
+     * @param TaxonomyNameModel[]|null $name
      */
     public function setName(?array $name): void
     {

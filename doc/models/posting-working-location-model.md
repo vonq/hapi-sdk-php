@@ -14,7 +14,7 @@
 | `postcode` | `string` | Required | - | getPostcode(): string | setPostcode(string postcode): void |
 | `city` | `string` | Required | - | getCity(): string | setCity(string city): void |
 | `country` | `string` | Required | - | getCountry(): string | setCountry(string country): void |
-| `allowsRemoteWork` | `?float` | Optional | Optional parameter allowing remote work, possible values are 0 and 1, defaults to 0 | getAllowsRemoteWork(): ?float | setAllowsRemoteWork(?float allowsRemoteWork): void |
+| `allowsRemoteWork` | `?int` | Optional | Optional parameter allowing remote work, possible values are 0 and 1, defaults to 0<br>**Constraints**: `>= 0`, `<= 1` | getAllowsRemoteWork(): ?int | setAllowsRemoteWork(?int allowsRemoteWork): void |
 
 ## Example (as JSON)
 

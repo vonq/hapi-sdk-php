@@ -1,8 +1,6 @@
 
 # Range Enum
 
-The range of the duration
-
 ## Enumeration
 
 `RangeEnum`
@@ -12,12 +10,4 @@ The range of the duration
 | Name |
 |  --- |
 | `DAYS` |
-| `MONTHS` |
-| `YEARS` |
-
-## Example
-
-```
-days
-```
 

@@ -58,7 +58,7 @@ class OrderedProductsPostElementModel implements \JsonSerializable
      * Returns Utm.
      * Query string for UTM parameters
      *
-     * **Pattern:** `/^([%.-_!*a-zA-Z0-9]{1,}=[%.-_!*+,;$()a-zA-Z0-9]{1,}[&]{0,}){1,}$/`
+     * **Pattern:** `^([%.\-_!*a-zA-Z0-9]{1,}=[%.\-_!*+,;$\(\)a-zA-Z0-9]{1,}[&]{0,}){1,}$`
      */
     public function getUtm(): ?string
     {
@@ -69,7 +69,7 @@ class OrderedProductsPostElementModel implements \JsonSerializable
      * Sets Utm.
      * Query string for UTM parameters
      *
-     * **Pattern:** `/^([%.-_!*a-zA-Z0-9]{1,}=[%.-_!*+,;$()a-zA-Z0-9]{1,}[&]{0,}){1,}$/`
+     * **Pattern:** `^([%.\-_!*a-zA-Z0-9]{1,}=[%.\-_!*+,;$\(\)a-zA-Z0-9]{1,}[&]{0,}){1,}$`
      *
      * @maps utm
      */

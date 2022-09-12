@@ -12,13 +12,10 @@ namespace HAPILib\Models;
 
 use stdClass;
 
-/**
- * Industry(id, name)
- */
 class IndustryModel implements \JsonSerializable
 {
     /**
-     * @var float|null
+     * @var float
      */
     private $id;
 
@@ -28,17 +25,19 @@ class IndustryModel implements \JsonSerializable
     private $name;
 
     /**
+     * @param float $id
      * @param string $name
      */
-    public function __construct(string $name)
+    public function __construct(float $id, string $name)
     {
+        $this->id = $id;
         $this->name = $name;
     }
 
     /**
      * Returns Id.
      */
-    public function getId(): ?float
+    public function getId(): float
     {
         return $this->id;
     }
@@ -46,9 +45,10 @@ class IndustryModel implements \JsonSerializable
     /**
      * Sets Id.
      *
+     * @required
      * @maps id
      */
-    public function setId(?float $id): void
+    public function setId(float $id): void
     {
         $this->id = $id;
     }
@@ -97,10 +97,8 @@ class IndustryModel implements \JsonSerializable
     public function jsonSerialize(bool $asArrayWhenEmpty = false)
     {
         $json = [];
-        if (isset($this->id)) {
-            $json['id'] = $this->id;
-        }
-        $json['name']   = $this->name;
+        $json['id']   = $this->id;
+        $json['name'] = $this->name;
         $json = array_merge($json, $this->additionalProperties);
 
         return (!$asArrayWhenEmpty && empty($json)) ? new stdClass() : $json;
