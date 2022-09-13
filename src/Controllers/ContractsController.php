@@ -13,6 +13,7 @@ namespace HAPI\Controllers;
 use HAPI\Exceptions\ApiException;
 use HAPI\ConfigurationInterface;
 use HAPI\ApiHelper;
+use HAPI\Models;
 use HAPI\Http\ApiResponse;
 use HAPI\Http\HttpRequest;
 use HAPI\Http\HttpResponse;
@@ -30,16 +31,21 @@ class ContractsController extends BaseController
     /**
      * This endpoint exposes a list of contract available to a particular customer.
      *
-     * @param array $options Array with all options for search
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param int|null $limit Number of results to return per page.
+     * @param int|null $offset The initial index from which to return the results.
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function listContracts(array $options): ApiResponse
+    public function listContracts(string $xCustomerId, ?int $limit = 50, ?int $offset = 0): ApiResponse
     {
         //check that all required arguments are provided
-        if (!isset($options['xCustomerId'])) {
+        if (!isset($xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -48,15 +54,17 @@ class ContractsController extends BaseController
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'limit'         => $this->val($options, 'limit', 50),
-            'offset'        => $this->val($options, 'offset', 0),
+            'limit'         => (null != $limit) ?
+                $limit : 50,
+            'offset'        => (null != $offset) ?
+                $offset : 0,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
+            'X-Customer-Id'   => $xCustomerId
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -105,16 +113,20 @@ class ContractsController extends BaseController
      * be possible. To edit contract credentials, the credentials need to be deleted first, and then
      * recreated. When deleted, all corresponding jobs can't be deleted anymore
      *
-     * @param array $options Array with all options for search
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param Models\ContractCreateRequestModel $body
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function createContract(array $options): ApiResponse
+    public function createContract(string $xCustomerId, Models\ContractCreateRequestModel $body): ApiResponse
     {
         //check that all required arguments are provided
-        if (!isset($options['xCustomerId'], $options['body'])) {
+        if (!isset($xCustomerId, $body)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -125,12 +137,12 @@ class ContractsController extends BaseController
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId'),
+            'X-Customer-Id'   => $xCustomerId,
             'Content-Type'    => 'application/json'
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
+        $_bodyJson = ApiHelper::serialize($body);
 
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
 
@@ -196,16 +208,20 @@ class ContractsController extends BaseController
      * result the inability to [Take the campaign offline](https://vonq.stoplight.
      * io/docs/hapi/d70d556dbb9ba-take-a-campaign-offline).
      *
-     * @param array $options Array with all options for search
+     * @param string $contractId The ID of the contract you want to delete
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function deleteContract(array $options): ApiResponse
+    public function deleteContract(string $contractId, string $xCustomerId): ApiResponse
     {
         //check that all required arguments are provided
-        if (!isset($options['contractId'], $options['xCustomerId'])) {
+        if (!isset($contractId, $xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -214,13 +230,13 @@ class ContractsController extends BaseController
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'contract_id'   => $this->val($options, 'contractId'),
+            'contract_id'   => $contractId,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
+            'X-Customer-Id'   => $xCustomerId
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::DELETE, $_headers, $_queryUrl);
@@ -262,16 +278,26 @@ class ContractsController extends BaseController
     /**
      * This endpoint exposes a list of multiple contracts, if available to a specific customer
      *
-     * @param array $options Array with all options for search
+     * @param string[] $contractsIds Comma separated list of contract IDs
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts)
+     * @param int|null $limit Number of results to return per page
+     * @param int|null $offset The initial index from which to return the results
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveMultipleContracts(array $options): ApiResponse
-    {
+    public function retrieveMultipleContracts(
+        array $contractsIds,
+        string $xCustomerId,
+        ?int $limit = 50,
+        ?int $offset = 0
+    ): ApiResponse {
         //check that all required arguments are provided
-        if (!isset($options['contractsIds'], $options['xCustomerId'])) {
+        if (!isset($contractsIds, $xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -280,20 +306,22 @@ class ContractsController extends BaseController
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'contracts_ids' => $this->val($options, 'contractsIds'),
+            'contracts_ids' => $contractsIds,
         ]);
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'limit'         => $this->val($options, 'limit', 50),
-            'offset'        => $this->val($options, 'offset', 0),
+            'limit'         => (null != $limit) ?
+                $limit : 50,
+            'offset'        => (null != $offset) ?
+                $offset : 0,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
+            'X-Customer-Id'   => $xCustomerId
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -340,16 +368,26 @@ class ContractsController extends BaseController
      * When `channel_id` is used, the credentials are required. When using `contract_id`, since the
      * credentials were already send as part of contract creation, there is no need to pass the credentials.
      *
-     * @param array $options Array with all options for search
+     * @param int $channelIdOrContractId The channel ID or contract ID
+     * @param string $postingRequirementName The name of the posting requirement
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param Models\FacetAutocompleteModel $body
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function listAutocompleteValues(array $options): ApiResponse
-    {
+    public function listAutocompleteValues(
+        int $channelIdOrContractId,
+        string $postingRequirementName,
+        string $xCustomerId,
+        Models\FacetAutocompleteModel $body
+    ): ApiResponse {
         //check that all required arguments are provided
-        if (!isset($options['channelIdOrContractId'], $options['postingRequirementName'], $options['xCustomerId'], $options['body'])) {
+        if (!isset($channelIdOrContractId, $postingRequirementName, $xCustomerId, $body)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -359,20 +397,20 @@ class ContractsController extends BaseController
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'channel_id_or_contract_id' => $this->val($options, 'channelIdOrContractId'),
-            'posting-requirement-name'  => $this->val($options, 'postingRequirementName'),
+            'channel_id_or_contract_id' => $channelIdOrContractId,
+            'posting-requirement-name'  => $postingRequirementName,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'              => self::$userAgent,
             'Accept'                  => 'application/json',
-            'X-Customer-Id'             => $this->val($options, 'xCustomerId'),
+            'X-Customer-Id'             => $xCustomerId,
             'Content-Type'              => 'application/json'
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
+        $_bodyJson = ApiHelper::serialize($body);
 
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
 
@@ -421,16 +459,20 @@ class ContractsController extends BaseController
      * This endpoint retrieves the detail for a customer contract. It contains a reference to a channel, an
      * (encrypted) credential payload, and the facets set for the My Contracts product.
      *
-     * @param array $options Array with all options for search
+     * @param string $contractId ID of the contract you want to retrieve
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveContract(array $options): ApiResponse
+    public function retrieveContract(string $contractId, string $xCustomerId): ApiResponse
     {
         //check that all required arguments are provided
-        if (!isset($options['contractId'], $options['xCustomerId'])) {
+        if (!isset($contractId, $xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -439,14 +481,14 @@ class ContractsController extends BaseController
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'contract_id'   => $this->val($options, 'contractId'),
+            'contract_id'   => $contractId,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
+            'X-Customer-Id'   => $xCustomerId
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -494,20 +536,5 @@ class ContractsController extends BaseController
             'EncryptedContractModel'
         );
         return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
-    }
-
-    /**
-     * Array access utility method
-     * @param  array          $arr         Array of values to read from
-     * @param  string         $key         Key to get the value from the array
-     * @param  mixed|null     $default     Default value to use if the key was not found
-     * @return mixed
-     */
-    private function val(array $arr, string $key, $default = null)
-    {
-        if (isset($arr[$key])) {
-            return is_bool($arr[$key]) ? var_export($arr[$key], true) : $arr[$key];
-        }
-        return $default;
     }
 }

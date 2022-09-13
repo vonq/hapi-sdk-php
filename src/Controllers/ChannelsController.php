@@ -33,16 +33,28 @@ class ChannelsController extends BaseController
      * for creating a contract or a campaign for each channel, please call the "Retrieve details for
      * channel with support for contracts".
      *
-     * @param array $options Array with all options for search
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param string|null $search A search term
+     * @param int|null $limit Number of results to return per page
+     * @param int|null $offset The initial index from which to return the results
+     * @param string|null $acceptLanguage The language the client prefers
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function listChannels(array $options): ApiResponse
-    {
+    public function listChannels(
+        string $xCustomerId,
+        ?string $search = null,
+        ?int $limit = 25,
+        ?int $offset = 0,
+        ?string $acceptLanguage = null
+    ): ApiResponse {
         //check that all required arguments are provided
-        if (!isset($options['xCustomerId'])) {
+        if (!isset($xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -51,17 +63,19 @@ class ChannelsController extends BaseController
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'search'          => $this->val($options, 'search'),
-            'limit'           => $this->val($options, 'limit', 25),
-            'offset'          => $this->val($options, 'offset', 0),
+            'search'          => $search,
+            'limit'           => (null != $limit) ?
+                $limit : 25,
+            'offset'          => (null != $offset) ?
+                $offset : 0,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId'),
-            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($this->val($options, 'acceptLanguage'))
+            'X-Customer-Id'   => $xCustomerId,
+            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($acceptLanguage)
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -115,16 +129,21 @@ class ChannelsController extends BaseController
      * This endpoint exposes the details of a channel with support for contracts,as well as all the
      * required details for creating a contract or a campaign for each channel.
      *
-     * @param array $options Array with all options for search
+     * @param int $channelId ID of the channel
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param string|null $acceptLanguage The language the client prefers
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveChannel(array $options): ApiResponse
+    public function retrieveChannel(int $channelId, string $xCustomerId, ?string $acceptLanguage = null): ApiResponse
     {
         //check that all required arguments are provided
-        if (!isset($options['channelId'], $options['xCustomerId'])) {
+        if (!isset($channelId, $xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -133,15 +152,15 @@ class ChannelsController extends BaseController
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'channelId'       => $this->val($options, 'channelId'),
+            'channelId'       => $channelId,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId'),
-            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($this->val($options, 'acceptLanguage'))
+            'X-Customer-Id'   => $xCustomerId,
+            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($acceptLanguage)
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -198,20 +217,5 @@ class ChannelsController extends BaseController
             'LimitedChannelModel'
         );
         return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
-    }
-
-    /**
-     * Array access utility method
-     * @param  array          $arr         Array of values to read from
-     * @param  string         $key         Key to get the value from the array
-     * @param  mixed|null     $default     Default value to use if the key was not found
-     * @return mixed
-     */
-    private function val(array $arr, string $key, $default = null)
-    {
-        if (isset($arr[$key])) {
-            return is_bool($arr[$key]) ? var_export($arr[$key], true) : $arr[$key];
-        }
-        return $default;
     }
 }

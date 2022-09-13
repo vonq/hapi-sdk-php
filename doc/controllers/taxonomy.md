@@ -25,7 +25,12 @@ Use the `id` key of any Industry in the response to search for a product.
 Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
 
 ```php
-function listIndustries(array $options): ApiResponse
+function listIndustries(
+    ?int $limit = 50,
+    ?int $offset = 0,
+    ?string $acceptLanguage = null,
+    ?string $xCustomerId = null
+): ApiResponse
 ```
 
 ## Parameters
@@ -44,21 +49,12 @@ function listIndustries(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $limit = 10;
-$collect['limit'] = $limit;
-
 $offset = 0;
-$collect['offset'] = $offset;
-
 $acceptLanguage = Models\AcceptLanguageEnum::NL;
-$collect['acceptLanguage'] = $acceptLanguage;
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $taxonomyController->listIndustries($collect);
+$apiResponse = $taxonomyController->listIndustries($limit, $offset, $acceptLanguage, $xCustomerId);
 ```
 
 ## Example Response *(as JSON)*
@@ -300,7 +296,7 @@ Each Job Function is associated with [**`Job Titles`**](b3A6MzM0NDA3MzY-job-titl
 Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
 
 ```php
-function retrieveJobFunctionsTree(array $options): ApiResponse
+function retrieveJobFunctionsTree(?string $acceptLanguage = null, ?string $xCustomerId = null): ApiResponse
 ```
 
 ## Parameters
@@ -317,15 +313,10 @@ function retrieveJobFunctionsTree(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $acceptLanguage = Models\AcceptLanguageEnum::NL;
-$collect['acceptLanguage'] = $acceptLanguage;
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $taxonomyController->retrieveJobFunctionsTree($collect);
+$apiResponse = $taxonomyController->retrieveJobFunctionsTree($acceptLanguage, $xCustomerId);
 ```
 
 ## Example Response *(as JSON)*
@@ -467,7 +458,13 @@ Each Job Title is associated with a [**`Job Function`**](b3A6MzM0NDA3MzU-job-fun
 Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
 
 ```php
-function searchJobTitles(array $options): ApiResponse
+function searchJobTitles(
+    string $text,
+    ?int $limit = 50,
+    ?int $offset = 0,
+    ?string $acceptLanguage = null,
+    ?string $xCustomerId = null
+): ApiResponse
 ```
 
 ## Parameters
@@ -487,24 +484,13 @@ function searchJobTitles(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $text = 'text0';
-$collect['text'] = $text;
-
 $limit = 10;
-$collect['limit'] = $limit;
-
 $offset = 0;
-$collect['offset'] = $offset;
-
 $acceptLanguage = Models\AcceptLanguageEnum::NL;
-$collect['acceptLanguage'] = $acceptLanguage;
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $taxonomyController->searchJobTitles($collect);
+$apiResponse = $taxonomyController->searchJobTitles($text, $limit, $offset, $acceptLanguage, $xCustomerId);
 ```
 
 
@@ -516,7 +502,7 @@ Use the `id` key of each object in the response to search for a Product.
 Supports text input in English, Dutch and German.
 
 ```php
-function searchLocations(array $options): ApiResponse
+function searchLocations(string $text, ?string $acceptLanguage = null, ?string $xCustomerId = null): ApiResponse
 ```
 
 ## Parameters
@@ -534,18 +520,11 @@ function searchLocations(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $text = 'text0';
-$collect['text'] = $text;
-
 $acceptLanguage = Models\AcceptLanguageEnum::NL;
-$collect['acceptLanguage'] = $acceptLanguage;
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $taxonomyController->searchLocations($collect);
+$apiResponse = $taxonomyController->searchLocations($text, $acceptLanguage, $xCustomerId);
 ```
 
 ## Example Response *(as JSON)*

@@ -48,29 +48,28 @@ Besides the default English, German and Dutch result translations can be request
     public function testTestSearchProducts()
     {
         // Parameters for the API call
-        $input = array();
-        $input['limit'] = null;
-        $input['offset'] = null;
-        $input['includeLocationId'] = null;
-        $input['exactLocationId'] = null;
-        $input['jobFunctionId'] = null;
-        $input['jobTitleId'] = null;
-        $input['industryId'] = null;
-        $input['durationFrom'] = null;
-        $input['durationTo'] = null;
-        $input['name'] = null;
-        $input['currency'] = null;
-        $input['sortBy'] = Models\SortByEnum::RELEVANT;
-        $input['recommended'] = null;
-        $input['mcEnabled'] = null;
-        $input['excludeRecommended'] = false;
-        $input['acceptLanguage'] = null;
-        $input['xCustomerId'] = null;
+        $limit = null;
+        $offset = null;
+        $includeLocationId = null;
+        $exactLocationId = null;
+        $jobFunctionId = null;
+        $jobTitleId = null;
+        $industryId = null;
+        $durationFrom = null;
+        $durationTo = null;
+        $name = null;
+        $currency = null;
+        $sortBy = Models\SortByEnum::RELEVANT;
+        $recommended = null;
+        $mcEnabled = null;
+        $excludeRecommended = false;
+        $acceptLanguage = null;
+        $xCustomerId = null;
 
         // Set callback and perform API call
         $result = null;
         try {
-            $result = self::$controller->searchProducts($input)->getResult();
+            $result = self::$controller->searchProducts($limit, $offset, $includeLocationId, $exactLocationId, $jobFunctionId, $jobTitleId, $industryId, $durationFrom, $durationTo, $name, $currency, $sortBy, $recommended, $mcEnabled, $excludeRecommended, $acceptLanguage, $xCustomerId)->getResult();
         } catch (ApiException $e) {
         }
 

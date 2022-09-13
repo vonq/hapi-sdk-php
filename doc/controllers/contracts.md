@@ -25,7 +25,7 @@ This endpoint creates a new customer contract. It requires a reference to a chan
 HAPI doesn't support contract editing, because job boards require the same credentials to be able to delete already posted jobs via that contract at a later moment. Otherwise, deleting jobs would not be possible. To edit contract credentials, the credentials need to be deleted first, and then recreated. When deleted, all corresponding jobs can't be deleted anymore
 
 ```php
-function createContract(array $options): ApiResponse
+function createContract(string $xCustomerId, ContractCreateRequestModel $body): ApiResponse
 ```
 
 ## Parameters
@@ -42,11 +42,7 @@ function createContract(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
-
 $body_channelId = 236;
 $body_credentials = ['' => HAPI\ApiHelper::deserialize(null), '' => HAPI\ApiHelper::deserialize(null)];
 $body = new Models\ContractCreateRequestModel(
@@ -63,9 +59,8 @@ $body->setPurchasePrice(new Models\PurchasePriceModel(
     $body_purchasePrice_amount,
     $body_purchasePrice_currency
 ));
-$collect['body'] = $body;
 
-$apiResponse = $contractsController->createContract($collect);
+$apiResponse = $contractsController->createContract($xCustomerId, $body);
 ```
 
 ## Errors
@@ -85,7 +80,7 @@ HAPI doesn't support contract editing, because job boards require the same crede
 Contracts with Campaign(s) whose Channel status (retrievable through the "[Check a campaign status](https://vonq.stoplight.io/docs/hapi/cd5f4f9018c18-check-campaign-status)" endpoint, as defined by the`orderedProductsStatus.status`) is set to `online` can be deleted, but this will result the inability to [Take the campaign offline](https://vonq.stoplight.io/docs/hapi/d70d556dbb9ba-take-a-campaign-offline).
 
 ```php
-function deleteContract(array $options): ApiResponse
+function deleteContract(string $contractId, string $xCustomerId): ApiResponse
 ```
 
 ## Parameters
@@ -102,15 +97,10 @@ function deleteContract(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $contractId = 'contract_id8';
-$collect['contractId'] = $contractId;
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $contractsController->deleteContract($collect);
+$apiResponse = $contractsController->deleteContract($contractId, $xCustomerId);
 ```
 
 ## Errors
@@ -127,7 +117,12 @@ This endpoint exposes autocomplete items given a `channel_id` or `contract_id` a
 When `channel_id` is used, the credentials are required. When using `contract_id`, since the credentials were already send as part of contract creation, there is no need to pass the credentials.
 
 ```php
-function listAutocompleteValues(array $options): ApiResponse
+function listAutocompleteValues(
+    int $channelIdOrContractId,
+    string $postingRequirementName,
+    string $xCustomerId,
+    FacetAutocompleteModel $body
+): ApiResponse
 ```
 
 ## Parameters
@@ -146,23 +141,14 @@ function listAutocompleteValues(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $channelIdOrContractId = 210;
-$collect['channelIdOrContractId'] = $channelIdOrContractId;
-
 $postingRequirementName = 'posting-requirement-name2';
-$collect['postingRequirementName'] = $postingRequirementName;
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
-
 $body = new Models\FacetAutocompleteModel;
 $body->setTerm('Example term text');
 $body->setCredentials(HAPI\ApiHelper::deserialize('{"key1":"val1","key2":"val2"}'));
-$collect['body'] = $body;
 
-$apiResponse = $contractsController->listAutocompleteValues($collect);
+$apiResponse = $contractsController->listAutocompleteValues($channelIdOrContractId, $postingRequirementName, $xCustomerId, $body);
 ```
 
 ## Example Response *(as JSON)*
@@ -196,7 +182,7 @@ $apiResponse = $contractsController->listAutocompleteValues($collect);
 This endpoint exposes a list of contract available to a particular customer.
 
 ```php
-function listContracts(array $options): ApiResponse
+function listContracts(string $xCustomerId, ?int $limit = 50, ?int $offset = 0): ApiResponse
 ```
 
 ## Parameters
@@ -214,18 +200,11 @@ function listContracts(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
-
 $limit = 10;
-$collect['limit'] = $limit;
-
 $offset = 0;
-$collect['offset'] = $offset;
 
-$apiResponse = $contractsController->listContracts($collect);
+$apiResponse = $contractsController->listContracts($xCustomerId, $limit, $offset);
 ```
 
 
@@ -234,7 +213,7 @@ $apiResponse = $contractsController->listContracts($collect);
 This endpoint retrieves the detail for a customer contract. It contains a reference to a channel, an (encrypted) credential payload, and the facets set for the My Contracts product.
 
 ```php
-function retrieveContract(array $options): ApiResponse
+function retrieveContract(string $contractId, string $xCustomerId): ApiResponse
 ```
 
 ## Parameters
@@ -251,15 +230,10 @@ function retrieveContract(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $contractId = 'contract_id8';
-$collect['contractId'] = $contractId;
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $contractsController->retrieveContract($collect);
+$apiResponse = $contractsController->retrieveContract($contractId, $xCustomerId);
 ```
 
 ## Errors
@@ -274,7 +248,12 @@ $apiResponse = $contractsController->retrieveContract($collect);
 This endpoint exposes a list of multiple contracts, if available to a specific customer
 
 ```php
-function retrieveMultipleContracts(array $options): ApiResponse
+function retrieveMultipleContracts(
+    array $contractsIds,
+    string $xCustomerId,
+    ?int $limit = 50,
+    ?int $offset = 0
+): ApiResponse
 ```
 
 ## Parameters
@@ -293,20 +272,11 @@ function retrieveMultipleContracts(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $contractsIds = ['contracts_ids7', 'contracts_ids8'];
-$collect['contractsIds'] = $contractsIds;
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
-
 $limit = 10;
-$collect['limit'] = $limit;
-
 $offset = 0;
-$collect['offset'] = $offset;
 
-$apiResponse = $contractsController->retrieveMultipleContracts($collect);
+$apiResponse = $contractsController->retrieveMultipleContracts($contractsIds, $xCustomerId, $limit, $offset);
 ```
 

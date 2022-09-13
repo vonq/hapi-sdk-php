@@ -103,16 +103,20 @@ class WalletsController extends BaseController
     /**
      * Create a wallet for the provided customer ID.
      *
-     * @param array $options Array with all options for search
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param Models\WalletRequestModel|null $body
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function postWallet(array $options): ApiResponse
+    public function postWallet(string $xCustomerId, ?Models\WalletRequestModel $body = null): ApiResponse
     {
         //check that all required arguments are provided
-        if (!isset($options['xCustomerId'])) {
+        if (!isset($xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -123,12 +127,12 @@ class WalletsController extends BaseController
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId'),
+            'X-Customer-Id'   => $xCustomerId,
             'Content-Type'    => 'application/json'
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
+        $_bodyJson = ApiHelper::serialize($body);
 
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
 
@@ -193,16 +197,21 @@ class WalletsController extends BaseController
     /**
      * Returns billing portal link where the customer can edit his billing details.
      *
-     * @param array $options Array with all options for search
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param string|null $partnerReturnUrl if set, the billing portal page will have this link as
+     *        "Return to"
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function postWalletWalletIdBillingPortal(array $options): ApiResponse
+    public function postWalletWalletIdBillingPortal(string $xCustomerId, ?string $partnerReturnUrl = null): ApiResponse
     {
         //check that all required arguments are provided
-        if (!isset($options['xCustomerId'])) {
+        if (!isset($xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -211,14 +220,14 @@ class WalletsController extends BaseController
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'partnerReturnUrl' => $this->val($options, 'partnerReturnUrl'),
+            'partnerReturnUrl' => $partnerReturnUrl,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'     => self::$userAgent,
             'Accept'         => 'application/json',
-            'X-Customer-Id'    => $this->val($options, 'xCustomerId')
+            'X-Customer-Id'    => $xCustomerId
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
@@ -486,16 +495,29 @@ class WalletsController extends BaseController
      * });
      * ```
      *
-     * @param array $options Array with all options for search
+     * @param string $walletId The wallet ID, see `GET /wallet` endpoint.
+     * @param string $partnerId Your partner ID.
+     * @param int|null $amount Amount, in USD cents, that the customer wants to add to his wallet
+     *        balance. If specified, the minimum top-up will be amount - wallet balance. If not
+     *        specified, the minimum top-up amount will be USD 300.
+     * @param string|null $returnUrl After the payment is processed, the customer is redirected to
+     *        this page. It can be for example, the page he was on before starting the billing
+     *        process.
+     * @param string|null $successCallbackUrl Called, asynchronous, when the payment was successful.
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function getWalletTopupHtml(array $options): ApiResponse
-    {
+    public function getWalletTopupHtml(
+        string $walletId,
+        string $partnerId,
+        ?int $amount = null,
+        ?string $returnUrl = null,
+        ?string $successCallbackUrl = null
+    ): ApiResponse {
         //check that all required arguments are provided
-        if (!isset($options['walletId'], $options['partnerId'])) {
+        if (!isset($walletId, $partnerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -504,11 +526,11 @@ class WalletsController extends BaseController
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'walletId'           => $this->val($options, 'walletId'),
-            'partnerId'          => $this->val($options, 'partnerId'),
-            'amount'             => $this->val($options, 'amount'),
-            'returnUrl'          => $this->val($options, 'returnUrl'),
-            'successCallbackUrl' => $this->val($options, 'successCallbackUrl'),
+            'walletId'           => $walletId,
+            'partnerId'          => $partnerId,
+            'amount'             => $amount,
+            'returnUrl'          => $returnUrl,
+            'successCallbackUrl' => $successCallbackUrl,
         ]);
 
         //prepare headers
@@ -553,20 +575,5 @@ class WalletsController extends BaseController
         $this->validateResponse($_httpResponse, $_httpRequest);
         $deserializedResponse = $response->body;
         return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
-    }
-
-    /**
-     * Array access utility method
-     * @param  array          $arr         Array of values to read from
-     * @param  string         $key         Key to get the value from the array
-     * @param  mixed|null     $default     Default value to use if the key was not found
-     * @return mixed
-     */
-    private function val(array $arr, string $key, $default = null)
-    {
-        if (isset($arr[$key])) {
-            return is_bool($arr[$key]) ? var_export($arr[$key], true) : $arr[$key];
-        }
-        return $default;
     }
 }

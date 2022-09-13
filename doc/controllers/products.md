@@ -27,7 +27,7 @@ Learn why some products take up to 10 days to setup: - https://hapisupport.vonq.
 Note that delivery time is only applicable for Job Marketing products and it won't appear when using HAPI Job Post and connecting your contracts.
 
 ```php
-function calculateOrderDeliveryTime(array $options): ApiResponse
+function calculateOrderDeliveryTime(array $productsIds, ?string $xCustomerId = null): ApiResponse
 ```
 
 ## Parameters
@@ -44,15 +44,10 @@ function calculateOrderDeliveryTime(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $productsIds = ['products_ids7', 'products_ids8'];
-$collect['productsIds'] = $productsIds;
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $productsController->calculateOrderDeliveryTime($collect);
+$apiResponse = $productsController->calculateOrderDeliveryTime($productsIds, $xCustomerId);
 ```
 
 ## Errors
@@ -69,7 +64,11 @@ Sometimes you already have access to the Identification codes of more than one P
 Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
 
 ```php
-function retrieveMultipleProducts(array $options): ApiResponse
+function retrieveMultipleProducts(
+    array $productsIds,
+    ?string $acceptLanguage = null,
+    ?string $xCustomerId = null
+): ApiResponse
 ```
 
 ## Parameters
@@ -87,18 +86,11 @@ function retrieveMultipleProducts(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $productsIds = ['products_ids7', 'products_ids8'];
-$collect['productsIds'] = $productsIds;
-
 $acceptLanguage = Models\AcceptLanguageEnum::NL;
-$collect['acceptLanguage'] = $acceptLanguage;
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $productsController->retrieveMultipleProducts($collect);
+$apiResponse = $productsController->retrieveMultipleProducts($productsIds, $acceptLanguage, $xCustomerId);
 ```
 
 
@@ -108,7 +100,11 @@ Sometimes you already have access to the Identification code of any particular P
 Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
 
 ```php
-function retrieveSingleProduct(array $options): ApiResponse
+function retrieveSingleProduct(
+    string $productId,
+    ?string $acceptLanguage = null,
+    ?string $xCustomerId = null
+): ApiResponse
 ```
 
 ## Parameters
@@ -126,18 +122,11 @@ function retrieveSingleProduct(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $productId = 'product_id4';
-$collect['productId'] = $productId;
-
 $acceptLanguage = Models\AcceptLanguageEnum::NL;
-$collect['acceptLanguage'] = $acceptLanguage;
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $productsController->retrieveSingleProduct($collect);
+$apiResponse = $productsController->retrieveSingleProduct($productId, $acceptLanguage, $xCustomerId);
 ```
 
 ## Errors
@@ -159,7 +148,25 @@ Calling this endpoint will guarantee that the Products you see are configured fo
 Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
 
 ```php
-function searchProducts(array $options): ApiResponse
+function searchProducts(
+    ?int $limit = null,
+    ?int $offset = null,
+    ?array $includeLocationId = null,
+    ?string $exactLocationId = null,
+    ?string $jobFunctionId = null,
+    ?string $jobTitleId = null,
+    ?array $industryId = null,
+    ?string $durationFrom = null,
+    ?string $durationTo = null,
+    ?string $name = null,
+    ?string $currency = null,
+    ?string $sortBy = Models\SortByEnum::RELEVANT,
+    ?bool $recommended = null,
+    ?bool $mcEnabled = null,
+    ?bool $excludeRecommended = false,
+    ?string $acceptLanguage = null,
+    ?string $xCustomerId = null
+): ApiResponse
 ```
 
 ## Parameters
@@ -191,60 +198,25 @@ function searchProducts(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $limit = 172;
-$collect['limit'] = $limit;
-
 $offset = 12;
-$collect['offset'] = $offset;
-
 $includeLocationId = ['includeLocationId3', 'includeLocationId4'];
-$collect['includeLocationId'] = $includeLocationId;
-
 $exactLocationId = 'exactLocationId6';
-$collect['exactLocationId'] = $exactLocationId;
-
 $jobFunctionId = 'jobFunctionId8';
-$collect['jobFunctionId'] = $jobFunctionId;
-
 $jobTitleId = 'jobTitleId4';
-$collect['jobTitleId'] = $jobTitleId;
-
 $industryId = ['industryId3'];
-$collect['industryId'] = $industryId;
-
 $durationFrom = 'durationFrom8';
-$collect['durationFrom'] = $durationFrom;
-
 $durationTo = 'durationTo6';
-$collect['durationTo'] = $durationTo;
-
 $name = 'name0';
-$collect['name'] = $name;
-
 $currency = 'currency0';
-$collect['currency'] = $currency;
-
 $sortBy = Models\SortByEnum::RELEVANT;
-$collect['sortBy'] = $sortBy;
-
 $recommended = false;
-$collect['recommended'] = $recommended;
-
 $mcEnabled = false;
-$collect['mcEnabled'] = $mcEnabled;
-
 $excludeRecommended = false;
-$collect['excludeRecommended'] = $excludeRecommended;
-
 $acceptLanguage = Models\AcceptLanguageEnum::NL;
-$collect['acceptLanguage'] = $acceptLanguage;
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $productsController->searchProducts($collect);
+$apiResponse = $productsController->searchProducts($limit, $offset, $includeLocationId, $exactLocationId, $jobFunctionId, $jobTitleId, $industryId, $durationFrom, $durationTo, $name, $currency, $sortBy, $recommended, $mcEnabled, $excludeRecommended, $acceptLanguage, $xCustomerId);
 ```
 
 ## Errors

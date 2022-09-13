@@ -13,6 +13,7 @@ namespace HAPI\Controllers;
 use HAPI\Exceptions\ApiException;
 use HAPI\ConfigurationInterface;
 use HAPI\ApiHelper;
+use HAPI\Models;
 use HAPI\Http\ApiResponse;
 use HAPI\Http\HttpRequest;
 use HAPI\Http\HttpResponse;
@@ -30,16 +31,24 @@ class ContractGroupsController extends BaseController
     /**
      * This endpoint exposes the list of contract groups
      *
-     * @param array $options Array with all options for search
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param string|null $ordering Which field to use when ordering the results.
+     * @param string|null $search A search term.
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function listContractsGroups(array $options): ApiResponse
-    {
+    public function listContractsGroups(
+        string $xCustomerId,
+        ?string $ordering = null,
+        ?string $search = null
+    ): ApiResponse {
         //check that all required arguments are provided
-        if (!isset($options['xCustomerId'])) {
+        if (!isset($xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -48,15 +57,15 @@ class ContractGroupsController extends BaseController
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'ordering'      => $this->val($options, 'ordering'),
-            'search'        => $this->val($options, 'search'),
+            'ordering'      => $ordering,
+            'search'        => $search,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
+            'X-Customer-Id'   => $xCustomerId
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -100,16 +109,22 @@ class ContractGroupsController extends BaseController
     /**
      * This endpoint allows to create a new contract group
      *
-     * @param array $options Array with all options for search
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param Models\ContractGroupRequestModel|null $body
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function createContractsGroup(array $options): ApiResponse
-    {
+    public function createContractsGroup(
+        string $xCustomerId,
+        ?Models\ContractGroupRequestModel $body = null
+    ): ApiResponse {
         //check that all required arguments are provided
-        if (!isset($options['xCustomerId'])) {
+        if (!isset($xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -120,12 +135,12 @@ class ContractGroupsController extends BaseController
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId'),
+            'X-Customer-Id'   => $xCustomerId,
             'Content-Type'    => 'application/json'
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
+        $_bodyJson = ApiHelper::serialize($body);
 
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
 
@@ -177,16 +192,20 @@ class ContractGroupsController extends BaseController
     /**
      * Returns the details of the Contract Group by index/idx
      *
-     * @param array $options Array with all options for search
+     * @param string $groupIdx The countract group ID
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function getContractGroup(array $options): ApiResponse
+    public function getContractGroup(string $groupIdx, string $xCustomerId): ApiResponse
     {
         //check that all required arguments are provided
-        if (!isset($options['groupIdx'], $options['xCustomerId'])) {
+        if (!isset($groupIdx, $xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -195,14 +214,14 @@ class ContractGroupsController extends BaseController
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'group_idx'     => $this->val($options, 'groupIdx'),
+            'group_idx'     => $groupIdx,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
+            'X-Customer-Id'   => $xCustomerId
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -256,16 +275,20 @@ class ContractGroupsController extends BaseController
      * Deletes a contract Contract Group by idx.
      * Groups with idx=0 or associated to contracts can't be deleted.
      *
-     * @param array $options Array with all options for search
+     * @param string $groupIdx The countract group ID
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function deleteContractGroup(array $options): ApiResponse
+    public function deleteContractGroup(string $groupIdx, string $xCustomerId): ApiResponse
     {
         //check that all required arguments are provided
-        if (!isset($options['groupIdx'], $options['xCustomerId'])) {
+        if (!isset($groupIdx, $xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -274,13 +297,13 @@ class ContractGroupsController extends BaseController
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'group_idx'     => $this->val($options, 'groupIdx'),
+            'group_idx'     => $groupIdx,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
+            'X-Customer-Id'   => $xCustomerId
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::DELETE, $_headers, $_queryUrl);
@@ -331,16 +354,24 @@ class ContractGroupsController extends BaseController
     /**
      * Allows updating the contract group name
      *
-     * @param array $options Array with all options for search
+     * @param string $groupIdx The countract group ID
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param Models\ContractGroupRequestModel|null $body
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function updateContractGroup(array $options): ApiResponse
-    {
+    public function updateContractGroup(
+        string $groupIdx,
+        string $xCustomerId,
+        ?Models\ContractGroupRequestModel $body = null
+    ): ApiResponse {
         //check that all required arguments are provided
-        if (!isset($options['groupIdx'], $options['xCustomerId'])) {
+        if (!isset($groupIdx, $xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -349,19 +380,19 @@ class ContractGroupsController extends BaseController
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'group_idx'     => $this->val($options, 'groupIdx'),
+            'group_idx'     => $groupIdx,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId'),
+            'X-Customer-Id'   => $xCustomerId,
             'Content-Type'    => 'application/json'
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
+        $_bodyJson = ApiHelper::serialize($body);
 
         $_httpRequest = new HttpRequest(HttpMethod::PUT, $_headers, $_queryUrl);
 
@@ -422,16 +453,24 @@ class ContractGroupsController extends BaseController
     /**
      * Allows updating the contract group name
      *
-     * @param array $options Array with all options for search
+     * @param string $groupIdx The countract group ID
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param Models\ContractGroupRequestModel|null $body
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function partialUpdateContractGroup(array $options): ApiResponse
-    {
+    public function partialUpdateContractGroup(
+        string $groupIdx,
+        string $xCustomerId,
+        ?Models\ContractGroupRequestModel $body = null
+    ): ApiResponse {
         //check that all required arguments are provided
-        if (!isset($options['groupIdx'], $options['xCustomerId'])) {
+        if (!isset($groupIdx, $xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -440,19 +479,19 @@ class ContractGroupsController extends BaseController
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'group_idx'     => $this->val($options, 'groupIdx'),
+            'group_idx'     => $groupIdx,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId'),
+            'X-Customer-Id'   => $xCustomerId,
             'Content-Type'    => 'application/json'
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
+        $_bodyJson = ApiHelper::serialize($body);
 
         $_httpRequest = new HttpRequest(HttpMethod::PATCH, $_headers, $_queryUrl);
 
@@ -508,20 +547,5 @@ class ContractGroupsController extends BaseController
             'ContractGroupModel'
         );
         return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
-    }
-
-    /**
-     * Array access utility method
-     * @param  array          $arr         Array of values to read from
-     * @param  string         $key         Key to get the value from the array
-     * @param  mixed|null     $default     Default value to use if the key was not found
-     * @return mixed
-     */
-    private function val(array $arr, string $key, $default = null)
-    {
-        if (isset($arr[$key])) {
-            return is_bool($arr[$key]) ? var_export($arr[$key], true) : $arr[$key];
-        }
-        return $default;
     }
 }

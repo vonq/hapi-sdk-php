@@ -19,7 +19,13 @@ $channelsController = $client->getChannelsController();
 This endpoint exposes a list of channels with support for contracts. For all of the required details for creating a contract or a campaign for each channel, please call the "Retrieve details for channel with support for contracts".
 
 ```php
-function listChannels(array $options): ApiResponse
+function listChannels(
+    string $xCustomerId,
+    ?string $search = null,
+    ?int $limit = 25,
+    ?int $offset = 0,
+    ?string $acceptLanguage = null
+): ApiResponse
 ```
 
 ## Parameters
@@ -39,24 +45,13 @@ function listChannels(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
-
 $search = 'search2';
-$collect['search'] = $search;
-
 $limit = 10;
-$collect['limit'] = $limit;
-
 $offset = 0;
-$collect['offset'] = $offset;
-
 $acceptLanguage = Models\AcceptLanguageEnum::NL;
-$collect['acceptLanguage'] = $acceptLanguage;
 
-$apiResponse = $channelsController->listChannels($collect);
+$apiResponse = $channelsController->listChannels($xCustomerId, $search, $limit, $offset, $acceptLanguage);
 ```
 
 ## Example Response *(as JSON)*
@@ -90,7 +85,7 @@ $apiResponse = $channelsController->listChannels($collect);
 This endpoint exposes the details of a channel with support for contracts,as well as all the required details for creating a contract or a campaign for each channel.
 
 ```php
-function retrieveChannel(array $options): ApiResponse
+function retrieveChannel(int $channelId, string $xCustomerId, ?string $acceptLanguage = null): ApiResponse
 ```
 
 ## Parameters
@@ -108,18 +103,11 @@ function retrieveChannel(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $channelId = 154;
-$collect['channelId'] = $channelId;
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
-
 $acceptLanguage = Models\AcceptLanguageEnum::NL;
-$collect['acceptLanguage'] = $acceptLanguage;
 
-$apiResponse = $channelsController->retrieveChannel($collect);
+$apiResponse = $channelsController->retrieveChannel($channelId, $xCustomerId, $acceptLanguage);
 ```
 
 ## Errors

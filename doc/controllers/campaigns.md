@@ -44,6 +44,7 @@ function checkCampaignStatus(string $campaignId): ApiResponse
 
 ```php
 $campaignId = '000026a2-0000-0000-0000-000000000000';
+
 $apiResponse = $campaignsController->checkCampaignStatus($campaignId);
 ```
 
@@ -79,7 +80,7 @@ Displays all the existing Campaigns already ordered for this Partner is as simpl
 request against the endpoint `/campaigns`
 
 ```php
-function listCampaigns(array $options): ApiResponse
+function listCampaigns(?string $companyId = null, ?int $limit = null, ?int $offset = null): ApiResponse
 ```
 
 ## Parameters
@@ -97,18 +98,11 @@ function listCampaigns(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $companyId = 'companyId0';
-$collect['companyId'] = $companyId;
-
 $limit = 172;
-$collect['limit'] = $limit;
-
 $offset = 12;
-$collect['offset'] = $offset;
 
-$apiResponse = $campaignsController->listCampaigns($collect);
+$apiResponse = $campaignsController->listCampaigns($companyId, $limit, $offset);
 ```
 
 
@@ -132,7 +126,7 @@ You should use the following endpoints for the target group information:
 - [**`Seniority`**](b3A6MzM0NDA3NDA-retrieve-seniority-taxonomy)
 
 ```php
-function orderCampaign(array $options): ApiResponse
+function orderCampaign(string $xCustomerId, CampaignCreateRequestModel $body): ApiResponse
 ```
 
 ## Parameters
@@ -149,11 +143,7 @@ function orderCampaign(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
-
 $body_companyId = 'dd1c5be0-b0e1-41c8-ba92-e876da16c38b';
 $body_recruiterInfo_id = 'af78ce39-94a8-45dc-8c68-35f4d684fa5f';
 $body_recruiterInfo_name = 'John Doe';
@@ -288,9 +278,8 @@ $body_orderedProductsSpecs[0]->getPostingRequirements()->setSomeIntValue(54.2);
 $body->setOrderedProductsSpecs($body_orderedProductsSpecs);
 
 $body->setWalletId('00001ba8-0000-0000-0000-000000000000');
-$collect['body'] = $body;
 
-$apiResponse = $campaignsController->orderCampaign($collect);
+$apiResponse = $campaignsController->orderCampaign($xCustomerId, $body);
 ```
 
 ## Example Response *(as JSON)*
@@ -321,7 +310,10 @@ Depending on the results, in case of no errors, a 200 status code will be return
 Check our implementation guide for more explanations.
 
 ```php
-function postCampaignsValidateCampaign(array $options): ApiResponse
+function postCampaignsValidateCampaign(
+    string $xCustomerId,
+    ?CampaignValidationRequestModel $body = null
+): ApiResponse
 ```
 
 ## Parameters
@@ -338,18 +330,13 @@ function postCampaignsValidateCampaign(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
-
 $body_campaign = ['companyId' => HAPI\ApiHelper::deserialize('"dd1c5be0-b0e1-41c8-ba92-e876da16c38b"'), 'orderReference' => HAPI\ApiHelper::deserialize('"PO_567_2019"'), '' => HAPI\ApiHelper::deserialize(null), 'orderedProducts' => HAPI\ApiHelper::deserialize('["contractProductId1","contractProductId2"]'), 'orderedProductsSpecs' => HAPI\ApiHelper::deserialize('[{"productId":"{{contractProductId1}}","contractId":"{{contractId1}}","postingRequirements":{"titre":"Startup-minded Python/Django/GraphQL DeveloperF/H","IGB_country":"99207"}}]')];
 $body = new Models\CampaignValidationRequestModel(
     $body_campaign
 );
-$collect['body'] = $body;
 
-$apiResponse = $campaignsController->postCampaignsValidateCampaign($collect);
+$apiResponse = $campaignsController->postCampaignsValidateCampaign($xCustomerId, $body);
 ```
 
 ## Errors
@@ -368,7 +355,10 @@ Depending on the results, in case of no errors, a 200 status code will be return
 Check our implementation guide for more explanations.
 
 ```php
-function postCampaignsValidateChannelPosting(array $options): ApiResponse
+function postCampaignsValidateChannelPosting(
+    string $xCustomerId,
+    ?ProductValidationRequestModel $body = null
+): ApiResponse
 ```
 
 ## Parameters
@@ -385,11 +375,7 @@ function postCampaignsValidateChannelPosting(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
-
 $body_productId = 'contractProductId';
 $body_contractId = 'contractId';
 $body_postingRequirements = [];
@@ -472,9 +458,8 @@ $body_vacancy[0] = new Models\InputRequestModel(
 );
 $body->setVacancy($body_vacancy);
 
-$collect['body'] = $body;
 
-$apiResponse = $campaignsController->postCampaignsValidateChannelPosting($collect);
+$apiResponse = $campaignsController->postCampaignsValidateChannelPosting($xCustomerId, $body);
 ```
 
 ## Errors
@@ -493,7 +478,10 @@ Depending on the results, in case of no errors, a 200 status code will be return
 Check our implementation guide for more explanations.
 
 ```php
-function postCampaignsValidateVacancyInfo(array $options): ApiResponse
+function postCampaignsValidateVacancyInfo(
+    string $xCustomerId,
+    ?VacancyValidationRequestModel $body = null
+): ApiResponse
 ```
 
 ## Parameters
@@ -510,18 +498,13 @@ function postCampaignsValidateVacancyInfo(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $xCustomerId = 'X-Customer-Id2';
-$collect['xCustomerId'] = $xCustomerId;
-
 $body_vacancy = ['companyId' => HAPI\ApiHelper::deserialize('"dd1c5be0-b0e1-41c8-ba92-e876da16c38b"'), '' => HAPI\ApiHelper::deserialize(null), 'campaignName' => HAPI\ApiHelper::deserialize('"NationalVacaturebank MC 1001"'), '' => HAPI\ApiHelper::deserialize(null), '' => HAPI\ApiHelper::deserialize(null)];
 $body = new Models\VacancyValidationRequestModel(
     $body_vacancy
 );
-$collect['body'] = $body;
 
-$apiResponse = $campaignsController->postCampaignsValidateVacancyInfo($collect);
+$apiResponse = $campaignsController->postCampaignsValidateVacancyInfo($xCustomerId, $body);
 ```
 
 ## Example Response *(as JSON)*
@@ -563,6 +546,7 @@ function retrieveCampaign(string $campaignId): ApiResponse
 
 ```php
 $campaignId = '000026a2-0000-0000-0000-000000000000';
+
 $apiResponse = $campaignsController->retrieveCampaign($campaignId);
 ```
 
@@ -580,7 +564,7 @@ Specific endpoint to take a campaign offline. Keep in mind that processing this 
 take some time and it only has an effect if the campaign's status is "online".
 
 ```php
-function takeCampaignOffline(array $options): ApiResponse
+function takeCampaignOffline(string $campaignId, TakeCampaignOfflineRequestModel $body): ApiResponse
 ```
 
 ## Parameters
@@ -597,18 +581,13 @@ function takeCampaignOffline(array $options): ApiResponse
 ## Example Usage
 
 ```php
-$collect = [];
-
 $campaignId = '000026a2-0000-0000-0000-000000000000';
-$collect['campaignId'] = $campaignId;
-
 $body_campaignId = 'ffb37e76-d4fe-5ad6-8441-b02c1b15aa4c';
 $body = new Models\TakeCampaignOfflineRequestModel(
     $body_campaignId
 );
-$collect['body'] = $body;
 
-$apiResponse = $campaignsController->takeCampaignOffline($collect);
+$apiResponse = $campaignsController->takeCampaignOffline($campaignId, $body);
 ```
 
 ## Example Response *(as JSON)*

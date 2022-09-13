@@ -42,15 +42,14 @@ request against the endpoint `/campaigns`
     public function testTestListCampaigns()
     {
         // Parameters for the API call
-        $input = array();
-        $input['companyId'] = null;
-        $input['limit'] = null;
-        $input['offset'] = null;
+        $companyId = null;
+        $limit = null;
+        $offset = null;
 
         // Set callback and perform API call
         $result = null;
         try {
-            $result = self::$controller->listCampaigns($input)->getResult();
+            $result = self::$controller->listCampaigns($companyId, $limit, $offset)->getResult();
         } catch (ApiException $e) {
         }
 

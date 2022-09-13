@@ -35,29 +35,41 @@ class TaxonomyController extends BaseController
      * Besides the default English, German and Dutch result translations can be requested by specifying an
      * `Accept-Language: [de|nl]` header.
      *
-     * @param array $options Array with all options for search
+     * @param int|null $limit Number of results to return per page.
+     * @param int|null $offset The initial index from which to return the results.
+     * @param string|null $acceptLanguage The language the client prefers
+     * @param string|null $xCustomerId In order to identify the ATS end-user, some requests (to HAPI
+     *        Job Post in particular) require this header. You need to provide this to be able to
+     *        work with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function listIndustries(array $options): ApiResponse
-    {
+    public function listIndustries(
+        ?int $limit = 50,
+        ?int $offset = 0,
+        ?string $acceptLanguage = null,
+        ?string $xCustomerId = null
+    ): ApiResponse {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/industries/';
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'limit'           => $this->val($options, 'limit', 50),
-            'offset'          => $this->val($options, 'offset', 0),
+            'limit'           => (null != $limit) ?
+                $limit : 50,
+            'offset'          => (null != $offset) ?
+                $offset : 0,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($this->val($options, 'acceptLanguage')),
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
+            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($acceptLanguage),
+            'X-Customer-Id'   => $xCustomerId
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -101,13 +113,17 @@ class TaxonomyController extends BaseController
      * Besides the default English, German and Dutch result translations can be requested by specifying an
      * `Accept-Language: [de|nl]` header.
      *
-     * @param array $options Array with all options for search
+     * @param string|null $acceptLanguage The language the client prefers
+     * @param string|null $xCustomerId In order to identify the ATS end-user, some requests (to HAPI
+     *        Job Post in particular) require this header. You need to provide this to be able to
+     *        work with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveJobFunctionsTree(array $options): ApiResponse
+    public function retrieveJobFunctionsTree(?string $acceptLanguage = null, ?string $xCustomerId = null): ApiResponse
     {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/job-functions/';
@@ -116,8 +132,8 @@ class TaxonomyController extends BaseController
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($this->val($options, 'acceptLanguage')),
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
+            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($acceptLanguage),
+            'X-Customer-Id'   => $xCustomerId
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -169,16 +185,28 @@ class TaxonomyController extends BaseController
      * Besides the default English, German and Dutch result translations can be requested by specifying an
      * `Accept-Language: [de|nl]` header.
      *
-     * @param array $options Array with all options for search
+     * @param string $text Search text for a job title name
+     * @param int|null $limit Number of results to return per page.
+     * @param int|null $offset The initial index from which to return the results.
+     * @param string|null $acceptLanguage The language the client prefers
+     * @param string|null $xCustomerId In order to identify the ATS end-user, some requests (to HAPI
+     *        Job Post in particular) require this header. You need to provide this to be able to
+     *        work with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function searchJobTitles(array $options): ApiResponse
-    {
+    public function searchJobTitles(
+        string $text,
+        ?int $limit = 50,
+        ?int $offset = 0,
+        ?string $acceptLanguage = null,
+        ?string $xCustomerId = null
+    ): ApiResponse {
         //check that all required arguments are provided
-        if (!isset($options['text'])) {
+        if (!isset($text)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -187,17 +215,19 @@ class TaxonomyController extends BaseController
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'text'            => $this->val($options, 'text'),
-            'limit'           => $this->val($options, 'limit', 50),
-            'offset'          => $this->val($options, 'offset', 0),
+            'text'            => $text,
+            'limit'           => (null != $limit) ?
+                $limit : 50,
+            'offset'          => (null != $offset) ?
+                $offset : 0,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($this->val($options, 'acceptLanguage')),
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
+            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($acceptLanguage),
+            'X-Customer-Id'   => $xCustomerId
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -244,16 +274,25 @@ class TaxonomyController extends BaseController
      * Use the `id` key of each object in the response to search for a Product.
      * Supports text input in English, Dutch and German.
      *
-     * @param array $options Array with all options for search
+     * @param string $text Search text for a location name in either English, Dutch, German, French
+     *        and Italian. Partial recognition of 20 other languages.
+     * @param string|null $acceptLanguage The language the client prefers
+     * @param string|null $xCustomerId In order to identify the ATS end-user, some requests (to HAPI
+     *        Job Post in particular) require this header. You need to provide this to be able to
+     *        work with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function searchLocations(array $options): ApiResponse
-    {
+    public function searchLocations(
+        string $text,
+        ?string $acceptLanguage = null,
+        ?string $xCustomerId = null
+    ): ApiResponse {
         //check that all required arguments are provided
-        if (!isset($options['text'])) {
+        if (!isset($text)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -262,15 +301,15 @@ class TaxonomyController extends BaseController
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'text'            => $this->val($options, 'text'),
+            'text'            => $text,
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($this->val($options, 'acceptLanguage')),
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
+            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($acceptLanguage),
+            'X-Customer-Id'   => $xCustomerId
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -425,20 +464,5 @@ class TaxonomyController extends BaseController
             1
         );
         return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
-    }
-
-    /**
-     * Array access utility method
-     * @param  array          $arr         Array of values to read from
-     * @param  string         $key         Key to get the value from the array
-     * @param  mixed|null     $default     Default value to use if the key was not found
-     * @return mixed
-     */
-    private function val(array $arr, string $key, $default = null)
-    {
-        if (isset($arr[$key])) {
-            return is_bool($arr[$key]) ? var_export($arr[$key], true) : $arr[$key];
-        }
-        return $default;
     }
 }

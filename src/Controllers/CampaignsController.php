@@ -13,6 +13,7 @@ namespace HAPI\Controllers;
 use HAPI\Exceptions\ApiException;
 use HAPI\ConfigurationInterface;
 use HAPI\ApiHelper;
+use HAPI\Models;
 use HAPI\Http\ApiResponse;
 use HAPI\Http\HttpRequest;
 use HAPI\Http\HttpResponse;
@@ -32,22 +33,24 @@ class CampaignsController extends BaseController
      * `GET`
      * request against the endpoint `/campaigns`
      *
-     * @param array $options Array with all options for search
+     * @param string|null $companyId CompanyId to filter the results on
+     * @param int|null $limit Number of results to return per page.
+     * @param int|null $offset The initial index from which to return the results.
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function listCampaigns(array $options): ApiResponse
+    public function listCampaigns(?string $companyId = null, ?int $limit = null, ?int $offset = null): ApiResponse
     {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/campaigns';
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'companyId' => $this->val($options, 'companyId'),
-            'limit'     => $this->val($options, 'limit'),
-            'offset'    => $this->val($options, 'offset'),
+            'companyId' => $companyId,
+            'limit'     => $limit,
+            'offset'    => $offset,
         ]);
 
         //prepare headers
@@ -179,16 +182,17 @@ class CampaignsController extends BaseController
      * Specific endpoint to take a campaign offline. Keep in mind that processing this might
      * take some time and it only has an effect if the campaign's status is "online".
      *
-     * @param array $options Array with all options for search
+     * @param string $campaignId ID of the campaign you want to retrieve or take action on
+     * @param Models\TakeCampaignOfflineRequestModel $body
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function takeCampaignOffline(array $options): ApiResponse
+    public function takeCampaignOffline(string $campaignId, Models\TakeCampaignOfflineRequestModel $body): ApiResponse
     {
         //check that all required arguments are provided
-        if (!isset($options['campaignId'], $options['body'])) {
+        if (!isset($campaignId, $body)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -197,7 +201,7 @@ class CampaignsController extends BaseController
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'campaignId'   => $this->val($options, 'campaignId'),
+            'campaignId'   => $campaignId,
         ]);
 
         //prepare headers
@@ -208,7 +212,7 @@ class CampaignsController extends BaseController
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
+        $_bodyJson = ApiHelper::serialize($body);
 
         $_httpRequest = new HttpRequest(HttpMethod::PUT, $_headers, $_queryUrl);
 
@@ -373,16 +377,20 @@ class CampaignsController extends BaseController
      *
      * - [**`Seniority`**](b3A6MzM0NDA3NDA-retrieve-seniority-taxonomy)
      *
-     * @param array $options Array with all options for search
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param Models\CampaignCreateRequestModel $body
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function orderCampaign(array $options): ApiResponse
+    public function orderCampaign(string $xCustomerId, Models\CampaignCreateRequestModel $body): ApiResponse
     {
         //check that all required arguments are provided
-        if (!isset($options['xCustomerId'], $options['body'])) {
+        if (!isset($xCustomerId, $body)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -393,12 +401,12 @@ class CampaignsController extends BaseController
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId'),
+            'X-Customer-Id'   => $xCustomerId,
             'Content-Type'    => 'application/json'
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
+        $_bodyJson = ApiHelper::serialize($body);
 
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
 
@@ -477,16 +485,22 @@ class CampaignsController extends BaseController
      *
      * Check our implementation guide for more explanations.
      *
-     * @param array $options Array with all options for search
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param Models\CampaignValidationRequestModel|null $body
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function postCampaignsValidateCampaign(array $options): ApiResponse
-    {
+    public function postCampaignsValidateCampaign(
+        string $xCustomerId,
+        ?Models\CampaignValidationRequestModel $body = null
+    ): ApiResponse {
         //check that all required arguments are provided
-        if (!isset($options['xCustomerId'])) {
+        if (!isset($xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -497,12 +511,12 @@ class CampaignsController extends BaseController
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId'),
+            'X-Customer-Id'   => $xCustomerId,
             'Content-Type'    => 'application/json'
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
+        $_bodyJson = ApiHelper::serialize($body);
 
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
 
@@ -564,16 +578,22 @@ class CampaignsController extends BaseController
      *
      * Check our implementation guide for more explanations.
      *
-     * @param array $options Array with all options for search
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param Models\ProductValidationRequestModel|null $body
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function postCampaignsValidateChannelPosting(array $options): ApiResponse
-    {
+    public function postCampaignsValidateChannelPosting(
+        string $xCustomerId,
+        ?Models\ProductValidationRequestModel $body = null
+    ): ApiResponse {
         //check that all required arguments are provided
-        if (!isset($options['xCustomerId'])) {
+        if (!isset($xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -584,12 +604,12 @@ class CampaignsController extends BaseController
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId'),
+            'X-Customer-Id'   => $xCustomerId,
             'Content-Type'    => 'application/json'
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
+        $_bodyJson = ApiHelper::serialize($body);
 
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
 
@@ -650,16 +670,22 @@ class CampaignsController extends BaseController
      *
      * Check our implementation guide for more explanations.
      *
-     * @param array $options Array with all options for search
+     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
+     *        Post in particular) require this header. You need to provide this to be able to work
+     *        with Contracts functionality (adding contract, retrieving channels, ordering
+     *        campaigns with contracts).
+     * @param Models\VacancyValidationRequestModel|null $body
      *
      * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function postCampaignsValidateVacancyInfo(array $options): ApiResponse
-    {
+    public function postCampaignsValidateVacancyInfo(
+        string $xCustomerId,
+        ?Models\VacancyValidationRequestModel $body = null
+    ): ApiResponse {
         //check that all required arguments are provided
-        if (!isset($options['xCustomerId'])) {
+        if (!isset($xCustomerId)) {
             throw new \InvalidArgumentException("One or more required arguments were NULL.");
         }
 
@@ -670,12 +696,12 @@ class CampaignsController extends BaseController
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $this->val($options, 'xCustomerId'),
+            'X-Customer-Id'   => $xCustomerId,
             'Content-Type'    => 'application/json'
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
+        $_bodyJson = ApiHelper::serialize($body);
 
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
 
@@ -726,20 +752,5 @@ class CampaignsController extends BaseController
             'VacancyValidationModel'
         );
         return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
-    }
-
-    /**
-     * Array access utility method
-     * @param  array          $arr         Array of values to read from
-     * @param  string         $key         Key to get the value from the array
-     * @param  mixed|null     $default     Default value to use if the key was not found
-     * @return mixed
-     */
-    private function val(array $arr, string $key, $default = null)
-    {
-        if (isset($arr[$key])) {
-            return is_bool($arr[$key]) ? var_export($arr[$key], true) : $arr[$key];
-        }
-        return $default;
     }
 }

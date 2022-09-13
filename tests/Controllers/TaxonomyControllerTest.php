@@ -43,16 +43,15 @@ Besides the default English, German and Dutch result translations can be request
     public function testTestListIndustries()
     {
         // Parameters for the API call
-        $input = array();
-        $input['limit'] = 50;
-        $input['offset'] = 0;
-        $input['acceptLanguage'] = null;
-        $input['xCustomerId'] = null;
+        $limit = 50;
+        $offset = 0;
+        $acceptLanguage = null;
+        $xCustomerId = null;
 
         // Set callback and perform API call
         $result = null;
         try {
-            $result = self::$controller->listIndustries($input)->getResult();
+            $result = self::$controller->listIndustries($limit, $offset, $acceptLanguage, $xCustomerId)->getResult();
         } catch (ApiException $e) {
         }
 
@@ -114,14 +113,13 @@ Besides the default English, German and Dutch result translations can be request
     public function testTestRetrieveJobFunctionsTree()
     {
         // Parameters for the API call
-        $input = array();
-        $input['acceptLanguage'] = null;
-        $input['xCustomerId'] = null;
+        $acceptLanguage = null;
+        $xCustomerId = null;
 
         // Set callback and perform API call
         $result = null;
         try {
-            $result = self::$controller->retrieveJobFunctionsTree($input)->getResult();
+            $result = self::$controller->retrieveJobFunctionsTree($acceptLanguage, $xCustomerId)->getResult();
         } catch (ApiException $e) {
         }
 
