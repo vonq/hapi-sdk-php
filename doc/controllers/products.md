@@ -81,7 +81,7 @@ function retrieveMultipleProducts(
 
 ## Response Type
 
-[`PaginatedProductListModel`](../../doc/models/paginated-product-list-model.md)
+[`PaginatedProductListWithoutFacetsModel`](../../doc/models/paginated-product-list-without-facets-model.md)
 
 ## Example Usage
 
