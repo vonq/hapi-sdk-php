@@ -5,7 +5,7 @@ The following parameters are configurable for the API Client:
 
 | Parameter | Type | Description |
 |  --- | --- | --- |
-| `environment` | Environment | The API environment. <br> **Default: `Environment.SANDBOX`** |
+| `environment` | Environment | The API environment. <br> **Default: `Environment.PRODUCTION`** |
 | `timeout` | `int` | Timeout for API calls in seconds.<br>*Default*: `0` |
 | `enableRetries` | `bool` | Whether to enable retries and backoff feature.<br>*Default*: `false` |
 | `numberOfRetries` | `int` | The number of retries to make.<br>*Default*: `0` |
@@ -26,7 +26,7 @@ $client = new HAPILib\HAPIClient([
     'xAuthToken' => 'X-Auth-Token',
 
     // Set the environment
-    'environment' => 'sandbox',
+    'environment' => 'production',
 
     // Specifies whether to skip SSL certificate verification
     'skipSslVerification' => true,

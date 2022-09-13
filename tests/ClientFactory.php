@@ -21,7 +21,7 @@ class ClientFactory
 
     public static function getTestConfiguration(HttpCallBackCatcher $httpCallback): array
     {
-        return ['environment' => \HAPILib\Environment::SANDBOX, 'httpCallback' => $httpCallback];
+        return ['httpCallback' => $httpCallback];
     }
 
     public static function getConfigurationFromEnvironment(): array

@@ -12,6 +12,9 @@ namespace HAPILib\Models;
 
 use stdClass;
 
+/**
+ * only `null` when part of a top-level Location's `within` key
+ */
 class LocationModel implements \JsonSerializable
 {
     /**
@@ -45,9 +48,9 @@ class LocationModel implements \JsonSerializable
     private $placeType;
 
     /**
-     * @var LocationModel
+     * @var array
      */
-    private $within;
+    private $within = [];
 
     /**
      * @param int $id
@@ -55,22 +58,19 @@ class LocationModel implements \JsonSerializable
      * @param string $canonicalName
      * @param float[] $boundingBox
      * @param string[] $placeType
-     * @param LocationModel $within
      */
     public function __construct(
         int $id,
         string $fullyQualifiedPlaceName,
         string $canonicalName,
         array $boundingBox,
-        array $placeType,
-        LocationModel $within
+        array $placeType
     ) {
         $this->id = $id;
         $this->fullyQualifiedPlaceName = $fullyQualifiedPlaceName;
         $this->canonicalName = $canonicalName;
         $this->boundingBox = $boundingBox;
         $this->placeType = $placeType;
-        $this->within = $within;
     }
 
     /**
@@ -201,21 +201,34 @@ class LocationModel implements \JsonSerializable
 
     /**
      * Returns Within.
+     * only `null` when part of a top-level Location's `within` key
      */
-    public function getWithin(): LocationModel
+    public function getWithin(): ?LocationModel
     {
-        return $this->within;
+        if (count($this->within) == 0) {
+            return null;
+        }
+        return $this->within['value'];
     }
 
     /**
      * Sets Within.
+     * only `null` when part of a top-level Location's `within` key
      *
-     * @required
      * @maps within
      */
-    public function setWithin(LocationModel $within): void
+    public function setWithin(?LocationModel $within): void
     {
-        $this->within = $within;
+        $this->within['value'] = $within;
+    }
+
+    /**
+     * Unsets Within.
+     * only `null` when part of a top-level Location's `within` key
+     */
+    public function unsetWithin(): void
+    {
+        $this->within = [];
     }
 
     private $additionalProperties = [];
@@ -251,7 +264,9 @@ class LocationModel implements \JsonSerializable
             $json['area']                   = $this->area;
         }
         $json['place_type']                 = PlaceTypeEnum::checkValue($this->placeType);
-        $json['within']                     = $this->within;
+        if (!empty($this->within)) {
+            $json['within']                 = $this->within['value'];
+        }
         $json = array_merge($json, $this->additionalProperties);
 
         return (!$asArrayWhenEmpty && empty($json)) ? new stdClass() : $json;

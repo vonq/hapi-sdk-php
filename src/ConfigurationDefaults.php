@@ -35,7 +35,7 @@ class ConfigurationDefaults
 
     public const SKIP_SSL_VERIFICATION = false;
 
-    public const ENVIRONMENT = Environment::SANDBOX;
+    public const ENVIRONMENT = Environment::PRODUCTION;
 
     public const X_AUTH_TOKEN = '';
 }

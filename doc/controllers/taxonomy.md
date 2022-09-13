@@ -518,6 +518,162 @@ $text = 'text0';
 $result = $taxonomyController->searchLocations($text);
 ```
 
+## Example Response *(as JSON)*
+
+```json
+[
+  {
+    "id": 2395,
+    "fully_qualified_place_name": "United States",
+    "canonical_name": "United States",
+    "place_type": [
+      "country"
+    ],
+    "within": {
+      "id": 2616,
+      "fully_qualified_place_name": "North America",
+      "canonical_name": "North America",
+      "place_type": [
+        "continent"
+      ],
+      "within": {
+        "id": 2425,
+        "fully_qualified_place_name": "Welt",
+        "canonical_name": "International",
+        "place_type": [
+          "world"
+        ],
+        "bounding_box": []
+      },
+      "bounding_box": []
+    },
+    "bounding_box": []
+  },
+  {
+    "id": 2546,
+    "fully_qualified_place_name": "US Virgin Islands",
+    "canonical_name": "US Virgin Islands",
+    "place_type": [
+      "country",
+      "region"
+    ],
+    "within": {
+      "id": 2616,
+      "fully_qualified_place_name": "North America",
+      "canonical_name": "North America",
+      "place_type": [
+        "continent"
+      ],
+      "within": {
+        "id": 2425,
+        "fully_qualified_place_name": "Welt",
+        "canonical_name": "International",
+        "place_type": [
+          "world"
+        ],
+        "bounding_box": []
+      },
+      "bounding_box": []
+    },
+    "bounding_box": []
+  },
+  {
+    "id": 2501,
+    "fully_qualified_place_name": "US Minor Outlying Islands",
+    "canonical_name": "US Minor Outlying Islands",
+    "place_type": [
+      "country",
+      "region"
+    ],
+    "bounding_box": []
+  },
+  {
+    "id": 26698,
+    "fully_qualified_place_name": "Statesboro, Georgia, United States",
+    "canonical_name": "Statesboro",
+    "place_type": [
+      "place"
+    ],
+    "within": {
+      "id": 2395,
+      "fully_qualified_place_name": "United States",
+      "canonical_name": "United States",
+      "place_type": [
+        "country"
+      ],
+      "within": {
+        "id": 2616,
+        "fully_qualified_place_name": "North America",
+        "canonical_name": "North America",
+        "place_type": [
+          "continent"
+        ],
+        "within": {
+          "id": 2425,
+          "fully_qualified_place_name": "Welt",
+          "canonical_name": "International",
+          "place_type": [
+            "world"
+          ],
+          "bounding_box": []
+        },
+        "bounding_box": []
+      },
+      "bounding_box": []
+    },
+    "area": 2195,
+    "bounding_box": [
+      -81.976425,
+      32.187913,
+      -81.52575,
+      32.653433
+    ]
+  },
+  {
+    "id": 30620,
+    "fully_qualified_place_name": "State College, Pennsylvania, United States",
+    "canonical_name": "State College",
+    "place_type": [
+      "place"
+    ],
+    "within": {
+      "id": 2395,
+      "fully_qualified_place_name": "United States",
+      "canonical_name": "United States",
+      "place_type": [
+        "country"
+      ],
+      "within": {
+        "id": 2616,
+        "fully_qualified_place_name": "North America",
+        "canonical_name": "North America",
+        "place_type": [
+          "continent"
+        ],
+        "within": {
+          "id": 2425,
+          "fully_qualified_place_name": "Welt",
+          "canonical_name": "International",
+          "place_type": [
+            "world"
+          ],
+          "bounding_box": []
+        },
+        "bounding_box": []
+      },
+      "bounding_box": []
+    },
+    "area": 254,
+    "bounding_box": [
+      -77.972841,
+      40.729539,
+      -77.786646,
+      40.874866
+    ]
+  }
+]
+```
+
 ## Errors
 
 | HTTP Status Code | Error Description | Exception Class |

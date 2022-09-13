@@ -16,12 +16,12 @@ namespace HAPILib;
 class Environment
 {
     /**
-     * Sandbox
-     */
-    public const SANDBOX = 'sandbox';
-
-    /**
      * Production
      */
     public const PRODUCTION = 'production';
+
+    /**
+     * Sandbox
+     */
+    public const SANDBOX = 'sandbox';
 }
