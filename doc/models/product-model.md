@@ -15,9 +15,9 @@
 | `industries` | [`IndustryModel[]`](../../doc/models/industry-model.md) | Required | **Constraints**: *Unique Items Required* | getIndustries(): array | setIndustries(array industries): void |
 | `description` | `?string` | Required | - | getDescription(): ?string | setDescription(?string description): void |
 | `homepage` | `?string` | Required | - | getHomepage(): ?string | setHomepage(?string homepage): void |
-| `logoUrl` | [`?(ProductLogoModel[])`](../../doc/models/product-logo-model.md) | Required | - | getLogoUrl(): ?array | setLogoUrl(?array logoUrl): void |
-| `logoSquareUrl` | [`?(ProductLogoWithSizeModel[])`](../../doc/models/product-logo-with-size-model.md) | Required | - | getLogoSquareUrl(): ?array | setLogoSquareUrl(?array logoSquareUrl): void |
-| `logoRectangleUrl` | [`?(ProductLogoWithSizeModel[])`](../../doc/models/product-logo-with-size-model.md) | Required | - | getLogoRectangleUrl(): ?array | setLogoRectangleUrl(?array logoRectangleUrl): void |
+| `logoUrl` | [`ProductLogoModel[]`](../../doc/models/product-logo-model.md) | Required | - | getLogoUrl(): array | setLogoUrl(array logoUrl): void |
+| `logoSquareUrl` | [`ProductLogoWithSizeModel[]`](../../doc/models/product-logo-with-size-model.md) | Required | - | getLogoSquareUrl(): array | setLogoSquareUrl(array logoSquareUrl): void |
+| `logoRectangleUrl` | [`ProductLogoWithSizeModel[]`](../../doc/models/product-logo-with-size-model.md) | Required | - | getLogoRectangleUrl(): array | setLogoRectangleUrl(array logoRectangleUrl): void |
 | `duration` | [`DurationInDaysModel`](../../doc/models/duration-in-days-model.md) | Required | - | getDuration(): DurationInDaysModel | setDuration(DurationInDaysModel duration): void |
 | `timeToProcess` | [`DurationInHoursModel`](../../doc/models/duration-in-hours-model.md) | Required | - | getTimeToProcess(): DurationInHoursModel | setTimeToProcess(DurationInHoursModel timeToProcess): void |
 | `timeToSetup` | [`DurationInHoursModel`](../../doc/models/duration-in-hours-model.md) | Required | - | getTimeToSetup(): DurationInHoursModel | setTimeToSetup(DurationInHoursModel timeToSetup): void |

@@ -45,17 +45,17 @@ class ProductModel implements \JsonSerializable
     private $homepage;
 
     /**
-     * @var ProductLogoModel[]|null
+     * @var ProductLogoModel[]
      */
     private $logoUrl;
 
     /**
-     * @var ProductLogoWithSizeModel[]|null
+     * @var ProductLogoWithSizeModel[]
      */
     private $logoSquareUrl;
 
     /**
-     * @var ProductLogoWithSizeModel[]|null
+     * @var ProductLogoWithSizeModel[]
      */
     private $logoRectangleUrl;
 
@@ -129,6 +129,9 @@ class ProductModel implements \JsonSerializable
      * @param LimitedLocationModel[] $locations
      * @param LimitedJobFunctionModel[] $jobFunctions
      * @param IndustryModel[] $industries
+     * @param ProductLogoModel[] $logoUrl
+     * @param ProductLogoWithSizeModel[] $logoSquareUrl
+     * @param ProductLogoWithSizeModel[] $logoRectangleUrl
      * @param DurationInDaysModel $duration
      * @param DurationInHoursModel $timeToProcess
      * @param DurationInHoursModel $timeToSetup
@@ -148,6 +151,9 @@ class ProductModel implements \JsonSerializable
         array $locations,
         array $jobFunctions,
         array $industries,
+        array $logoUrl,
+        array $logoSquareUrl,
+        array $logoRectangleUrl,
         DurationInDaysModel $duration,
         DurationInHoursModel $timeToProcess,
         DurationInHoursModel $timeToSetup,
@@ -166,6 +172,9 @@ class ProductModel implements \JsonSerializable
         $this->locations = $locations;
         $this->jobFunctions = $jobFunctions;
         $this->industries = $industries;
+        $this->logoUrl = $logoUrl;
+        $this->logoSquareUrl = $logoSquareUrl;
+        $this->logoRectangleUrl = $logoRectangleUrl;
         $this->duration = $duration;
         $this->timeToProcess = $timeToProcess;
         $this->timeToSetup = $timeToSetup;
@@ -308,9 +317,9 @@ class ProductModel implements \JsonSerializable
     /**
      * Returns Logo Url.
      *
-     * @return ProductLogoModel[]|null
+     * @return ProductLogoModel[]
      */
-    public function getLogoUrl(): ?array
+    public function getLogoUrl(): array
     {
         return $this->logoUrl;
     }
@@ -318,11 +327,12 @@ class ProductModel implements \JsonSerializable
     /**
      * Sets Logo Url.
      *
+     * @required
      * @maps logo_url
      *
-     * @param ProductLogoModel[]|null $logoUrl
+     * @param ProductLogoModel[] $logoUrl
      */
-    public function setLogoUrl(?array $logoUrl): void
+    public function setLogoUrl(array $logoUrl): void
     {
         $this->logoUrl = $logoUrl;
     }
@@ -330,9 +340,9 @@ class ProductModel implements \JsonSerializable
     /**
      * Returns Logo Square Url.
      *
-     * @return ProductLogoWithSizeModel[]|null
+     * @return ProductLogoWithSizeModel[]
      */
-    public function getLogoSquareUrl(): ?array
+    public function getLogoSquareUrl(): array
     {
         return $this->logoSquareUrl;
     }
@@ -340,11 +350,12 @@ class ProductModel implements \JsonSerializable
     /**
      * Sets Logo Square Url.
      *
+     * @required
      * @maps logo_square_url
      *
-     * @param ProductLogoWithSizeModel[]|null $logoSquareUrl
+     * @param ProductLogoWithSizeModel[] $logoSquareUrl
      */
-    public function setLogoSquareUrl(?array $logoSquareUrl): void
+    public function setLogoSquareUrl(array $logoSquareUrl): void
     {
         $this->logoSquareUrl = $logoSquareUrl;
     }
@@ -352,9 +363,9 @@ class ProductModel implements \JsonSerializable
     /**
      * Returns Logo Rectangle Url.
      *
-     * @return ProductLogoWithSizeModel[]|null
+     * @return ProductLogoWithSizeModel[]
      */
-    public function getLogoRectangleUrl(): ?array
+    public function getLogoRectangleUrl(): array
     {
         return $this->logoRectangleUrl;
     }
@@ -362,11 +373,12 @@ class ProductModel implements \JsonSerializable
     /**
      * Sets Logo Rectangle Url.
      *
+     * @required
      * @maps logo_rectangle_url
      *
-     * @param ProductLogoWithSizeModel[]|null $logoRectangleUrl
+     * @param ProductLogoWithSizeModel[] $logoRectangleUrl
      */
-    public function setLogoRectangleUrl(?array $logoRectangleUrl): void
+    public function setLogoRectangleUrl(array $logoRectangleUrl): void
     {
         $this->logoRectangleUrl = $logoRectangleUrl;
     }
