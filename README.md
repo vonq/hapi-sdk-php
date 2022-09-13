@@ -106,7 +106,7 @@ The generated code has dependencies over external libraries like UniRest and Jso
 * Using command line, navigate to the directory containing the generated files (including `composer.json`) for the SDK.
 * Run the command `composer install`. This should install all the required dependencies and create the `vendor` directory in your project directory.
 
-![Building SDK - Step 1](https://apidocs.io/illustration/php?workspaceFolder=VONQHiringAPI&step=installDependencies)
+![Building SDK - Step 1](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=installDependencies)
 
 ### Configuring CURL Certificate Path in php.ini
 
@@ -125,35 +125,35 @@ curl.cainfo = PATH_TO/cacert.pem
 
 ## Installation
 
-The following section explains how to use the VONQHiringAPILib library in a new project.
+The following section explains how to use the HAPI library in a new project.
 
 ### 1. Open Project in an IDE
 
 Open an IDE for PHP like PhpStorm. The basic workflow presented here is also applicable if you prefer using a different editor or IDE.
 
-![Open project in PHPStorm - Step 1](https://apidocs.io/illustration/php?workspaceFolder=VONQHiringAPI&step=openIDE)
+![Open project in PHPStorm - Step 1](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=openIDE)
 
 Click on `Open` in PhpStorm to browse to your generated SDK directory and then click `OK`.
 
-![Open project in PHPStorm - Step 2](https://apidocs.io/illustration/php?workspaceFolder=VONQHiringAPI&step=openProject0)
+![Open project in PHPStorm - Step 2](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=openProject0)
 
 ### 2. Add a new Test Project
 
 Create a new directory by right clicking on the solution name as shown below:
 
-![Add a new project in PHPStorm - Step 1](https://apidocs.io/illustration/php?workspaceFolder=VONQHiringAPI&step=createDirectory)
+![Add a new project in PHPStorm - Step 1](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=createDirectory)
 
 Name the directory as "test".
 
-![Add a new project in PHPStorm - Step 2](https://apidocs.io/illustration/php?workspaceFolder=VONQHiringAPI&step=nameDirectory)
+![Add a new project in PHPStorm - Step 2](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=nameDirectory)
 
 Add a PHP file to this project.
 
-![Add a new project in PHPStorm - Step 3](https://apidocs.io/illustration/php?workspaceFolder=VONQHiringAPI&step=createFile)
+![Add a new project in PHPStorm - Step 3](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=createFile)
 
 Name it "testSDK".
 
-![Add a new project in PHPStorm - Step 4](https://apidocs.io/illustration/php?workspaceFolder=VONQHiringAPI&step=nameFile)
+![Add a new project in PHPStorm - Step 4](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=nameFile)
 
 Depending on your project setup, you might need to include composer's autoloader in your PHP code to enable auto loading of classes.
 
@@ -163,7 +163,7 @@ require_once "vendor/autoload.php";
 
 It is important that the path inside require_once correctly points to the file `autoload.php` inside the vendor directory created during dependency installations.
 
-![Add a new project in PHPStorm - Step 5](https://apidocs.io/illustration/php?workspaceFolder=VONQHiringAPI&step=projectFiles)
+![Add a new project in PHPStorm - Step 5](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=projectFiles)
 
 After this you can add code to initialize the client library and acquire the instance of a Controller class. Sample code to initialize the client library and use the Controller methods is given in the subsequent sections.
 
@@ -173,23 +173,23 @@ To run your project you must set the Interpreter for your project. Interpreter i
 
 Open `Settings` from `File` menu.
 
-![Run Test Project - Step 1](https://apidocs.io/illustration/php?workspaceFolder=VONQHiringAPI&step=openSettings)
+![Run Test Project - Step 1](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=openSettings)
 
 Select `PHP` from within `Languages & Frameworks`.
 
-![Run Test Project - Step 2](https://apidocs.io/illustration/php?workspaceFolder=VONQHiringAPI&step=setInterpreter0)
+![Run Test Project - Step 2](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=setInterpreter0)
 
 Browse for Interpreters near the `Interpreter` option and choose your interpreter.
 
-![Run Test Project - Step 3](https://apidocs.io/illustration/php?workspaceFolder=VONQHiringAPI&step=setInterpreter1)
+![Run Test Project - Step 3](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=setInterpreter1)
 
 Once the interpreter is selected, click `OK`.
 
-![Run Test Project - Step 4](https://apidocs.io/illustration/php?workspaceFolder=VONQHiringAPI&step=setInterpreter2)
+![Run Test Project - Step 4](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=setInterpreter2)
 
 To run your project, right click on your PHP file inside your Test project and click on `Run`.
 
-![Run Test Project - Step 5](https://apidocs.io/illustration/php?workspaceFolder=VONQHiringAPI&step=runProject)
+![Run Test Project - Step 5](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=runProject)
 
 ## Test the SDK
 
@@ -218,17 +218,21 @@ The following parameters are configurable for the API Client:
 | `retryOnTimeout` | `bool` | Whether to retry on request timeout.<br>*Default*: `true` |
 | `httpStatusCodesToRetry` | `array` | Http status codes to retry against.<br>*Default*: `408, 413, 429, 500, 502, 503, 504, 521, 522, 524` |
 | `httpMethodsToRetry` | `array` | Http methods to retry against.<br>*Default*: `'GET', 'PUT'` |
+| `skipSslVerification` | `bool` | Set to true to allow skipping ssl certificate verification<br>*Default*: `false` |
 | `xAuthToken` | `string` | In order to interact with the API, every request needs to have an API Token.  The key will be supplied by VONQ to our partners. |
 
 The API client can be initialized as follows:
 
 ```php
-$client = new VONQHiringAPILib\VONQHiringAPIClient([
+$client = new HAPILib\HAPIClient([
     // Set authentication parameters
     'xAuthToken' => 'X-Auth-Token',
 
     // Set the environment
     'environment' => 'production',
+
+    // Specifies whether to skip SSL certificate verification
+    'skipSslVerification' => true,
 ]);
 ```
 

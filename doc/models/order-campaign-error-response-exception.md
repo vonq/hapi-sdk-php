@@ -10,11 +10,11 @@
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `companyId` | `?(string[])` | Optional | - | getCompanyId(): ?array | setCompanyId(?array companyId): void |
-| `postingDetails` | [`?PostingDetailsValidationError`](../../doc/models/posting-details-validation-error.md) | Optional | - | getPostingDetails(): ?PostingDetailsValidationError | setPostingDetails(?PostingDetailsValidationError postingDetails): void |
-| `targetGroup` | [`?TargetGroupValidationError`](../../doc/models/target-group-validation-error.md) | Optional | - | getTargetGroup(): ?TargetGroupValidationError | setTargetGroup(?TargetGroupValidationError targetGroup): void |
-| `recruiterInfo` | [`?RecruiterInfoValidationError`](../../doc/models/recruiter-info-validation-error.md) | Optional | - | getRecruiterInfo(): ?RecruiterInfoValidationError | setRecruiterInfo(?RecruiterInfoValidationError recruiterInfo): void |
+| `postingDetails` | [`?PostingDetailsValidationErrorModel`](../../doc/models/posting-details-validation-error-model.md) | Optional | - | getPostingDetails(): ?PostingDetailsValidationErrorModel | setPostingDetails(?PostingDetailsValidationErrorModel postingDetails): void |
+| `targetGroup` | [`?TargetGroupValidationErrorModel`](../../doc/models/target-group-validation-error-model.md) | Optional | - | getTargetGroup(): ?TargetGroupValidationErrorModel | setTargetGroup(?TargetGroupValidationErrorModel targetGroup): void |
+| `recruiterInfo` | [`?RecruiterInfoValidationErrorModel`](../../doc/models/recruiter-info-validation-error-model.md) | Optional | - | getRecruiterInfo(): ?RecruiterInfoValidationErrorModel | setRecruiterInfo(?RecruiterInfoValidationErrorModel recruiterInfo): void |
 | `orderedProducts` | `?(string[])` | Optional | - | getOrderedProducts(): ?array | setOrderedProducts(?array orderedProducts): void |
-| `orderedProductsSpecs` | [`?(OrderedProductsSpecValidationError[])`](../../doc/models/ordered-products-spec-validation-error.md) | Optional | - | getOrderedProductsSpecs(): ?array | setOrderedProductsSpecs(?array orderedProductsSpecs): void |
+| `orderedProductsSpecs` | [`?(OrderedProductsSpecValidationErrorModel[])`](../../doc/models/ordered-products-spec-validation-error-model.md) | Optional | - | getOrderedProductsSpecs(): ?array | setOrderedProductsSpecs(?array orderedProductsSpecs): void |
 | `orderReference` | `?(string[])` | Optional | - | getOrderReference(): ?array | setOrderReference(?array orderReference): void |
 | `campaignName` | `?(string[])` | Optional | - | getCampaignName(): ?array | setCampaignName(?array campaignName): void |
 | `walletId` | `?(string[])` | Optional | - | getWalletId(): ?array | setWalletId(?array walletId): void |

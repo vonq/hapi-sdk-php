@@ -25,7 +25,7 @@ function listChannels(
     ?int $limit = 25,
     ?int $offset = 0,
     ?string $acceptLanguage = null
-): PaginatedListChannelList
+): PaginatedListChannelListModel
 ```
 
 ## Parameters
@@ -40,7 +40,7 @@ function listChannels(
 
 ## Response Type
 
-[`PaginatedListChannelList`](../../doc/models/paginated-list-channel-list.md)
+[`PaginatedListChannelListModel`](../../doc/models/paginated-list-channel-list-model.md)
 
 ## Example Usage
 
@@ -83,7 +83,11 @@ $result = $channelsController->listChannels($xCustomerId, null, $limit, $offset)
 This endpoint exposes the details of a channel with support for contracts,as well as all the required details for creating a contract or a campaign for each channel.
 
 ```php
-function retrieveChannel(int $channelId, string $xCustomerId, ?string $acceptLanguage = null): LimitedChannel
+function retrieveChannel(
+    int $channelId,
+    string $xCustomerId,
+    ?string $acceptLanguage = null
+): LimitedChannelModel
 ```
 
 ## Parameters
@@ -96,7 +100,7 @@ function retrieveChannel(int $channelId, string $xCustomerId, ?string $acceptLan
 
 ## Response Type
 
-[`LimitedChannel`](../../doc/models/limited-channel.md)
+[`LimitedChannelModel`](../../doc/models/limited-channel-model.md)
 
 ## Example Usage
 

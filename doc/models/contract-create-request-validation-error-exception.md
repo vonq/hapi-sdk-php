@@ -15,7 +15,7 @@
 | `facets` | `?array` | Optional | - | getFacets(): ?array | setFacets(?array facets): void |
 | `expiryDate` | `?(string[])` | Optional | - | getExpiryDate(): ?array | setExpiryDate(?array expiryDate): void |
 | `credits` | `?(string[])` | Optional | - | getCredits(): ?array | setCredits(?array credits): void |
-| `purchasePrice` | [`?PurchasePriceValidationError`](../../doc/models/purchase-price-validation-error.md) | Optional | - | getPurchasePrice(): ?PurchasePriceValidationError | setPurchasePrice(?PurchasePriceValidationError purchasePrice): void |
+| `purchasePrice` | [`?PurchasePriceValidationErrorModel`](../../doc/models/purchase-price-validation-error-model.md) | Optional | - | getPurchasePrice(): ?PurchasePriceValidationErrorModel | setPurchasePrice(?PurchasePriceValidationErrorModel purchasePrice): void |
 | `followedInstructions` | `?(string[])` | Optional | - | getFollowedInstructions(): ?array | setFollowedInstructions(?array followedInstructions): void |
 | `groupId` | `?(string[])` | Optional | - | getGroupId(): ?array | setGroupId(?array groupId): void |
 

@@ -45,17 +45,17 @@ class ProductModel implements \JsonSerializable
     private $homepage;
 
     /**
-     * @var ProductLogoModel[]|null
+     * @var array
      */
-    private $logoUrl;
+    private $logoUrl = [];
 
     /**
-     * @var ProductLogoWithSizeModel[]
+     * @var ProductLogoWithSizeModel[]|null
      */
     private $logoSquareUrl;
 
     /**
-     * @var ProductLogoWithSizeModel[]
+     * @var ProductLogoWithSizeModel[]|null
      */
     private $logoRectangleUrl;
 
@@ -129,8 +129,6 @@ class ProductModel implements \JsonSerializable
      * @param LimitedLocationModel[] $locations
      * @param LimitedJobFunctionModel[] $jobFunctions
      * @param IndustryModel[] $industries
-     * @param ProductLogoWithSizeModel[] $logoSquareUrl
-     * @param ProductLogoWithSizeModel[] $logoRectangleUrl
      * @param DurationInDaysModel $duration
      * @param DurationInHoursModel $timeToProcess
      * @param DurationInHoursModel $timeToSetup
@@ -150,8 +148,6 @@ class ProductModel implements \JsonSerializable
         array $locations,
         array $jobFunctions,
         array $industries,
-        array $logoSquareUrl,
-        array $logoRectangleUrl,
         DurationInDaysModel $duration,
         DurationInHoursModel $timeToProcess,
         DurationInHoursModel $timeToSetup,
@@ -170,8 +166,6 @@ class ProductModel implements \JsonSerializable
         $this->locations = $locations;
         $this->jobFunctions = $jobFunctions;
         $this->industries = $industries;
-        $this->logoSquareUrl = $logoSquareUrl;
-        $this->logoRectangleUrl = $logoRectangleUrl;
         $this->duration = $duration;
         $this->timeToProcess = $timeToProcess;
         $this->timeToSetup = $timeToSetup;
@@ -318,7 +312,10 @@ class ProductModel implements \JsonSerializable
      */
     public function getLogoUrl(): ?array
     {
-        return $this->logoUrl;
+        if (count($this->logoUrl) == 0) {
+            return null;
+        }
+        return $this->logoUrl['value'];
     }
 
     /**
@@ -330,15 +327,23 @@ class ProductModel implements \JsonSerializable
      */
     public function setLogoUrl(?array $logoUrl): void
     {
-        $this->logoUrl = $logoUrl;
+        $this->logoUrl['value'] = $logoUrl;
+    }
+
+    /**
+     * Unsets Logo Url.
+     */
+    public function unsetLogoUrl(): void
+    {
+        $this->logoUrl = [];
     }
 
     /**
      * Returns Logo Square Url.
      *
-     * @return ProductLogoWithSizeModel[]
+     * @return ProductLogoWithSizeModel[]|null
      */
-    public function getLogoSquareUrl(): array
+    public function getLogoSquareUrl(): ?array
     {
         return $this->logoSquareUrl;
     }
@@ -346,12 +351,11 @@ class ProductModel implements \JsonSerializable
     /**
      * Sets Logo Square Url.
      *
-     * @required
      * @maps logo_square_url
      *
-     * @param ProductLogoWithSizeModel[] $logoSquareUrl
+     * @param ProductLogoWithSizeModel[]|null $logoSquareUrl
      */
-    public function setLogoSquareUrl(array $logoSquareUrl): void
+    public function setLogoSquareUrl(?array $logoSquareUrl): void
     {
         $this->logoSquareUrl = $logoSquareUrl;
     }
@@ -359,9 +363,9 @@ class ProductModel implements \JsonSerializable
     /**
      * Returns Logo Rectangle Url.
      *
-     * @return ProductLogoWithSizeModel[]
+     * @return ProductLogoWithSizeModel[]|null
      */
-    public function getLogoRectangleUrl(): array
+    public function getLogoRectangleUrl(): ?array
     {
         return $this->logoRectangleUrl;
     }
@@ -369,12 +373,11 @@ class ProductModel implements \JsonSerializable
     /**
      * Sets Logo Rectangle Url.
      *
-     * @required
      * @maps logo_rectangle_url
      *
-     * @param ProductLogoWithSizeModel[] $logoRectangleUrl
+     * @param ProductLogoWithSizeModel[]|null $logoRectangleUrl
      */
-    public function setLogoRectangleUrl(array $logoRectangleUrl): void
+    public function setLogoRectangleUrl(?array $logoRectangleUrl): void
     {
         $this->logoRectangleUrl = $logoRectangleUrl;
     }
@@ -685,8 +688,8 @@ class ProductModel implements \JsonSerializable
         $json['industries']         = $this->industries;
         $json['description']        = $this->description;
         $json['homepage']           = $this->homepage;
-        if (isset($this->logoUrl)) {
-            $json['logo_url']       = $this->logoUrl;
+        if (!empty($this->logoUrl)) {
+            $json['logo_url']       = $this->logoUrl['value'];
         }
         $json['logo_square_url']    = $this->logoSquareUrl;
         $json['logo_rectangle_url'] = $this->logoRectangleUrl;

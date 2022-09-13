@@ -15,17 +15,21 @@ The following parameters are configurable for the API Client:
 | `retryOnTimeout` | `bool` | Whether to retry on request timeout.<br>*Default*: `true` |
 | `httpStatusCodesToRetry` | `array` | Http status codes to retry against.<br>*Default*: `408, 413, 429, 500, 502, 503, 504, 521, 522, 524` |
 | `httpMethodsToRetry` | `array` | Http methods to retry against.<br>*Default*: `'GET', 'PUT'` |
+| `skipSslVerification` | `bool` | Set to true to allow skipping ssl certificate verification<br>*Default*: `false` |
 | `xAuthToken` | `string` | In order to interact with the API, every request needs to have an API Token.  The key will be supplied by VONQ to our partners. |
 
 The API client can be initialized as follows:
 
 ```php
-$client = new VONQHiringAPILib\VONQHiringAPIClient([
+$client = new HAPILib\HAPIClient([
     // Set authentication parameters
     'xAuthToken' => 'X-Auth-Token',
 
     // Set the environment
     'environment' => 'production',
+
+    // Specifies whether to skip SSL certificate verification
+    'skipSslVerification' => true,
 ]);
 ```
 

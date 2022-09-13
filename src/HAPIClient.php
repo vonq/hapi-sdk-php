@@ -328,11 +328,11 @@ class HAPIClient implements ConfigurationInterface
      * @var array
      */
     private const ENVIRONMENT_MAP = [
-        Environment::SANDBOX => [
-            Server::DEFAULT_ => 'https://marketplace-sandbox.api.vonq.com',
-        ],
         Environment::PRODUCTION => [
             Server::DEFAULT_ => 'https://marketplace.api.vonq.com',
+        ],
+        Environment::SANDBOX => [
+            Server::DEFAULT_ => 'https://marketplace-sandbox.api.vonq.com',
         ],
     ];
 }

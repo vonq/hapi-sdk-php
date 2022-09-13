@@ -11,11 +11,11 @@ $walletsController = $client->getWalletsController();
 ## Methods
 
 * [Get-Wallet](../../doc/controllers/wallets.md#get-wallet)
-* [Post-Wallet](../../doc/controllers/wallets.md#post-wallet)
-* [Post-Wallet-Wallet Id-Billing-Portal](../../doc/controllers/wallets.md#post-wallet-wallet-id-billing-portal)
-* [Post-Wallet-Payment-Intent](../../doc/controllers/wallets.md#post-wallet-payment-intent)
 * [Get-Wallet-Process](../../doc/controllers/wallets.md#get-wallet-process)
 * [Get-Wallet-Topup Html](../../doc/controllers/wallets.md#get-wallet-topup-html)
+* [Post-Wallet](../../doc/controllers/wallets.md#post-wallet)
+* [Post-Wallet-Payment-Intent](../../doc/controllers/wallets.md#post-wallet-payment-intent)
+* [Post-Wallet-Wallet Id-Billing-Portal](../../doc/controllers/wallets.md#post-wallet-wallet-id-billing-portal)
 
 
 # Get-Wallet
@@ -23,7 +23,7 @@ $walletsController = $client->getWalletsController();
 Retrieves wallet details and balance. You must first create a wallet for your customer. See [POST /wallet](HAPI-Payments.yaml/paths/~1wallet)
 
 ```php
-function getWallet(string $xCustomerId): Wallet
+function getWallet(string $xCustomerId): WalletModel
 ```
 
 ## Parameters
@@ -34,7 +34,7 @@ function getWallet(string $xCustomerId): Wallet
 
 ## Response Type
 
-[`Wallet`](../../doc/models/wallet.md)
+[`WalletModel`](../../doc/models/wallet-model.md)
 
 ## Example Usage
 
@@ -62,138 +62,6 @@ $result = $walletsController->getWallet($xCustomerId);
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 404 | Not Found | [`GenericErrorException`](../../doc/models/generic-error-exception.md) |
-
-
-# Post-Wallet
-
-Create a wallet for the provided customer ID.
-
-```php
-function postWallet(string $xCustomerId, ?WalletRequest $body = null): Wallet
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `xCustomerId` | `string` | Header, Required | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
-| `body` | [`?WalletRequest`](../../doc/models/wallet-request.md) | Body, Optional | - |
-
-## Response Type
-
-[`Wallet`](../../doc/models/wallet.md)
-
-## Example Usage
-
-```php
-$xCustomerId = 'X-Customer-Id2';
-$body_customerName = 'VONQ';
-$body = new Models\WalletRequest(
-    $body_customerName
-);
-
-$result = $walletsController->postWallet($xCustomerId, $body);
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "id": "a9b6f1f6-e099-5fd5-b225-08c43067ae71",
-  "balance": {
-    "USD": 0
-  },
-  "created_date": "2022-07-15T08:56:49+00:00",
-  "has_billing_details": false
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Bad Request | [`WalletValidationErrorException`](../../doc/models/wallet-validation-error-exception.md) |
-| 409 | Returned when a wallet for the provided X-Customer-Id already exists. | [`GenericErrorWithDetailException`](../../doc/models/generic-error-with-detail-exception.md) |
-| 500 | Internal Server Error | [`GenericErrorException`](../../doc/models/generic-error-exception.md) |
-
-
-# Post-Wallet-Wallet Id-Billing-Portal
-
-Returns billing portal link where the customer can edit his billing details.
-
-```php
-function postWalletWalletIdBillingPortal(
-    string $xCustomerId,
-    ?string $partnerReturnUrl = null
-): BillingPortalLink
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `xCustomerId` | `string` | Header, Required | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
-| `partnerReturnUrl` | `?string` | Query, Optional | if set, the billing portal page will have this link as "Return to" |
-
-## Response Type
-
-[`BillingPortalLink`](../../doc/models/billing-portal-link.md)
-
-## Example Usage
-
-```php
-$xCustomerId = 'X-Customer-Id2';
-
-$result = $walletsController->postWalletWalletIdBillingPortal($xCustomerId);
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "billingPortalLink": "https://billing.stripe.com/session/live_YWNjdF8xSVdodDBGT1RiUXI5OEtOLF9NRnBpZk80VDY0Q0JQNm9aeXR2OVNJblVoWU5ESVFS0100biwbiZ9D"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 404 | Not Found | `ApiException` |
-
-
-# Post-Wallet-Payment-Intent
-
-Initiates a payment intent object. To make a payment, one first needs to create a payment intent.
-
-:information_source: **Note** This endpoint does not require authentication.
-
-```php
-function postWalletPaymentIntent(?PaymentIntent $body = null): LimitedPaymentIntent
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`?PaymentIntent`](../../doc/models/payment-intent.md) | Body, Optional | - |
-
-## Response Type
-
-[`LimitedPaymentIntent`](../../doc/models/limited-payment-intent.md)
-
-## Example Usage
-
-```php
-$result = $walletsController->postWalletPaymentIntent();
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Bad Request | [`GenericErrorException`](../../doc/models/generic-error-exception.md) |
-| 422 | Unprocessable Entity | [`GenericErrorWithDetailException`](../../doc/models/generic-error-with-detail-exception.md) |
 
 
 # Get-Wallet-Process
@@ -349,5 +217,137 @@ $result = $walletsController->getWalletTopupHtml($walletId, $partnerId);
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 400 | Bad Request | `ApiException` |
+| 404 | Not Found | `ApiException` |
+
+
+# Post-Wallet
+
+Create a wallet for the provided customer ID.
+
+```php
+function postWallet(string $xCustomerId, ?WalletRequestModel $body = null): WalletModel
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `xCustomerId` | `string` | Header, Required | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
+| `body` | [`?WalletRequestModel`](../../doc/models/wallet-request-model.md) | Body, Optional | - |
+
+## Response Type
+
+[`WalletModel`](../../doc/models/wallet-model.md)
+
+## Example Usage
+
+```php
+$xCustomerId = 'X-Customer-Id2';
+$body_customerName = 'VONQ';
+$body = new Models\WalletRequestModel(
+    $body_customerName
+);
+
+$result = $walletsController->postWallet($xCustomerId, $body);
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "id": "a9b6f1f6-e099-5fd5-b225-08c43067ae71",
+  "balance": {
+    "USD": 0
+  },
+  "created_date": "2022-07-15T08:56:49+00:00",
+  "has_billing_details": false
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Bad Request | [`WalletValidationErrorException`](../../doc/models/wallet-validation-error-exception.md) |
+| 409 | Returned when a wallet for the provided X-Customer-Id already exists. | [`GenericErrorWithDetailException`](../../doc/models/generic-error-with-detail-exception.md) |
+| 500 | Internal Server Error | [`GenericErrorException`](../../doc/models/generic-error-exception.md) |
+
+
+# Post-Wallet-Payment-Intent
+
+Initiates a payment intent object. To make a payment, one first needs to create a payment intent.
+
+:information_source: **Note** This endpoint does not require authentication.
+
+```php
+function postWalletPaymentIntent(?PaymentIntentModel $body = null): LimitedPaymentIntentModel
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`?PaymentIntentModel`](../../doc/models/payment-intent-model.md) | Body, Optional | - |
+
+## Response Type
+
+[`LimitedPaymentIntentModel`](../../doc/models/limited-payment-intent-model.md)
+
+## Example Usage
+
+```php
+$result = $walletsController->postWalletPaymentIntent();
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Bad Request | [`GenericErrorException`](../../doc/models/generic-error-exception.md) |
+| 422 | Unprocessable Entity | [`GenericErrorWithDetailException`](../../doc/models/generic-error-with-detail-exception.md) |
+
+
+# Post-Wallet-Wallet Id-Billing-Portal
+
+Returns billing portal link where the customer can edit his billing details.
+
+```php
+function postWalletWalletIdBillingPortal(
+    string $xCustomerId,
+    ?string $partnerReturnUrl = null
+): BillingPortalLinkModel
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `xCustomerId` | `string` | Header, Required | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
+| `partnerReturnUrl` | `?string` | Query, Optional | if set, the billing portal page will have this link as "Return to" |
+
+## Response Type
+
+[`BillingPortalLinkModel`](../../doc/models/billing-portal-link-model.md)
+
+## Example Usage
+
+```php
+$xCustomerId = 'X-Customer-Id2';
+
+$result = $walletsController->postWalletWalletIdBillingPortal($xCustomerId);
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "billingPortalLink": "https://billing.stripe.com/session/live_YWNjdF8xSVdodDBGT1RiUXI5OEtOLF9NRnBpZk80VDY0Q0JQNm9aeXR2OVNJblVoWU5ESVFS0100biwbiZ9D"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
 | 404 | Not Found | `ApiException` |
 

@@ -11,11 +11,11 @@ $taxonomyController = $client->getTaxonomyController();
 ## Methods
 
 * [List Industries](../../doc/controllers/taxonomy.md#list-industries)
+* [Retrieve Education Levels](../../doc/controllers/taxonomy.md#retrieve-education-levels)
 * [Retrieve Job Functions Tree](../../doc/controllers/taxonomy.md#retrieve-job-functions-tree)
+* [Retrieve Seniorities](../../doc/controllers/taxonomy.md#retrieve-seniorities)
 * [Search Job Titles](../../doc/controllers/taxonomy.md#search-job-titles)
 * [Search Locations](../../doc/controllers/taxonomy.md#search-locations)
-* [Retrieve Education Levels](../../doc/controllers/taxonomy.md#retrieve-education-levels)
-* [Retrieve Seniorities](../../doc/controllers/taxonomy.md#retrieve-seniorities)
 
 
 # List Industries
@@ -44,7 +44,7 @@ function listIndustries(
 
 ## Response Type
 
-[`Industry[]`](../../doc/models/industry.md)
+[`IndustryModel[]`](../../doc/models/industry-model.md)
 
 ## Example Usage
 
@@ -251,6 +251,41 @@ $result = $taxonomyController->listIndustries($limit, $offset);
 ```
 
 
+# Retrieve Education Levels
+
+Retrieve all Education Level possible values.
+
+```php
+function retrieveEducationLevels(): array
+```
+
+## Response Type
+
+[`EducationLevelModel[]`](../../doc/models/education-level-model.md)
+
+## Example Usage
+
+```php
+$result = $taxonomyController->retrieveEducationLevels();
+```
+
+## Example Response *(as JSON)*
+
+```json
+[
+  {
+    "id": 1,
+    "name": [
+      {
+        "languageCode": "nl_NL",
+        "value": "Master / Postdoctoraal"
+      }
+    ]
+  }
+]
+```
+
+
 # Retrieve Job Functions Tree
 
 This endpoint returns a tree-like structure of supported Job Functions that can be used to search for Products.
@@ -271,7 +306,7 @@ function retrieveJobFunctionsTree(?string $acceptLanguage = null, ?string $xCust
 
 ## Response Type
 
-[`JobFunctionTree[]`](../../doc/models/job-function-tree.md)
+[`JobFunctionTreeModel[]`](../../doc/models/job-function-tree-model.md)
 
 ## Example Usage
 
@@ -298,6 +333,117 @@ $result = $taxonomyController->retrieveJobFunctionsTree();
 ```
 
 
+# Retrieve Seniorities
+
+Retrieve all Seniority possible values.
+
+```php
+function retrieveSeniorities(): array
+```
+
+## Response Type
+
+[`SeniorityModel[]`](../../doc/models/seniority-model.md)
+
+## Example Usage
+
+```php
+$result = $taxonomyController->retrieveSeniorities();
+```
+
+## Example Response *(as JSON)*
+
+```json
+[
+  {
+    "id": 1,
+    "name": [
+      {
+        "languageCode": "de_DE",
+        "value": "Geschäftsführer / C-Level"
+      },
+      {
+        "languageCode": "en_GB",
+        "value": "Executive/Director"
+      },
+      {
+        "languageCode": "nl_NL",
+        "value": "Executive/Director"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": [
+      {
+        "languageCode": "de_DE",
+        "value": "Manager"
+      },
+      {
+        "languageCode": "en_GB",
+        "value": "Manager"
+      },
+      {
+        "languageCode": "nl_NL",
+        "value": "Manager"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": [
+      {
+        "languageCode": "de_DE",
+        "value": "Professional"
+      },
+      {
+        "languageCode": "en_GB",
+        "value": "Mid-Senior level"
+      },
+      {
+        "languageCode": "nl_NL",
+        "value": "Professional"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": [
+      {
+        "languageCode": "de_DE",
+        "value": "Berufseinsteiger"
+      },
+      {
+        "languageCode": "en_GB",
+        "value": "Entry level/Graduate"
+      },
+      {
+        "languageCode": "nl_NL",
+        "value": "Entry level/Graduate"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": [
+      {
+        "languageCode": "de_DE",
+        "value": "Student/Trainee"
+      },
+      {
+        "languageCode": "en_GB",
+        "value": "Student/Trainee"
+      },
+      {
+        "languageCode": "nl_NL",
+        "value": "Student/Trainee"
+      }
+    ]
+  }
+]
+```
+
+
 # Search Job Titles
 
 This endpoint takes any text as input and returns a list of supported Job Titles matching the query, ordered by popularity.
@@ -313,7 +459,7 @@ function searchJobTitles(
     ?int $offset = 0,
     ?string $acceptLanguage = null,
     ?string $xCustomerId = null
-): PaginatedJobTitleList
+): PaginatedJobTitleListModel
 ```
 
 ## Parameters
@@ -328,7 +474,7 @@ function searchJobTitles(
 
 ## Response Type
 
-[`PaginatedJobTitleList`](../../doc/models/paginated-job-title-list.md)
+[`PaginatedJobTitleListModel`](../../doc/models/paginated-job-title-list-model.md)
 
 ## Example Usage
 
@@ -362,7 +508,7 @@ function searchLocations(string $text, ?string $acceptLanguage = null, ?string $
 
 ## Response Type
 
-[`Location[]`](../../doc/models/location.md)
+[`LocationModel[]`](../../doc/models/location-model.md)
 
 ## Example Usage
 
@@ -533,150 +679,4 @@ $result = $taxonomyController->searchLocations($text);
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 400 | Bad Request | [`GenericErrorException`](../../doc/models/generic-error-exception.md) |
-
-
-# Retrieve Education Levels
-
-Retrieve all Education Level possible values.
-
-```php
-function retrieveEducationLevels(): array
-```
-
-## Response Type
-
-[`EducationLevel[]`](../../doc/models/education-level.md)
-
-## Example Usage
-
-```php
-$result = $taxonomyController->retrieveEducationLevels();
-```
-
-## Example Response *(as JSON)*
-
-```json
-[
-  {
-    "id": 1,
-    "name": [
-      {
-        "languageCode": "nl_NL",
-        "value": "Master / Postdoctoraal"
-      }
-    ]
-  }
-]
-```
-
-
-# Retrieve Seniorities
-
-Retrieve all Seniority possible values.
-
-```php
-function retrieveSeniorities(): array
-```
-
-## Response Type
-
-[`Seniority[]`](../../doc/models/seniority.md)
-
-## Example Usage
-
-```php
-$result = $taxonomyController->retrieveSeniorities();
-```
-
-## Example Response *(as JSON)*
-
-```json
-[
-  {
-    "id": 1,
-    "name": [
-      {
-        "languageCode": "de_DE",
-        "value": "Geschäftsführer / C-Level"
-      },
-      {
-        "languageCode": "en_GB",
-        "value": "Executive/Director"
-      },
-      {
-        "languageCode": "nl_NL",
-        "value": "Executive/Director"
-      }
-    ]
-  },
-  {
-    "id": 2,
-    "name": [
-      {
-        "languageCode": "de_DE",
-        "value": "Manager"
-      },
-      {
-        "languageCode": "en_GB",
-        "value": "Manager"
-      },
-      {
-        "languageCode": "nl_NL",
-        "value": "Manager"
-      }
-    ]
-  },
-  {
-    "id": 3,
-    "name": [
-      {
-        "languageCode": "de_DE",
-        "value": "Professional"
-      },
-      {
-        "languageCode": "en_GB",
-        "value": "Mid-Senior level"
-      },
-      {
-        "languageCode": "nl_NL",
-        "value": "Professional"
-      }
-    ]
-  },
-  {
-    "id": 4,
-    "name": [
-      {
-        "languageCode": "de_DE",
-        "value": "Berufseinsteiger"
-      },
-      {
-        "languageCode": "en_GB",
-        "value": "Entry level/Graduate"
-      },
-      {
-        "languageCode": "nl_NL",
-        "value": "Entry level/Graduate"
-      }
-    ]
-  },
-  {
-    "id": 5,
-    "name": [
-      {
-        "languageCode": "de_DE",
-        "value": "Student/Trainee"
-      },
-      {
-        "languageCode": "en_GB",
-        "value": "Student/Trainee"
-      },
-      {
-        "languageCode": "nl_NL",
-        "value": "Student/Trainee"
-      }
-    ]
-  }
-]
-```
 
