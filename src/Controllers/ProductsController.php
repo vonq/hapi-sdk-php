@@ -204,7 +204,7 @@ class ProductsController extends BaseController
             $_httpRequest,
             $_httpResponse,
             $response->body,
-            'PaginatedProductListModel'
+            'PaginatedProductListWithoutFacetsModel'
         );
         return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
