@@ -23,7 +23,7 @@ $walletsController = $client->getWalletsController();
 Retrieves wallet details and balance. You must first create a wallet for your customer. See [POST /wallet](HAPI-Payments.yaml/paths/~1wallet)
 
 ```php
-function getWallet(string $xCustomerId): WalletModel
+function getWallet(string $xCustomerId): ApiResponse
 ```
 
 ## Parameters
@@ -41,7 +41,7 @@ function getWallet(string $xCustomerId): WalletModel
 ```php
 $xCustomerId = 'X-Customer-Id2';
 
-$result = $walletsController->getWallet($xCustomerId);
+$apiResponse = $walletsController->getWallet($xCustomerId);
 ```
 
 ## Example Response *(as JSON)*
@@ -71,7 +71,7 @@ Landing page after a succesful payment operation. The user is redirected here fr
 :information_source: **Note** This endpoint does not require authentication.
 
 ```php
-function getWalletProcess(?string $target = null): array
+function getWalletProcess(?string $target = null): ApiResponse
 ```
 
 ## Parameters
@@ -87,7 +87,9 @@ function getWalletProcess(?string $target = null): array
 ## Example Usage
 
 ```php
-$result = $walletsController->getWalletProcess();
+$target = 'target2';
+
+$apiResponse = $walletsController->getWalletProcess($target);
 ```
 
 ## Errors
@@ -186,7 +188,7 @@ function getWalletTopupHtml(
     ?int $amount = null,
     ?string $returnUrl = null,
     ?string $successCallbackUrl = null
-): array
+): ApiResponse
 ```
 
 ## Parameters
@@ -208,8 +210,11 @@ function getWalletTopupHtml(
 ```php
 $walletId = '00000290-0000-0000-0000-000000000000';
 $partnerId = '00000c8c-0000-0000-0000-000000000000';
+$amount = 46;
+$returnUrl = 'returnUrl2';
+$successCallbackUrl = 'successCallbackUrl8';
 
-$result = $walletsController->getWalletTopupHtml($walletId, $partnerId);
+$apiResponse = $walletsController->getWalletTopupHtml($walletId, $partnerId, $amount, $returnUrl, $successCallbackUrl);
 ```
 
 ## Errors
@@ -225,7 +230,7 @@ $result = $walletsController->getWalletTopupHtml($walletId, $partnerId);
 Create a wallet for the provided customer ID.
 
 ```php
-function postWallet(string $xCustomerId, ?WalletRequestModel $body = null): WalletModel
+function postWallet(string $xCustomerId, ?WalletRequestModel $body = null): ApiResponse
 ```
 
 ## Parameters
@@ -248,7 +253,7 @@ $body = new Models\WalletRequestModel(
     $body_customerName
 );
 
-$result = $walletsController->postWallet($xCustomerId, $body);
+$apiResponse = $walletsController->postWallet($xCustomerId, $body);
 ```
 
 ## Example Response *(as JSON)*
@@ -280,7 +285,7 @@ Initiates a payment intent object. To make a payment, one first needs to create 
 :information_source: **Note** This endpoint does not require authentication.
 
 ```php
-function postWalletPaymentIntent(?PaymentIntentModel $body = null): LimitedPaymentIntentModel
+function postWalletPaymentIntent(?PaymentIntentModel $body = null): ApiResponse
 ```
 
 ## Parameters
@@ -296,7 +301,19 @@ function postWalletPaymentIntent(?PaymentIntentModel $body = null): LimitedPayme
 ## Example Usage
 
 ```php
-$result = $walletsController->postWalletPaymentIntent();
+$body_walletId = '00001ba8-0000-0000-0000-000000000000';
+$body_partnerId = '0000016c-0000-0000-0000-000000000000';
+$body_amount = 218;
+$body = new Models\PaymentIntentModel(
+    $body_walletId,
+    $body_partnerId,
+    $body_amount
+);
+$body->setQueryParamsAmount(238);
+$body->setSuccessCallbackUrl('successCallbackUrl8');
+$body->setAgreeTerms(false);
+
+$apiResponse = $walletsController->postWalletPaymentIntent($body);
 ```
 
 ## Errors
@@ -312,10 +329,7 @@ $result = $walletsController->postWalletPaymentIntent();
 Returns billing portal link where the customer can edit his billing details.
 
 ```php
-function postWalletWalletIdBillingPortal(
-    string $xCustomerId,
-    ?string $partnerReturnUrl = null
-): BillingPortalLinkModel
+function postWalletWalletIdBillingPortal(string $xCustomerId, ?string $partnerReturnUrl = null): ApiResponse
 ```
 
 ## Parameters
@@ -333,8 +347,9 @@ function postWalletWalletIdBillingPortal(
 
 ```php
 $xCustomerId = 'X-Customer-Id2';
+$partnerReturnUrl = 'partnerReturnUrl4';
 
-$result = $walletsController->postWalletWalletIdBillingPortal($xCustomerId);
+$apiResponse = $walletsController->postWalletWalletIdBillingPortal($xCustomerId, $partnerReturnUrl);
 ```
 
 ## Example Response *(as JSON)*

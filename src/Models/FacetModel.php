@@ -8,7 +8,7 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Models;
+namespace HAPI\Models;
 
 use stdClass;
 
@@ -186,7 +186,7 @@ class FacetModel implements \JsonSerializable
      *
      * @required
      * @maps type
-     * @factory \HAPILib\Models\FacetTypeEnum::checkValue
+     * @factory \HAPI\Models\FacetTypeEnum::checkValue
      */
     public function setType(string $type): void
     {

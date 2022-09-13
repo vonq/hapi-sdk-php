@@ -23,7 +23,7 @@ $contractGroupsController = $client->getContractGroupsController();
 This endpoint allows to create a new contract group
 
 ```php
-function createContractsGroup(string $xCustomerId, ?ContractGroupRequestModel $body = null): ContractGroupModel
+function createContractsGroup(string $xCustomerId, ?ContractGroupRequestModel $body = null): ApiResponse
 ```
 
 ## Parameters
@@ -41,8 +41,12 @@ function createContractsGroup(string $xCustomerId, ?ContractGroupRequestModel $b
 
 ```php
 $xCustomerId = 'X-Customer-Id2';
+$body_name = 'name6';
+$body = new Models\ContractGroupRequestModel(
+    $body_name
+);
 
-$result = $contractGroupsController->createContractsGroup($xCustomerId);
+$apiResponse = $contractGroupsController->createContractsGroup($xCustomerId, $body);
 ```
 
 ## Errors
@@ -58,7 +62,7 @@ Deletes a contract Contract Group by idx.
 Groups with idx=0 or associated to contracts can't be deleted.
 
 ```php
-function deleteContractGroup(string $groupIdx, string $xCustomerId): void
+function deleteContractGroup(string $groupIdx, string $xCustomerId): ApiResponse
 ```
 
 ## Parameters
@@ -78,7 +82,7 @@ function deleteContractGroup(string $groupIdx, string $xCustomerId): void
 $groupIdx = 'group_idx8';
 $xCustomerId = 'X-Customer-Id2';
 
-$contractGroupsController->deleteContractGroup($groupIdx, $xCustomerId);
+$apiResponse = $contractGroupsController->deleteContractGroup($groupIdx, $xCustomerId);
 ```
 
 ## Errors
@@ -94,7 +98,7 @@ $contractGroupsController->deleteContractGroup($groupIdx, $xCustomerId);
 Returns the details of the Contract Group by index/idx
 
 ```php
-function getContractGroup(string $groupIdx, string $xCustomerId): ContractGroupModel
+function getContractGroup(string $groupIdx, string $xCustomerId): ApiResponse
 ```
 
 ## Parameters
@@ -114,7 +118,7 @@ function getContractGroup(string $groupIdx, string $xCustomerId): ContractGroupM
 $groupIdx = 'group_idx8';
 $xCustomerId = 'X-Customer-Id2';
 
-$result = $contractGroupsController->getContractGroup($groupIdx, $xCustomerId);
+$apiResponse = $contractGroupsController->getContractGroup($groupIdx, $xCustomerId);
 ```
 
 ## Errors
@@ -129,7 +133,7 @@ $result = $contractGroupsController->getContractGroup($groupIdx, $xCustomerId);
 This endpoint exposes the list of contract groups
 
 ```php
-function listContractsGroups(string $xCustomerId, ?string $ordering = null, ?string $search = null): array
+function listContractsGroups(string $xCustomerId, ?string $ordering = null, ?string $search = null): ApiResponse
 ```
 
 ## Parameters
@@ -148,8 +152,10 @@ function listContractsGroups(string $xCustomerId, ?string $ordering = null, ?str
 
 ```php
 $xCustomerId = 'X-Customer-Id2';
+$ordering = 'ordering0';
+$search = 'search2';
 
-$result = $contractGroupsController->listContractsGroups($xCustomerId);
+$apiResponse = $contractGroupsController->listContractsGroups($xCustomerId, $ordering, $search);
 ```
 
 
@@ -162,7 +168,7 @@ function partialUpdateContractGroup(
     string $groupIdx,
     string $xCustomerId,
     ?ContractGroupRequestModel $body = null
-): ContractGroupModel
+): ApiResponse
 ```
 
 ## Parameters
@@ -182,8 +188,12 @@ function partialUpdateContractGroup(
 ```php
 $groupIdx = 'group_idx8';
 $xCustomerId = 'X-Customer-Id2';
+$body_name = 'name6';
+$body = new Models\ContractGroupRequestModel(
+    $body_name
+);
 
-$result = $contractGroupsController->partialUpdateContractGroup($groupIdx, $xCustomerId);
+$apiResponse = $contractGroupsController->partialUpdateContractGroup($groupIdx, $xCustomerId, $body);
 ```
 
 ## Errors
@@ -203,7 +213,7 @@ function updateContractGroup(
     string $groupIdx,
     string $xCustomerId,
     ?ContractGroupRequestModel $body = null
-): ContractGroupModel
+): ApiResponse
 ```
 
 ## Parameters
@@ -223,8 +233,12 @@ function updateContractGroup(
 ```php
 $groupIdx = 'group_idx8';
 $xCustomerId = 'X-Customer-Id2';
+$body_name = 'name6';
+$body = new Models\ContractGroupRequestModel(
+    $body_name
+);
 
-$result = $contractGroupsController->updateContractGroup($groupIdx, $xCustomerId);
+$apiResponse = $contractGroupsController->updateContractGroup($groupIdx, $xCustomerId, $body);
 ```
 
 ## Errors

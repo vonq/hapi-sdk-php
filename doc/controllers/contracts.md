@@ -25,7 +25,7 @@ This endpoint creates a new customer contract. It requires a reference to a chan
 HAPI doesn't support contract editing, because job boards require the same credentials to be able to delete already posted jobs via that contract at a later moment. Otherwise, deleting jobs would not be possible. To edit contract credentials, the credentials need to be deleted first, and then recreated. When deleted, all corresponding jobs can't be deleted anymore
 
 ```php
-function createContract(string $xCustomerId, ContractCreateRequestModel $body): EncryptedContractModel
+function createContract(string $xCustomerId, ContractCreateRequestModel $body): ApiResponse
 ```
 
 ## Parameters
@@ -44,13 +44,23 @@ function createContract(string $xCustomerId, ContractCreateRequestModel $body): 
 ```php
 $xCustomerId = 'X-Customer-Id2';
 $body_channelId = 236;
-$body_credentials = ['' => HAPILib\ApiHelper::deserialize(null), '' => HAPILib\ApiHelper::deserialize(null)];
+$body_credentials = ['' => HAPI\ApiHelper::deserialize(null), '' => HAPI\ApiHelper::deserialize(null)];
 $body = new Models\ContractCreateRequestModel(
     $body_channelId,
     $body_credentials
 );
+$body->setAlias('alias8');
+$body->setFacets(['' => HAPI\ApiHelper::deserialize(null), '' => HAPI\ApiHelper::deserialize(null)]);
+$body->setExpiryDate(DateTimeHelper::fromRfc3339DateTime('2016-03-13T12:52:32.123Z'));
+$body->setCredits(212);
+$body_purchasePrice_amount = 142;
+$body_purchasePrice_currency = Models\CurrencyEnum::ITL;
+$body->setPurchasePrice(new Models\PurchasePriceModel(
+    $body_purchasePrice_amount,
+    $body_purchasePrice_currency
+));
 
-$result = $contractsController->createContract($xCustomerId, $body);
+$apiResponse = $contractsController->createContract($xCustomerId, $body);
 ```
 
 ## Errors
@@ -70,7 +80,7 @@ HAPI doesn't support contract editing, because job boards require the same crede
 Contracts with Campaign(s) whose Channel status (retrievable through the "[Check a campaign status](https://vonq.stoplight.io/docs/hapi/cd5f4f9018c18-check-campaign-status)" endpoint, as defined by the`orderedProductsStatus.status`) is set to `online` can be deleted, but this will result the inability to [Take the campaign offline](https://vonq.stoplight.io/docs/hapi/d70d556dbb9ba-take-a-campaign-offline).
 
 ```php
-function deleteContract(string $contractId, string $xCustomerId): void
+function deleteContract(string $contractId, string $xCustomerId): ApiResponse
 ```
 
 ## Parameters
@@ -90,7 +100,7 @@ function deleteContract(string $contractId, string $xCustomerId): void
 $contractId = 'contract_id8';
 $xCustomerId = 'X-Customer-Id2';
 
-$contractsController->deleteContract($contractId, $xCustomerId);
+$apiResponse = $contractsController->deleteContract($contractId, $xCustomerId);
 ```
 
 ## Errors
@@ -112,7 +122,7 @@ function listAutocompleteValues(
     string $postingRequirementName,
     string $xCustomerId,
     FacetAutocompleteModel $body
-): array
+): ApiResponse
 ```
 
 ## Parameters
@@ -135,8 +145,10 @@ $channelIdOrContractId = 210;
 $postingRequirementName = 'posting-requirement-name2';
 $xCustomerId = 'X-Customer-Id2';
 $body = new Models\FacetAutocompleteModel;
+$body->setTerm('Example term text');
+$body->setCredentials(HAPI\ApiHelper::deserialize('{"key1":"val1","key2":"val2"}'));
 
-$result = $contractsController->listAutocompleteValues($channelIdOrContractId, $postingRequirementName, $xCustomerId, $body);
+$apiResponse = $contractsController->listAutocompleteValues($channelIdOrContractId, $postingRequirementName, $xCustomerId, $body);
 ```
 
 ## Example Response *(as JSON)*
@@ -170,7 +182,7 @@ $result = $contractsController->listAutocompleteValues($channelIdOrContractId, $
 This endpoint exposes a list of contract available to a particular customer.
 
 ```php
-function listContracts(string $xCustomerId, ?int $limit = 50, ?int $offset = 0): PaginatedContractListModel
+function listContracts(string $xCustomerId, ?int $limit = 50, ?int $offset = 0): ApiResponse
 ```
 
 ## Parameters
@@ -192,7 +204,7 @@ $xCustomerId = 'X-Customer-Id2';
 $limit = 10;
 $offset = 0;
 
-$result = $contractsController->listContracts($xCustomerId, $limit, $offset);
+$apiResponse = $contractsController->listContracts($xCustomerId, $limit, $offset);
 ```
 
 
@@ -201,7 +213,7 @@ $result = $contractsController->listContracts($xCustomerId, $limit, $offset);
 This endpoint retrieves the detail for a customer contract. It contains a reference to a channel, an (encrypted) credential payload, and the facets set for the My Contracts product.
 
 ```php
-function retrieveContract(string $contractId, string $xCustomerId): EncryptedContractModel
+function retrieveContract(string $contractId, string $xCustomerId): ApiResponse
 ```
 
 ## Parameters
@@ -221,7 +233,7 @@ function retrieveContract(string $contractId, string $xCustomerId): EncryptedCon
 $contractId = 'contract_id8';
 $xCustomerId = 'X-Customer-Id2';
 
-$result = $contractsController->retrieveContract($contractId, $xCustomerId);
+$apiResponse = $contractsController->retrieveContract($contractId, $xCustomerId);
 ```
 
 ## Errors
@@ -241,7 +253,7 @@ function retrieveMultipleContracts(
     string $xCustomerId,
     ?int $limit = 50,
     ?int $offset = 0
-): PaginatedDetailedContractListModel
+): ApiResponse
 ```
 
 ## Parameters
@@ -265,6 +277,6 @@ $xCustomerId = 'X-Customer-Id2';
 $limit = 10;
 $offset = 0;
 
-$result = $contractsController->retrieveMultipleContracts($contractsIds, $xCustomerId, $limit, $offset);
+$apiResponse = $contractsController->retrieveMultipleContracts($contractsIds, $xCustomerId, $limit, $offset);
 ```
 

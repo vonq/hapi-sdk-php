@@ -16,8 +16,15 @@
 
 ```json
 {
-  "amount": null,
-  "currency": null
+  "amount": [
+    "amount9",
+    "amount0",
+    "amount1"
+  ],
+  "currency": [
+    "currency0",
+    "currency1"
+  ]
 }
 ```
 

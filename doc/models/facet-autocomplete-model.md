@@ -16,7 +16,7 @@
 
 ```json
 {
-  "term": null,
+  "term": "Example term text",
   "credentials": null
 }
 ```

@@ -8,17 +8,18 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Controllers;
+namespace HAPI\Controllers;
 
-use HAPILib\Exceptions\ApiException;
-use HAPILib\ConfigurationInterface;
-use HAPILib\ApiHelper;
-use HAPILib\Models;
-use HAPILib\Http\HttpRequest;
-use HAPILib\Http\HttpResponse;
-use HAPILib\Http\HttpMethod;
-use HAPILib\Http\HttpContext;
-use HAPILib\Http\HttpCallBack;
+use HAPI\Exceptions\ApiException;
+use HAPI\ConfigurationInterface;
+use HAPI\ApiHelper;
+use HAPI\Models;
+use HAPI\Http\ApiResponse;
+use HAPI\Http\HttpRequest;
+use HAPI\Http\HttpResponse;
+use HAPI\Http\HttpMethod;
+use HAPI\Http\HttpContext;
+use HAPI\Http\HttpCallBack;
 
 class TaxonomyController extends BaseController
 {
@@ -42,7 +43,7 @@ class TaxonomyController extends BaseController
      *        work with Contracts functionality (adding contract, retrieving channels, ordering
      *        campaigns with contracts).
      *
-     * @return Models\IndustryModel[] Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
@@ -51,7 +52,7 @@ class TaxonomyController extends BaseController
         ?int $offset = 0,
         ?string $acceptLanguage = null,
         ?string $xCustomerId = null
-    ): array {
+    ): ApiResponse {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/industries/';
 
@@ -81,9 +82,6 @@ class TaxonomyController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -102,7 +100,8 @@ class TaxonomyController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'IndustryModel', 1);
+        $deserializedResponse = ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'IndustryModel', 1);
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -120,11 +119,11 @@ class TaxonomyController extends BaseController
      *        work with Contracts functionality (adding contract, retrieving channels, ordering
      *        campaigns with contracts).
      *
-     * @return Models\JobFunctionTreeModel[] Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveJobFunctionsTree(?string $acceptLanguage = null, ?string $xCustomerId = null): array
+    public function retrieveJobFunctionsTree(?string $acceptLanguage = null, ?string $xCustomerId = null): ApiResponse
     {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/job-functions/';
@@ -147,9 +146,6 @@ class TaxonomyController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -168,7 +164,14 @@ class TaxonomyController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'JobFunctionTreeModel', 1);
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'JobFunctionTreeModel',
+            1
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -191,7 +194,7 @@ class TaxonomyController extends BaseController
      *        work with Contracts functionality (adding contract, retrieving channels, ordering
      *        campaigns with contracts).
      *
-     * @return Models\PaginatedJobTitleListModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
@@ -201,7 +204,12 @@ class TaxonomyController extends BaseController
         ?int $offset = 0,
         ?string $acceptLanguage = null,
         ?string $xCustomerId = null
-    ): Models\PaginatedJobTitleListModel {
+    ): ApiResponse {
+        //check that all required arguments are provided
+        if (!isset($text)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/job-titles/';
 
@@ -232,9 +240,6 @@ class TaxonomyController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -253,7 +258,13 @@ class TaxonomyController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'PaginatedJobTitleListModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'PaginatedJobTitleListModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -271,12 +282,20 @@ class TaxonomyController extends BaseController
      *        work with Contracts functionality (adding contract, retrieving channels, ordering
      *        campaigns with contracts).
      *
-     * @return Models\LocationModel[] Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function searchLocations(string $text, ?string $acceptLanguage = null, ?string $xCustomerId = null): array
-    {
+    public function searchLocations(
+        string $text,
+        ?string $acceptLanguage = null,
+        ?string $xCustomerId = null
+    ): ApiResponse {
+        //check that all required arguments are provided
+        if (!isset($text)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/location/search/';
 
@@ -303,9 +322,6 @@ class TaxonomyController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -325,7 +341,7 @@ class TaxonomyController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -334,17 +350,18 @@ class TaxonomyController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'LocationModel', 1);
+        $deserializedResponse = ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'LocationModel', 1);
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
      * Retrieve all Education Level possible values.
      *
-     * @return Models\EducationLevelModel[] Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveEducationLevels(): array
+    public function retrieveEducationLevels(): ApiResponse
     {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/taxonomy/education-levels';
@@ -365,9 +382,6 @@ class TaxonomyController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -386,17 +400,24 @@ class TaxonomyController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'EducationLevelModel', 1);
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'EducationLevelModel',
+            1
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
      * Retrieve all Seniority possible values.
      *
-     * @return Models\SeniorityModel[] Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveSeniorities(): array
+    public function retrieveSeniorities(): ApiResponse
     {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/taxonomy/seniority';
@@ -417,9 +438,6 @@ class TaxonomyController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -438,6 +456,13 @@ class TaxonomyController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'SeniorityModel', 1);
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'SeniorityModel',
+            1
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 }

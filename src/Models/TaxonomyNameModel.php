@@ -8,7 +8,7 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Models;
+namespace HAPI\Models;
 
 use stdClass;
 
@@ -38,7 +38,7 @@ class TaxonomyNameModel implements \JsonSerializable
      * ICU Locale code for the Language of the taxonomy item
      *
      * @maps languageCode
-     * @factory \HAPILib\Models\LanguageCodeEnum::checkValue
+     * @factory \HAPI\Models\LanguageCodeEnum::checkValue
      */
     public function setLanguageCode(?string $languageCode): void
     {

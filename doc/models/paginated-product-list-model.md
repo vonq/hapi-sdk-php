@@ -23,34 +23,33 @@
   "facets": null,
   "next": null,
   "previous": null,
-  "results": {
-    "title": null,
-    "locations": null,
-    "job_functions": null,
-    "industries": null,
-    "description": "this is a product description",
-    "homepage": null,
-    "logo_square_url": null,
-    "logo_rectangle_url": null,
-    "duration": null,
-    "time_to_process": null,
-    "time_to_setup": null,
-    "product_id": null,
-    "vonq_price": null,
-    "ratecard_price": null,
-    "type": "job board",
-    "cross_postings": null,
-    "channel": {
-      "id": 66,
-      "name": null,
-      "type": null,
-      "url": null
-    },
-    "audience_group": null,
-    "mc_enabled": false,
-    "mc_only": false,
-    "allow_orders": null
-  }
+  "results": [
+    {
+      "description": "this is a product description",
+      "duration": {
+        "period": 30
+      },
+      "time_to_process": {
+        "period": 24
+      },
+      "time_to_setup": {
+        "period": 24
+      },
+      "vonq_price": [
+        {
+          "amount": 399.98
+        }
+      ],
+      "ratecard_price": [
+        {
+          "amount": 399.98
+        }
+      ],
+      "type": "job board",
+      "mc_enabled": false,
+      "mc_only": false
+    }
+  ]
 }
 ```
 

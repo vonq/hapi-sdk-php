@@ -208,7 +208,7 @@ The following parameters are configurable for the API Client:
 
 | Parameter | Type | Description |
 |  --- | --- | --- |
-| `environment` | Environment | The API environment. <br> **Default: `Environment.PRODUCTION`** |
+| `environment` | Environment | The API environment. <br> **Default: `Environment.SANDBOX`** |
 | `timeout` | `int` | Timeout for API calls in seconds.<br>*Default*: `0` |
 | `enableRetries` | `bool` | Whether to enable retries and backoff feature.<br>*Default*: `false` |
 | `numberOfRetries` | `int` | The number of retries to make.<br>*Default*: `0` |
@@ -218,23 +218,27 @@ The following parameters are configurable for the API Client:
 | `retryOnTimeout` | `bool` | Whether to retry on request timeout.<br>*Default*: `true` |
 | `httpStatusCodesToRetry` | `array` | Http status codes to retry against.<br>*Default*: `408, 413, 429, 500, 502, 503, 504, 521, 522, 524` |
 | `httpMethodsToRetry` | `array` | Http methods to retry against.<br>*Default*: `'GET', 'PUT'` |
-| `skipSslVerification` | `bool` | Set to true to allow skipping ssl certificate verification<br>*Default*: `false` |
 | `xAuthToken` | `string` | In order to interact with the API, every request needs to have an API Token.  The key will be supplied by VONQ to our partners. |
 
 The API client can be initialized as follows:
 
 ```php
-$client = new HAPILib\HAPIClient([
+$client = new HAPI\HAPIClient([
     // Set authentication parameters
     'xAuthToken' => 'X-Auth-Token',
 
     // Set the environment
-    'environment' => 'production',
-
-    // Specifies whether to skip SSL certificate verification
-    'skipSslVerification' => true,
+    'environment' => 'sandbox',
 ]);
 ```
+
+API calls return an `ApiResponse` object that includes the following fields:
+
+| Field | Description |
+|  --- | --- |
+| `getStatusCode` | Status code of the HTTP response |
+| `getHeaders` | Headers of the HTTP response as a Hash |
+| `getResult` | The deserialized body of the HTTP response as a String |
 
 ## Environments
 
@@ -244,8 +248,8 @@ The SDK can be configured to use a different environment for making API calls. A
 
 | Name | Description |
 |  --- | --- |
-| production | **Default** Production |
-| sandbox | Sandbox |
+| production | - |
+| sandbox | **Default** |
 
 ## Authorization
 

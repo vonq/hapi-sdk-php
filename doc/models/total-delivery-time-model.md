@@ -17,9 +17,9 @@
 
 ```json
 {
-  "days_to_process": null,
-  "days_to_setup": null,
-  "total_days": null
+  "days_to_process": 176,
+  "days_to_setup": 168,
+  "total_days": 58
 }
 ```
 

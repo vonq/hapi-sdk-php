@@ -5,18 +5,18 @@
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Tests;
+namespace HAPI\Tests;
 
-use HAPILib\Exceptions\ApiException;
-use HAPILib\Exceptions;
-use HAPILib\ApiHelper;
-use HAPILib\Models;
+use HAPI\Exceptions\ApiException;
+use HAPI\Exceptions;
+use HAPI\ApiHelper;
+use HAPI\Models;
 use PHPUnit\Framework\TestCase;
 
 class TaxonomyControllerTest extends TestCase
 {
     /**
-     * @var \HAPILib\Controllers\TaxonomyController Controller instance
+     * @var \HAPI\Controllers\TaxonomyController Controller instance
      */
     protected static $controller;
 
@@ -51,7 +51,7 @@ Besides the default English, German and Dutch result translations can be request
         // Set callback and perform API call
         $result = null;
         try {
-            $result = self::$controller->listIndustries($limit, $offset, $acceptLanguage, $xCustomerId);
+            $result = self::$controller->listIndustries($limit, $offset, $acceptLanguage, $xCustomerId)->getResult();
         } catch (ApiException $e) {
         }
 
@@ -119,7 +119,7 @@ Besides the default English, German and Dutch result translations can be request
         // Set callback and perform API call
         $result = null;
         try {
-            $result = self::$controller->retrieveJobFunctionsTree($acceptLanguage, $xCustomerId);
+            $result = self::$controller->retrieveJobFunctionsTree($acceptLanguage, $xCustomerId)->getResult();
         } catch (ApiException $e) {
         }
 
@@ -163,7 +163,7 @@ Besides the default English, German and Dutch result translations can be request
         // Set callback and perform API call
         $result = null;
         try {
-            $result = self::$controller->retrieveEducationLevels();
+            $result = self::$controller->retrieveEducationLevels()->getResult();
         } catch (ApiException $e) {
         }
 
@@ -207,7 +207,7 @@ Besides the default English, German and Dutch result translations can be request
         // Set callback and perform API call
         $result = null;
         try {
-            $result = self::$controller->retrieveSeniorities();
+            $result = self::$controller->retrieveSeniorities()->getResult();
         } catch (ApiException $e) {
         }
 

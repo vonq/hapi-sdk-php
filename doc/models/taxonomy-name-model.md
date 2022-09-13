@@ -16,8 +16,8 @@
 
 ```json
 {
-  "languageCode": null,
-  "value": null
+  "languageCode": "nl_NL",
+  "value": "Master / Postdoctoraal"
 }
 ```
 

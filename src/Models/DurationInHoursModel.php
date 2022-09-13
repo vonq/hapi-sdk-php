@@ -8,7 +8,7 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Models;
+namespace HAPI\Models;
 
 use stdClass;
 
@@ -38,7 +38,7 @@ class DurationInHoursModel implements \JsonSerializable
      * The range of the time to process
      *
      * @maps range
-     * @factory \HAPILib\Models\Range1Enum::checkValue
+     * @factory \HAPI\Models\RangeDurationInHoursEnum::checkValue
      */
     public function setRange(?string $range): void
     {
@@ -91,7 +91,7 @@ class DurationInHoursModel implements \JsonSerializable
     {
         $json = [];
         if (isset($this->range)) {
-            $json['range']  = Range1Enum::checkValue($this->range);
+            $json['range']  = RangeDurationInHoursEnum::checkValue($this->range);
         }
         if (isset($this->period)) {
             $json['period'] = $this->period;

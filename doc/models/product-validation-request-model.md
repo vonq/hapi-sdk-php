@@ -20,7 +20,38 @@
 {
   "product_id": "product_id4",
   "contract_id": "contract_id8",
-  "vacancy": null,
+  "vacancy": [
+    {
+      "name": "name3",
+      "value": {
+        "key0": {
+          "key1": "val1",
+          "key2": "val2"
+        },
+        "key1": {
+          "key1": "val1",
+          "key2": "val2"
+        }
+      }
+    },
+    {
+      "name": "name4",
+      "value": {
+        "key0": {
+          "key1": "val1",
+          "key2": "val2"
+        },
+        "key1": {
+          "key1": "val1",
+          "key2": "val2"
+        },
+        "key2": {
+          "key1": "val1",
+          "key2": "val2"
+        }
+      }
+    }
+  ],
   "posting_requirements": [
     {
       "name": "name8",

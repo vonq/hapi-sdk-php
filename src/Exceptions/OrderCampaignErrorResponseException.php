@@ -8,9 +8,9 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Exceptions;
+namespace HAPI\Exceptions;
 
-class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiException
+class OrderCampaignErrorResponseException extends \HAPI\Exceptions\ApiException
 {
     /**
      * @var string[]|null
@@ -18,17 +18,17 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     private $companyId;
 
     /**
-     * @var \HAPILib\Models\PostingDetailsValidationErrorModel|null
+     * @var \HAPI\Models\PostingDetailsValidationErrorModel|null
      */
     private $postingDetails;
 
     /**
-     * @var \HAPILib\Models\TargetGroupValidationErrorModel|null
+     * @var \HAPI\Models\TargetGroupValidationErrorModel|null
      */
     private $targetGroup;
 
     /**
-     * @var \HAPILib\Models\RecruiterInfoValidationErrorModel|null
+     * @var \HAPI\Models\RecruiterInfoValidationErrorModel|null
      */
     private $recruiterInfo;
 
@@ -38,7 +38,7 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     private $orderedProducts;
 
     /**
-     * @var \HAPILib\Models\OrderedProductsSpecValidationErrorModel[]|null
+     * @var \HAPI\Models\OrderedProductsSpecValidationErrorModel[]|null
      */
     private $orderedProductsSpecs;
 
@@ -87,7 +87,7 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Returns Posting Details.
      */
-    public function getPostingDetails(): ?\HAPILib\Models\PostingDetailsValidationErrorModel
+    public function getPostingDetails(): ?\HAPI\Models\PostingDetailsValidationErrorModel
     {
         return $this->postingDetails;
     }
@@ -97,7 +97,7 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
      *
      * @maps postingDetails
      */
-    public function setPostingDetails(?\HAPILib\Models\PostingDetailsValidationErrorModel $postingDetails): void
+    public function setPostingDetails(?\HAPI\Models\PostingDetailsValidationErrorModel $postingDetails): void
     {
         $this->postingDetails = $postingDetails;
     }
@@ -105,7 +105,7 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Returns Target Group.
      */
-    public function getTargetGroup(): ?\HAPILib\Models\TargetGroupValidationErrorModel
+    public function getTargetGroup(): ?\HAPI\Models\TargetGroupValidationErrorModel
     {
         return $this->targetGroup;
     }
@@ -115,7 +115,7 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
      *
      * @maps targetGroup
      */
-    public function setTargetGroup(?\HAPILib\Models\TargetGroupValidationErrorModel $targetGroup): void
+    public function setTargetGroup(?\HAPI\Models\TargetGroupValidationErrorModel $targetGroup): void
     {
         $this->targetGroup = $targetGroup;
     }
@@ -123,7 +123,7 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Returns Recruiter Info.
      */
-    public function getRecruiterInfo(): ?\HAPILib\Models\RecruiterInfoValidationErrorModel
+    public function getRecruiterInfo(): ?\HAPI\Models\RecruiterInfoValidationErrorModel
     {
         return $this->recruiterInfo;
     }
@@ -133,7 +133,7 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
      *
      * @maps recruiterInfo
      */
-    public function setRecruiterInfo(?\HAPILib\Models\RecruiterInfoValidationErrorModel $recruiterInfo): void
+    public function setRecruiterInfo(?\HAPI\Models\RecruiterInfoValidationErrorModel $recruiterInfo): void
     {
         $this->recruiterInfo = $recruiterInfo;
     }
@@ -163,7 +163,7 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
     /**
      * Returns Ordered Products Specs.
      *
-     * @return \HAPILib\Models\OrderedProductsSpecValidationErrorModel[]|null
+     * @return \HAPI\Models\OrderedProductsSpecValidationErrorModel[]|null
      */
     public function getOrderedProductsSpecs(): ?array
     {
@@ -175,7 +175,7 @@ class OrderCampaignErrorResponseException extends \HAPILib\Exceptions\ApiExcepti
      *
      * @maps orderedProductsSpecs
      *
-     * @param \HAPILib\Models\OrderedProductsSpecValidationErrorModel[]|null $orderedProductsSpecs
+     * @param \HAPI\Models\OrderedProductsSpecValidationErrorModel[]|null $orderedProductsSpecs
      */
     public function setOrderedProductsSpecs(?array $orderedProductsSpecs): void
     {

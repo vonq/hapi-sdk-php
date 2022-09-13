@@ -15,7 +15,7 @@
 | `industries` | [`IndustryModel[]`](../../doc/models/industry-model.md) | Required | **Constraints**: *Unique Items Required* | getIndustries(): array | setIndustries(array industries): void |
 | `description` | `?string` | Required | - | getDescription(): ?string | setDescription(?string description): void |
 | `homepage` | `?string` | Required | - | getHomepage(): ?string | setHomepage(?string homepage): void |
-| `logoUrl` | [`?(ProductLogoModel[])`](../../doc/models/product-logo-model.md) | Optional | - | getLogoUrl(): ?array | setLogoUrl(?array logoUrl): void |
+| `logoUrl` | [`?(ProductLogoModel[])`](../../doc/models/product-logo-model.md) | Required | - | getLogoUrl(): ?array | setLogoUrl(?array logoUrl): void |
 | `logoSquareUrl` | [`?(ProductLogoWithSizeModel[])`](../../doc/models/product-logo-with-size-model.md) | Required | - | getLogoSquareUrl(): ?array | setLogoSquareUrl(?array logoSquareUrl): void |
 | `logoRectangleUrl` | [`?(ProductLogoWithSizeModel[])`](../../doc/models/product-logo-with-size-model.md) | Required | - | getLogoRectangleUrl(): ?array | setLogoRectangleUrl(?array logoRectangleUrl): void |
 | `duration` | [`DurationInDaysModel`](../../doc/models/duration-in-days-model.md) | Required | - | getDuration(): DurationInDaysModel | setDuration(DurationInDaysModel duration): void |
@@ -42,22 +42,32 @@
   "industries": null,
   "description": "this is a product description",
   "homepage": null,
+  "logo_url": null,
   "logo_square_url": null,
   "logo_rectangle_url": null,
-  "duration": null,
-  "time_to_process": null,
-  "time_to_setup": null,
+  "duration": {
+    "period": 30
+  },
+  "time_to_process": {
+    "period": 24
+  },
+  "time_to_setup": {
+    "period": 24
+  },
   "product_id": null,
-  "vonq_price": null,
-  "ratecard_price": null,
+  "vonq_price": [
+    {
+      "amount": 399.98
+    }
+  ],
+  "ratecard_price": [
+    {
+      "amount": 399.98
+    }
+  ],
   "type": "job board",
   "cross_postings": null,
-  "channel": {
-    "id": 66,
-    "name": null,
-    "type": null,
-    "url": null
-  },
+  "channel": null,
   "audience_group": null,
   "mc_enabled": false,
   "mc_only": false,

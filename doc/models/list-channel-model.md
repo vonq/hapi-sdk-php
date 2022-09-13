@@ -22,10 +22,47 @@
 
 ```json
 {
-  "id": 66,
-  "name": null,
-  "type": null,
-  "url": null
+  "id": 112,
+  "mc_enabled": false,
+  "logo_url": [
+    {
+      "url": "url9"
+    },
+    {
+      "url": "url0"
+    },
+    {
+      "url": "url1"
+    }
+  ],
+  "logo_square_url": [
+    {
+      "url": "url5",
+      "size": "size1"
+    },
+    {
+      "url": "url6",
+      "size": "size2"
+    },
+    {
+      "url": "url7",
+      "size": "size3"
+    }
+  ],
+  "logo_rectangle_url": [
+    {
+      "url": "url5",
+      "size": "size9"
+    },
+    {
+      "url": "url6",
+      "size": "size8"
+    },
+    {
+      "url": "url7",
+      "size": "size7"
+    }
+  ]
 }
 ```
 

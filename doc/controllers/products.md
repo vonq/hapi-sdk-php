@@ -27,7 +27,7 @@ Learn why some products take up to 10 days to setup: - https://hapisupport.vonq.
 Note that delivery time is only applicable for Job Marketing products and it won't appear when using HAPI Job Post and connecting your contracts.
 
 ```php
-function calculateOrderDeliveryTime(array $productsIds, ?string $xCustomerId = null): TotalDeliveryTimeModel
+function calculateOrderDeliveryTime(array $productsIds, ?string $xCustomerId = null): ApiResponse
 ```
 
 ## Parameters
@@ -45,8 +45,9 @@ function calculateOrderDeliveryTime(array $productsIds, ?string $xCustomerId = n
 
 ```php
 $productsIds = ['products_ids7', 'products_ids8'];
+$xCustomerId = 'X-Customer-Id2';
 
-$result = $productsController->calculateOrderDeliveryTime($productsIds);
+$apiResponse = $productsController->calculateOrderDeliveryTime($productsIds, $xCustomerId);
 ```
 
 ## Errors
@@ -67,7 +68,7 @@ function retrieveMultipleProducts(
     array $productsIds,
     ?string $acceptLanguage = null,
     ?string $xCustomerId = null
-): PaginatedProductListModel
+): ApiResponse
 ```
 
 ## Parameters
@@ -86,8 +87,10 @@ function retrieveMultipleProducts(
 
 ```php
 $productsIds = ['products_ids7', 'products_ids8'];
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
+$xCustomerId = 'X-Customer-Id2';
 
-$result = $productsController->retrieveMultipleProducts($productsIds);
+$apiResponse = $productsController->retrieveMultipleProducts($productsIds, $acceptLanguage, $xCustomerId);
 ```
 
 
@@ -101,7 +104,7 @@ function retrieveSingleProduct(
     string $productId,
     ?string $acceptLanguage = null,
     ?string $xCustomerId = null
-): ProductModel
+): ApiResponse
 ```
 
 ## Parameters
@@ -120,8 +123,10 @@ function retrieveSingleProduct(
 
 ```php
 $productId = 'product_id4';
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
+$xCustomerId = 'X-Customer-Id2';
 
-$result = $productsController->retrieveSingleProduct($productId);
+$apiResponse = $productsController->retrieveSingleProduct($productId, $acceptLanguage, $xCustomerId);
 ```
 
 ## Errors
@@ -161,7 +166,7 @@ function searchProducts(
     ?bool $excludeRecommended = false,
     ?string $acceptLanguage = null,
     ?string $xCustomerId = null
-): PaginatedProductListModel
+): ApiResponse
 ```
 
 ## Parameters
@@ -193,10 +198,25 @@ function searchProducts(
 ## Example Usage
 
 ```php
+$limit = 172;
+$offset = 12;
+$includeLocationId = ['includeLocationId3', 'includeLocationId4'];
+$exactLocationId = 'exactLocationId6';
+$jobFunctionId = 'jobFunctionId8';
+$jobTitleId = 'jobTitleId4';
+$industryId = ['industryId3'];
+$durationFrom = 'durationFrom8';
+$durationTo = 'durationTo6';
+$name = 'name0';
+$currency = 'currency0';
 $sortBy = Models\SortByEnum::RELEVANT;
+$recommended = false;
+$mcEnabled = false;
 $excludeRecommended = false;
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
+$xCustomerId = 'X-Customer-Id2';
 
-$result = $productsController->searchProducts(null, null, null, null, null, null, null, null, null, null, null, $sortBy, null, null, $excludeRecommended);
+$apiResponse = $productsController->searchProducts($limit, $offset, $includeLocationId, $exactLocationId, $jobFunctionId, $jobTitleId, $industryId, $durationFrom, $durationTo, $name, $currency, $sortBy, $recommended, $mcEnabled, $excludeRecommended, $acceptLanguage, $xCustomerId);
 ```
 
 ## Errors

@@ -18,6 +18,7 @@
 ```json
 {
   "facet": "IGB_locationtype",
+  "value": null,
   "op": null
 }
 ```

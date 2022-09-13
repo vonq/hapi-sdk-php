@@ -8,10 +8,10 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Exceptions;
+namespace HAPI\Exceptions;
 
-use HAPILib\Http\HttpResponse;
-use HAPILib\Http\HttpRequest;
+use HAPI\Http\HttpResponse;
+use HAPI\Http\HttpRequest;
 
 /**
  * Thrown when there is a network error or HTTP response status code is not okay.
@@ -21,20 +21,20 @@ class ApiException extends \Exception implements Exception
     /**
      * HTTP request
      *
-     * @var \HAPILib\Http\HttpRequest
+     * @var \HAPI\Http\HttpRequest
      */
     private $request;
 
     /**
      * HTTP response
      *
-     * @var \HAPILib\Http\HttpResponse|null
+     * @var \HAPI\Http\HttpResponse|null
      */
     private $response;
 
     /**
      * @param string $reason the reason for raising an exception
-     * @param \HAPILib\Http\HttpRequest $request
+     * @param \HAPI\Http\HttpRequest $request
      */
     public function __construct(string $reason, HttpRequest $request, ?HttpResponse $response = null)
     {

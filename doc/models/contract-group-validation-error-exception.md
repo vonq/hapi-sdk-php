@@ -15,7 +15,11 @@
 
 ```json
 {
-  "name": null
+  "name": [
+    "name0",
+    "name1",
+    "name2"
+  ]
 }
 ```
 

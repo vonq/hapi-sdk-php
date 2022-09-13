@@ -18,22 +18,30 @@
 
 ```json
 {
-  "educationLevel": {
-    "description": "Element name",
-    "vonqId": "23"
-  },
-  "seniority": {
-    "description": "Element name",
-    "vonqId": "23"
-  },
-  "industry": {
-    "description": "Element name",
-    "vonqId": "23"
-  },
-  "jobCategory": {
-    "description": "Element name",
-    "vonqId": "23"
-  }
+  "educationLevel": [
+    {
+      "description": "Element name",
+      "vonqId": "23"
+    }
+  ],
+  "seniority": [
+    {
+      "description": "Element name",
+      "vonqId": "23"
+    }
+  ],
+  "industry": [
+    {
+      "description": "Element name",
+      "vonqId": "23"
+    }
+  ],
+  "jobCategory": [
+    {
+      "description": "Element name",
+      "vonqId": "23"
+    }
+  ]
 }
 ```
 

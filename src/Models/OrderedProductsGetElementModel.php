@@ -8,9 +8,9 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Models;
+namespace HAPI\Models;
 
-use HAPILib\Utils\DateTimeHelper;
+use HAPI\Utils\DateTimeHelper;
 use stdClass;
 
 class OrderedProductsGetElementModel implements \JsonSerializable
@@ -119,7 +119,7 @@ class OrderedProductsGetElementModel implements \JsonSerializable
      *
      * @required
      * @maps status
-     * @factory \HAPILib\Models\Status3Enum::checkValue
+     * @factory \HAPI\Models\StatusOrderedProductsGetElementEnum::checkValue
      */
     public function setStatus(string $status): void
     {
@@ -162,7 +162,7 @@ class OrderedProductsGetElementModel implements \JsonSerializable
      * Date when the channel went online
      *
      * @maps deliveredOn
-     * @factory \HAPILib\Utils\DateTimeHelper::fromRfc3339DateTime
+     * @factory \HAPI\Utils\DateTimeHelper::fromRfc3339DateTime
      */
     public function setDeliveredOn(?\DateTime $deliveredOn): void
     {
@@ -315,7 +315,7 @@ class OrderedProductsGetElementModel implements \JsonSerializable
     {
         $json = [];
         $json['productId']           = $this->productId;
-        $json['status']              = Status3Enum::checkValue($this->status);
+        $json['status']              = StatusOrderedProductsGetElementEnum::checkValue($this->status);
         $json['statusDescription']   = $this->statusDescription;
         $json['deliveredOn']         = DateTimeHelper::toRfc3339DateTime($this->deliveredOn);
         $json['duration']            = $this->duration;

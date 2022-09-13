@@ -8,17 +8,18 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Controllers;
+namespace HAPI\Controllers;
 
-use HAPILib\Exceptions\ApiException;
-use HAPILib\ConfigurationInterface;
-use HAPILib\ApiHelper;
-use HAPILib\Models;
-use HAPILib\Http\HttpRequest;
-use HAPILib\Http\HttpResponse;
-use HAPILib\Http\HttpMethod;
-use HAPILib\Http\HttpContext;
-use HAPILib\Http\HttpCallBack;
+use HAPI\Exceptions\ApiException;
+use HAPI\ConfigurationInterface;
+use HAPI\ApiHelper;
+use HAPI\Models;
+use HAPI\Http\ApiResponse;
+use HAPI\Http\HttpRequest;
+use HAPI\Http\HttpResponse;
+use HAPI\Http\HttpMethod;
+use HAPI\Http\HttpContext;
+use HAPI\Http\HttpCallBack;
 
 class ProductsController extends BaseController
 {
@@ -46,14 +47,17 @@ class ProductsController extends BaseController
      *        work with Contracts functionality (adding contract, retrieving channels, ordering
      *        campaigns with contracts).
      *
-     * @return Models\TotalDeliveryTimeModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function calculateOrderDeliveryTime(
-        array $productsIds,
-        ?string $xCustomerId = null
-    ): Models\TotalDeliveryTimeModel {
+    public function calculateOrderDeliveryTime(array $productsIds, ?string $xCustomerId = null): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($productsIds)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/delivery-time/{products_ids}/';
 
@@ -79,9 +83,6 @@ class ProductsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -101,7 +102,7 @@ class ProductsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -110,7 +111,7 @@ class ProductsController extends BaseController
 
         if ($response->code == 404) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Not Found',
                 $_httpRequest,
                 $_httpResponse
@@ -119,7 +120,13 @@ class ProductsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'TotalDeliveryTimeModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'TotalDeliveryTimeModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -135,7 +142,7 @@ class ProductsController extends BaseController
      *        work with Contracts functionality (adding contract, retrieving channels, ordering
      *        campaigns with contracts).
      *
-     * @return Models\PaginatedProductListModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
@@ -143,7 +150,12 @@ class ProductsController extends BaseController
         array $productsIds,
         ?string $acceptLanguage = null,
         ?string $xCustomerId = null
-    ): Models\PaginatedProductListModel {
+    ): ApiResponse {
+        //check that all required arguments are provided
+        if (!isset($productsIds)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/multiple/{products_ids}/';
 
@@ -170,9 +182,6 @@ class ProductsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -191,7 +200,13 @@ class ProductsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'PaginatedProductListModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'PaginatedProductListModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -239,7 +254,7 @@ class ProductsController extends BaseController
      *        work with Contracts functionality (adding contract, retrieving channels, ordering
      *        campaigns with contracts).
      *
-     * @return Models\PaginatedProductListModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
@@ -261,7 +276,7 @@ class ProductsController extends BaseController
         ?bool $excludeRecommended = false,
         ?string $acceptLanguage = null,
         ?string $xCustomerId = null
-    ): Models\PaginatedProductListModel {
+    ): ApiResponse {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/search/';
 
@@ -304,9 +319,6 @@ class ProductsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -326,7 +338,7 @@ class ProductsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -335,7 +347,13 @@ class ProductsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'PaginatedProductListModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'PaginatedProductListModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -351,7 +369,7 @@ class ProductsController extends BaseController
      *        work with Contracts functionality (adding contract, retrieving channels, ordering
      *        campaigns with contracts).
      *
-     * @return Models\ProductModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
@@ -359,7 +377,12 @@ class ProductsController extends BaseController
         string $productId,
         ?string $acceptLanguage = null,
         ?string $xCustomerId = null
-    ): Models\ProductModel {
+    ): ApiResponse {
+        //check that all required arguments are provided
+        if (!isset($productId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/single/{product_id}/';
 
@@ -386,9 +409,6 @@ class ProductsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -408,7 +428,7 @@ class ProductsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 404) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Not Found',
                 $_httpRequest,
                 $_httpResponse
@@ -417,6 +437,7 @@ class ProductsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'ProductModel');
+        $deserializedResponse = ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'ProductModel');
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 }

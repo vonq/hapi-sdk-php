@@ -25,7 +25,7 @@ function listChannels(
     ?int $limit = 25,
     ?int $offset = 0,
     ?string $acceptLanguage = null
-): PaginatedListChannelListModel
+): ApiResponse
 ```
 
 ## Parameters
@@ -46,10 +46,12 @@ function listChannels(
 
 ```php
 $xCustomerId = 'X-Customer-Id2';
+$search = 'search2';
 $limit = 10;
 $offset = 0;
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
 
-$result = $channelsController->listChannels($xCustomerId, null, $limit, $offset);
+$apiResponse = $channelsController->listChannels($xCustomerId, $search, $limit, $offset, $acceptLanguage);
 ```
 
 ## Example Response *(as JSON)*
@@ -83,11 +85,7 @@ $result = $channelsController->listChannels($xCustomerId, null, $limit, $offset)
 This endpoint exposes the details of a channel with support for contracts,as well as all the required details for creating a contract or a campaign for each channel.
 
 ```php
-function retrieveChannel(
-    int $channelId,
-    string $xCustomerId,
-    ?string $acceptLanguage = null
-): LimitedChannelModel
+function retrieveChannel(int $channelId, string $xCustomerId, ?string $acceptLanguage = null): ApiResponse
 ```
 
 ## Parameters
@@ -107,8 +105,9 @@ function retrieveChannel(
 ```php
 $channelId = 154;
 $xCustomerId = 'X-Customer-Id2';
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
 
-$result = $channelsController->retrieveChannel($channelId, $xCustomerId);
+$apiResponse = $channelsController->retrieveChannel($channelId, $xCustomerId, $acceptLanguage);
 ```
 
 ## Errors

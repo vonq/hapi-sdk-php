@@ -20,7 +20,9 @@ Most job boards require a salary indication to be provided. This is a required f
 {
   "period": "yearly",
   "range": {
-    "to": 60000
+    "from": 56000,
+    "to": 60000,
+    "currency": "EUR"
   }
 }
 ```

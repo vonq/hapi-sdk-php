@@ -16,8 +16,15 @@
 
 ```json
 {
-  "vonqId": null,
-  "description": null
+  "vonqId": [
+    "vonqId2",
+    "vonqId3"
+  ],
+  "description": [
+    "description5",
+    "description6",
+    "description7"
+  ]
 }
 ```
 

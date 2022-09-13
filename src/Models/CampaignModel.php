@@ -8,9 +8,9 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Models;
+namespace HAPI\Models;
 
-use HAPILib\Utils\DateTimeHelper;
+use HAPI\Utils\DateTimeHelper;
 use stdClass;
 
 class CampaignModel implements \JsonSerializable
@@ -402,7 +402,7 @@ class CampaignModel implements \JsonSerializable
      *
      * @required
      * @maps createdOn
-     * @factory \HAPILib\Utils\DateTimeHelper::fromRfc3339DateTime
+     * @factory \HAPI\Utils\DateTimeHelper::fromRfc3339DateTime
      */
     public function setCreatedOn(\DateTime $createdOn): void
     {
@@ -426,7 +426,7 @@ class CampaignModel implements \JsonSerializable
      * ISO 3-Letter Currency Code
      *
      * @maps currency
-     * @factory \HAPILib\Models\Currency2Enum::checkValue
+     * @factory \HAPI\Models\CurrencyCampaignEnum::checkValue
      */
     public function setCurrency(?string $currency): void
     {
@@ -455,7 +455,7 @@ class CampaignModel implements \JsonSerializable
      *
      * @required
      * @maps status
-     * @factory \HAPILib\Models\Status1Enum::checkValue
+     * @factory \HAPI\Models\StatusCampaignEnum::checkValue
      */
     public function setStatus(string $status): void
     {
@@ -562,9 +562,9 @@ class CampaignModel implements \JsonSerializable
         $json['postings']             = $this->postings;
         $json['createdOn']            = DateTimeHelper::toRfc3339DateTime($this->createdOn);
         if (!empty($this->currency)) {
-            $json['currency']         = Currency2Enum::checkValue($this->currency['value']);
+            $json['currency']         = CurrencyCampaignEnum::checkValue($this->currency['value']);
         }
-        $json['status']               = Status1Enum::checkValue($this->status);
+        $json['status']               = StatusCampaignEnum::checkValue($this->status);
         $json['totalPrice']           = $this->totalPrice;
         $json['walletId']             = $this->walletId;
         $json['customerId']           = $this->customerId;

@@ -19,7 +19,9 @@ Contact is whom to contact about the job. This may be part of the posting info f
 
 ```json
 {
-  "name": "Janet Doe"
+  "name": "Janet Doe",
+  "phoneNumber": "+31 6 5555 5555",
+  "emailAddress": "janet.doe@vonq.com"
 }
 ```
 

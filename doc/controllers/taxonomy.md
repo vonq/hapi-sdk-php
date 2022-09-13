@@ -30,7 +30,7 @@ function listIndustries(
     ?int $offset = 0,
     ?string $acceptLanguage = null,
     ?string $xCustomerId = null
-): array
+): ApiResponse
 ```
 
 ## Parameters
@@ -51,8 +51,10 @@ function listIndustries(
 ```php
 $limit = 10;
 $offset = 0;
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
+$xCustomerId = 'X-Customer-Id2';
 
-$result = $taxonomyController->listIndustries($limit, $offset);
+$apiResponse = $taxonomyController->listIndustries($limit, $offset, $acceptLanguage, $xCustomerId);
 ```
 
 ## Example Response *(as JSON)*
@@ -256,7 +258,7 @@ $result = $taxonomyController->listIndustries($limit, $offset);
 Retrieve all Education Level possible values.
 
 ```php
-function retrieveEducationLevels(): array
+function retrieveEducationLevels(): ApiResponse
 ```
 
 ## Response Type
@@ -266,7 +268,7 @@ function retrieveEducationLevels(): array
 ## Example Usage
 
 ```php
-$result = $taxonomyController->retrieveEducationLevels();
+$apiResponse = $taxonomyController->retrieveEducationLevels();
 ```
 
 ## Example Response *(as JSON)*
@@ -294,7 +296,7 @@ Each Job Function is associated with [**`Job Titles`**](b3A6MzM0NDA3MzY-job-titl
 Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
 
 ```php
-function retrieveJobFunctionsTree(?string $acceptLanguage = null, ?string $xCustomerId = null): array
+function retrieveJobFunctionsTree(?string $acceptLanguage = null, ?string $xCustomerId = null): ApiResponse
 ```
 
 ## Parameters
@@ -311,7 +313,10 @@ function retrieveJobFunctionsTree(?string $acceptLanguage = null, ?string $xCust
 ## Example Usage
 
 ```php
-$result = $taxonomyController->retrieveJobFunctionsTree();
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
+$xCustomerId = 'X-Customer-Id2';
+
+$apiResponse = $taxonomyController->retrieveJobFunctionsTree($acceptLanguage, $xCustomerId);
 ```
 
 ## Example Response *(as JSON)*
@@ -338,7 +343,7 @@ $result = $taxonomyController->retrieveJobFunctionsTree();
 Retrieve all Seniority possible values.
 
 ```php
-function retrieveSeniorities(): array
+function retrieveSeniorities(): ApiResponse
 ```
 
 ## Response Type
@@ -348,7 +353,7 @@ function retrieveSeniorities(): array
 ## Example Usage
 
 ```php
-$result = $taxonomyController->retrieveSeniorities();
+$apiResponse = $taxonomyController->retrieveSeniorities();
 ```
 
 ## Example Response *(as JSON)*
@@ -459,7 +464,7 @@ function searchJobTitles(
     ?int $offset = 0,
     ?string $acceptLanguage = null,
     ?string $xCustomerId = null
-): PaginatedJobTitleListModel
+): ApiResponse
 ```
 
 ## Parameters
@@ -482,8 +487,10 @@ function searchJobTitles(
 $text = 'text0';
 $limit = 10;
 $offset = 0;
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
+$xCustomerId = 'X-Customer-Id2';
 
-$result = $taxonomyController->searchJobTitles($text, $limit, $offset);
+$apiResponse = $taxonomyController->searchJobTitles($text, $limit, $offset, $acceptLanguage, $xCustomerId);
 ```
 
 
@@ -495,7 +502,7 @@ Use the `id` key of each object in the response to search for a Product.
 Supports text input in English, Dutch and German.
 
 ```php
-function searchLocations(string $text, ?string $acceptLanguage = null, ?string $xCustomerId = null): array
+function searchLocations(string $text, ?string $acceptLanguage = null, ?string $xCustomerId = null): ApiResponse
 ```
 
 ## Parameters
@@ -514,8 +521,10 @@ function searchLocations(string $text, ?string $acceptLanguage = null, ?string $
 
 ```php
 $text = 'text0';
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
+$xCustomerId = 'X-Customer-Id2';
 
-$result = $taxonomyController->searchLocations($text);
+$apiResponse = $taxonomyController->searchLocations($text, $acceptLanguage, $xCustomerId);
 ```
 
 ## Example Response *(as JSON)*

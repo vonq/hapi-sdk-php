@@ -8,13 +8,13 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Tests;
+namespace HAPI\Tests;
 
 class ClientFactory
 {
-    public static function create(HttpCallBackCatcher $httpCallback): \HAPILib\HAPIClient
+    public static function create(HttpCallBackCatcher $httpCallback): \HAPI\HAPIClient
     {
-        $client = (new \HAPILib\HAPIClient(static::getConfigurationFromEnvironment()))
+        $client = (new \HAPI\HAPIClient(static::getConfigurationFromEnvironment()))
             ->withConfiguration(static::getTestConfiguration($httpCallback));
         return $client;
     }

@@ -8,9 +8,9 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Exceptions;
+namespace HAPI\Exceptions;
 
-class ContractCreateRequestValidationErrorException extends \HAPILib\Exceptions\ApiException
+class ContractCreateRequestValidationErrorException extends \HAPI\Exceptions\ApiException
 {
     /**
      * @var string[]|null
@@ -43,7 +43,7 @@ class ContractCreateRequestValidationErrorException extends \HAPILib\Exceptions\
     private $credits;
 
     /**
-     * @var \HAPILib\Models\PurchasePriceValidationErrorModel|null
+     * @var \HAPI\Models\PurchasePriceValidationErrorModel|null
      */
     private $purchasePrice;
 
@@ -184,7 +184,7 @@ class ContractCreateRequestValidationErrorException extends \HAPILib\Exceptions\
     /**
      * Returns Purchase Price.
      */
-    public function getPurchasePrice(): ?\HAPILib\Models\PurchasePriceValidationErrorModel
+    public function getPurchasePrice(): ?\HAPI\Models\PurchasePriceValidationErrorModel
     {
         return $this->purchasePrice;
     }
@@ -194,7 +194,7 @@ class ContractCreateRequestValidationErrorException extends \HAPILib\Exceptions\
      *
      * @maps purchase_price
      */
-    public function setPurchasePrice(?\HAPILib\Models\PurchasePriceValidationErrorModel $purchasePrice): void
+    public function setPurchasePrice(?\HAPI\Models\PurchasePriceValidationErrorModel $purchasePrice): void
     {
         $this->purchasePrice = $purchasePrice;
     }

@@ -20,10 +20,54 @@ Paginated list of channels, with basic information for each channel
 
 ```json
 {
-  "count": null,
-  "next": null,
-  "previous": null,
-  "results": null
+  "count": 60,
+  "next": "next2",
+  "previous": "previous8",
+  "results": [
+    {
+      "id": 29,
+      "mc_enabled": true,
+      "logo_url": [
+        {
+          "url": "url6"
+        },
+        {
+          "url": "url7"
+        },
+        {
+          "url": "url8"
+        }
+      ],
+      "logo_square_url": [
+        {
+          "url": "url8",
+          "size": "size4"
+        },
+        {
+          "url": "url9",
+          "size": "size5"
+        },
+        {
+          "url": "url0",
+          "size": "size6"
+        }
+      ],
+      "logo_rectangle_url": [
+        {
+          "url": "url2",
+          "size": "size2"
+        },
+        {
+          "url": "url3",
+          "size": "size1"
+        },
+        {
+          "url": "url4",
+          "size": "size0"
+        }
+      ]
+    }
+  ]
 }
 ```
 

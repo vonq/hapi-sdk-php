@@ -8,17 +8,18 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Controllers;
+namespace HAPI\Controllers;
 
-use HAPILib\Exceptions\ApiException;
-use HAPILib\ConfigurationInterface;
-use HAPILib\ApiHelper;
-use HAPILib\Models;
-use HAPILib\Http\HttpRequest;
-use HAPILib\Http\HttpResponse;
-use HAPILib\Http\HttpMethod;
-use HAPILib\Http\HttpContext;
-use HAPILib\Http\HttpCallBack;
+use HAPI\Exceptions\ApiException;
+use HAPI\ConfigurationInterface;
+use HAPI\ApiHelper;
+use HAPI\Models;
+use HAPI\Http\ApiResponse;
+use HAPI\Http\HttpRequest;
+use HAPI\Http\HttpResponse;
+use HAPI\Http\HttpMethod;
+use HAPI\Http\HttpContext;
+use HAPI\Http\HttpCallBack;
 
 class ContractsController extends BaseController
 {
@@ -37,15 +38,17 @@ class ContractsController extends BaseController
      * @param int|null $limit Number of results to return per page.
      * @param int|null $offset The initial index from which to return the results.
      *
-     * @return Models\PaginatedContractListModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function listContracts(
-        string $xCustomerId,
-        ?int $limit = 50,
-        ?int $offset = 0
-    ): Models\PaginatedContractListModel {
+    public function listContracts(string $xCustomerId, ?int $limit = 50, ?int $offset = 0): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/contracts/';
 
@@ -74,9 +77,6 @@ class ContractsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -95,7 +95,13 @@ class ContractsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'PaginatedContractListModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'PaginatedContractListModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -113,14 +119,17 @@ class ContractsController extends BaseController
      *        campaigns with contracts).
      * @param Models\ContractCreateRequestModel $body
      *
-     * @return Models\EncryptedContractModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function createContract(
-        string $xCustomerId,
-        Models\ContractCreateRequestModel $body
-    ): Models\EncryptedContractModel {
+    public function createContract(string $xCustomerId, Models\ContractCreateRequestModel $body): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($xCustomerId, $body)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/contracts/';
 
@@ -145,9 +154,6 @@ class ContractsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->post($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders(), $_bodyJson);
@@ -167,7 +173,7 @@ class ContractsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\ContractCreateRequestValidationErrorException',
+                '\\HAPI\\Exceptions\\ContractCreateRequestValidationErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -176,7 +182,13 @@ class ContractsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'EncryptedContractModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'EncryptedContractModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -202,12 +214,17 @@ class ContractsController extends BaseController
      *        with Contracts functionality (adding contract, retrieving channels, ordering
      *        campaigns with contracts).
      *
-     * @return void Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function deleteContract(string $contractId, string $xCustomerId): void
+    public function deleteContract(string $contractId, string $xCustomerId): ApiResponse
     {
+        //check that all required arguments are provided
+        if (!isset($contractId, $xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/contracts/{contract_id}/';
 
@@ -232,9 +249,6 @@ class ContractsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->delete($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -258,6 +272,7 @@ class ContractsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
+        return ApiResponse::createFromContext(null, null, $_httpContext);
     }
 
     /**
@@ -271,7 +286,7 @@ class ContractsController extends BaseController
      * @param int|null $limit Number of results to return per page
      * @param int|null $offset The initial index from which to return the results
      *
-     * @return Models\PaginatedDetailedContractListModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
@@ -280,7 +295,12 @@ class ContractsController extends BaseController
         string $xCustomerId,
         ?int $limit = 50,
         ?int $offset = 0
-    ): Models\PaginatedDetailedContractListModel {
+    ): ApiResponse {
+        //check that all required arguments are provided
+        if (!isset($contractsIds, $xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/contracts/multiple/{contracts_ids}';
 
@@ -314,9 +334,6 @@ class ContractsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -335,12 +352,13 @@ class ContractsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass(
+        $deserializedResponse = ApiHelper::mapClass(
             $_httpRequest,
             $_httpResponse,
             $response->body,
             'PaginatedDetailedContractListModel'
         );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -358,7 +376,7 @@ class ContractsController extends BaseController
      *        campaigns with contracts).
      * @param Models\FacetAutocompleteModel $body
      *
-     * @return Models\AutocompleteValuesResponseModel[] Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
@@ -367,7 +385,12 @@ class ContractsController extends BaseController
         string $postingRequirementName,
         string $xCustomerId,
         Models\FacetAutocompleteModel $body
-    ): array {
+    ): ApiResponse {
+        //check that all required arguments are provided
+        if (!isset($channelIdOrContractId, $postingRequirementName, $xCustomerId, $body)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() .
             '/contracts/posting-requirements/{channel_id_or_contract_id}/{posting-requirement-name}/';
@@ -399,9 +422,6 @@ class ContractsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->post($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders(), $_bodyJson);
@@ -425,13 +445,14 @@ class ContractsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass(
+        $deserializedResponse = ApiHelper::mapClass(
             $_httpRequest,
             $_httpResponse,
             $response->body,
             'AutocompleteValuesResponseModel',
             1
         );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -444,12 +465,17 @@ class ContractsController extends BaseController
      *        with Contracts functionality (adding contract, retrieving channels, ordering
      *        campaigns with contracts).
      *
-     * @return Models\EncryptedContractModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveContract(string $contractId, string $xCustomerId): Models\EncryptedContractModel
+    public function retrieveContract(string $contractId, string $xCustomerId): ApiResponse
     {
+        //check that all required arguments are provided
+        if (!isset($contractId, $xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/contracts/single/{contract_id}/';
 
@@ -475,9 +501,6 @@ class ContractsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -497,7 +520,7 @@ class ContractsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 404) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorWithDetailException',
+                '\\HAPI\\Exceptions\\GenericErrorWithDetailException',
                 'Not Found',
                 $_httpRequest,
                 $_httpResponse
@@ -506,6 +529,12 @@ class ContractsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'EncryptedContractModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'EncryptedContractModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 }

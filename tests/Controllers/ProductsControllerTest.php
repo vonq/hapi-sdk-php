@@ -5,18 +5,18 @@
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Tests;
+namespace HAPI\Tests;
 
-use HAPILib\Exceptions\ApiException;
-use HAPILib\Exceptions;
-use HAPILib\ApiHelper;
-use HAPILib\Models;
+use HAPI\Exceptions\ApiException;
+use HAPI\Exceptions;
+use HAPI\ApiHelper;
+use HAPI\Models;
 use PHPUnit\Framework\TestCase;
 
 class ProductsControllerTest extends TestCase
 {
     /**
-     * @var \HAPILib\Controllers\ProductsController Controller instance
+     * @var \HAPI\Controllers\ProductsController Controller instance
      */
     protected static $controller;
 
@@ -69,7 +69,7 @@ Besides the default English, German and Dutch result translations can be request
         // Set callback and perform API call
         $result = null;
         try {
-            $result = self::$controller->searchProducts($limit, $offset, $includeLocationId, $exactLocationId, $jobFunctionId, $jobTitleId, $industryId, $durationFrom, $durationTo, $name, $currency, $sortBy, $recommended, $mcEnabled, $excludeRecommended, $acceptLanguage, $xCustomerId);
+            $result = self::$controller->searchProducts($limit, $offset, $includeLocationId, $exactLocationId, $jobFunctionId, $jobTitleId, $industryId, $durationFrom, $durationTo, $name, $currency, $sortBy, $recommended, $mcEnabled, $excludeRecommended, $acceptLanguage, $xCustomerId)->getResult();
         } catch (ApiException $e) {
         }
 

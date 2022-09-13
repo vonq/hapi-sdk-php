@@ -5,9 +5,9 @@
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Tests;
+namespace HAPI\Tests;
 
-use HAPILib\Http\HttpCallBack;
+use HAPI\Http\HttpCallBack;
 
 /**
  * An HTTPCallBack that captures the request and response for use later
@@ -16,13 +16,13 @@ class HttpCallBackCatcher extends HttpCallBack
 {
     /**
      * Http request
-     * @var HAPILib\Http\HttpRequest
+     * @var HAPI\Http\HttpRequest
      */
     private $request;
 
     /**
      * Http Response
-     * @var HAPILib\Http\HttpResponse
+     * @var HAPI\Http\HttpResponse
      */
     private $response;
 
@@ -40,7 +40,7 @@ class HttpCallBackCatcher extends HttpCallBack
 
     /**
      * Get the HTTP Request object associated with this API call
-     * @return HAPILib\Http\HttpRequest
+     * @return HAPI\Http\HttpRequest
      */
     public function getRequest()
     {
@@ -49,7 +49,7 @@ class HttpCallBackCatcher extends HttpCallBack
 
     /**
      * Get the HTTP Response object associated with this API call
-     * @return HAPILib\Http\HttpResponse
+     * @return HAPI\Http\HttpResponse
      */
     public function getResponse()
     {

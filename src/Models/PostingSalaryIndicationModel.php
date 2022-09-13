@@ -8,7 +8,7 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Models;
+namespace HAPI\Models;
 
 use stdClass;
 
@@ -52,7 +52,7 @@ class PostingSalaryIndicationModel implements \JsonSerializable
      *
      * @required
      * @maps period
-     * @factory \HAPILib\Models\PeriodEnum::checkValue
+     * @factory \HAPI\Models\PeriodEnum::checkValue
      */
     public function setPeriod(string $period): void
     {

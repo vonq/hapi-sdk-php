@@ -8,7 +8,7 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Models;
+namespace HAPI\Models;
 
 use stdClass;
 
@@ -105,7 +105,7 @@ class RuleModel implements \JsonSerializable
      *
      * @required
      * @maps rule
-     * @factory \HAPILib\Models\RuleEnum::checkValue
+     * @factory \HAPI\Models\RuleEnum::checkValue
      */
     public function setRule(string $rule): void
     {

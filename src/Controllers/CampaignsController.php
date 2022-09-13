@@ -8,17 +8,18 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Controllers;
+namespace HAPI\Controllers;
 
-use HAPILib\Exceptions\ApiException;
-use HAPILib\ConfigurationInterface;
-use HAPILib\ApiHelper;
-use HAPILib\Models;
-use HAPILib\Http\HttpRequest;
-use HAPILib\Http\HttpResponse;
-use HAPILib\Http\HttpMethod;
-use HAPILib\Http\HttpContext;
-use HAPILib\Http\HttpCallBack;
+use HAPI\Exceptions\ApiException;
+use HAPI\ConfigurationInterface;
+use HAPI\ApiHelper;
+use HAPI\Models;
+use HAPI\Http\ApiResponse;
+use HAPI\Http\HttpRequest;
+use HAPI\Http\HttpResponse;
+use HAPI\Http\HttpMethod;
+use HAPI\Http\HttpContext;
+use HAPI\Http\HttpCallBack;
 
 class CampaignsController extends BaseController
 {
@@ -36,15 +37,12 @@ class CampaignsController extends BaseController
      * @param int|null $limit Number of results to return per page.
      * @param int|null $offset The initial index from which to return the results.
      *
-     * @return Models\PaginatedCampaignListModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function listCampaigns(
-        ?string $companyId = null,
-        ?int $limit = null,
-        ?int $offset = null
-    ): Models\PaginatedCampaignListModel {
+    public function listCampaigns(?string $companyId = null, ?int $limit = null, ?int $offset = null): ApiResponse
+    {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/campaigns';
 
@@ -71,9 +69,6 @@ class CampaignsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -92,7 +87,13 @@ class CampaignsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'PaginatedCampaignListModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'PaginatedCampaignListModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -101,12 +102,17 @@ class CampaignsController extends BaseController
      *
      * @param string $campaignId ID of the campaign you want to retrieve or take action on
      *
-     * @return Models\CampaignDataModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveCampaign(string $campaignId): Models\CampaignDataModel
+    public function retrieveCampaign(string $campaignId): ApiResponse
     {
+        //check that all required arguments are provided
+        if (!isset($campaignId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/campaigns/{campaignId}';
 
@@ -131,9 +137,6 @@ class CampaignsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -153,7 +156,7 @@ class CampaignsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -166,7 +169,13 @@ class CampaignsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'CampaignDataModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'CampaignDataModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -176,14 +185,17 @@ class CampaignsController extends BaseController
      * @param string $campaignId ID of the campaign you want to retrieve or take action on
      * @param Models\TakeCampaignOfflineRequestModel $body
      *
-     * @return Models\TakeCampaignOfflineResponseModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function takeCampaignOffline(
-        string $campaignId,
-        Models\TakeCampaignOfflineRequestModel $body
-    ): Models\TakeCampaignOfflineResponseModel {
+    public function takeCampaignOffline(string $campaignId, Models\TakeCampaignOfflineRequestModel $body): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($campaignId, $body)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/campaigns/{campaignId}/cancellation';
 
@@ -212,9 +224,6 @@ class CampaignsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->put($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders(), $_bodyJson);
@@ -234,7 +243,7 @@ class CampaignsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\TakeCampaignOfflineBadRequestErrorResponseException',
+                '\\HAPI\\Exceptions\\TakeCampaignOfflineBadRequestErrorResponseException',
                 '',
                 $_httpRequest,
                 $_httpResponse
@@ -243,7 +252,7 @@ class CampaignsController extends BaseController
 
         if ($response->code == 404) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\TakeCampaignOfflineNotFoundErrorResponseException',
+                '\\HAPI\\Exceptions\\TakeCampaignOfflineNotFoundErrorResponseException',
                 '',
                 $_httpRequest,
                 $_httpResponse
@@ -252,7 +261,13 @@ class CampaignsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'TakeCampaignOfflineResponseModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'TakeCampaignOfflineResponseModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -263,12 +278,17 @@ class CampaignsController extends BaseController
      *
      * @param string $campaignId ID of the campaign you want to retrieve or take action on
      *
-     * @return Models\CampaignStatusResponseModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function checkCampaignStatus(string $campaignId): Models\CampaignStatusResponseModel
+    public function checkCampaignStatus(string $campaignId): ApiResponse
     {
+        //check that all required arguments are provided
+        if (!isset($campaignId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/campaigns/{campaignId}/status';
 
@@ -293,9 +313,6 @@ class CampaignsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -315,7 +332,7 @@ class CampaignsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -328,7 +345,13 @@ class CampaignsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'CampaignStatusResponseModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'CampaignStatusResponseModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -360,14 +383,17 @@ class CampaignsController extends BaseController
      *        campaigns with contracts).
      * @param Models\CampaignCreateRequestModel $body
      *
-     * @return Models\LimitedCampaignModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function orderCampaign(
-        string $xCustomerId,
-        Models\CampaignCreateRequestModel $body
-    ): Models\LimitedCampaignModel {
+    public function orderCampaign(string $xCustomerId, Models\CampaignCreateRequestModel $body): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($xCustomerId, $body)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/campaigns/order';
 
@@ -392,9 +418,6 @@ class CampaignsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->post($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders(), $_bodyJson);
@@ -414,7 +437,7 @@ class CampaignsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\OrderCampaignErrorResponseException',
+                '\\HAPI\\Exceptions\\OrderCampaignErrorResponseException',
                 '',
                 $_httpRequest,
                 $_httpResponse
@@ -423,7 +446,7 @@ class CampaignsController extends BaseController
 
         if ($response->code == 403) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Forbidden',
                 $_httpRequest,
                 $_httpResponse
@@ -432,7 +455,7 @@ class CampaignsController extends BaseController
 
         if ($response->code == 422) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\OrderCampaignErrorResponseException',
+                '\\HAPI\\Exceptions\\OrderCampaignErrorResponseException',
                 'Unprocessable Entity',
                 $_httpRequest,
                 $_httpResponse
@@ -441,7 +464,13 @@ class CampaignsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'LimitedCampaignModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'LimitedCampaignModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -462,14 +491,19 @@ class CampaignsController extends BaseController
      *        campaigns with contracts).
      * @param Models\CampaignValidationRequestModel|null $body
      *
-     * @return Models\CampaignValidationModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
     public function postCampaignsValidateCampaign(
         string $xCustomerId,
         ?Models\CampaignValidationRequestModel $body = null
-    ): Models\CampaignValidationModel {
+    ): ApiResponse {
+        //check that all required arguments are provided
+        if (!isset($xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/campaigns/validate-campaign/';
 
@@ -494,9 +528,6 @@ class CampaignsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->post($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders(), $_bodyJson);
@@ -516,7 +547,7 @@ class CampaignsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 422) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\CampaignValidationErrorException',
+                '\\HAPI\\Exceptions\\CampaignValidationErrorException',
                 'Validation error  Sample response: ```json {   "errors": {     "orderedProductsSpecs' .
                 '": [       {         "credentials": {},         "posting_requirements": {           ' .
                 '"titre": "The field \\"Titre\\" must have a value"         }       }     ],     "curre' .
@@ -529,7 +560,13 @@ class CampaignsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'CampaignValidationModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'CampaignValidationModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -547,14 +584,19 @@ class CampaignsController extends BaseController
      *        campaigns with contracts).
      * @param Models\ProductValidationRequestModel|null $body
      *
-     * @return Models\ProductValidationModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
     public function postCampaignsValidateChannelPosting(
         string $xCustomerId,
         ?Models\ProductValidationRequestModel $body = null
-    ): Models\ProductValidationModel {
+    ): ApiResponse {
+        //check that all required arguments are provided
+        if (!isset($xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/campaigns/validate-channel-posting/';
 
@@ -579,9 +621,6 @@ class CampaignsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->post($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders(), $_bodyJson);
@@ -601,7 +640,7 @@ class CampaignsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 422) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\ProductValidationErrorException',
+                '\\HAPI\\Exceptions\\ProductValidationErrorException',
                 'Validation error  Sample response: ```json {   "errors": {     "credentials": {     ' .
                 '   "api_username" : "This field is required"     },     "posting_requirements": {   ' .
                 '    "typeContrat": "The field \\"Type contrat\\" must have a value",       "dureeTrava' .
@@ -613,7 +652,13 @@ class CampaignsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'ProductValidationModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'ProductValidationModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -631,14 +676,19 @@ class CampaignsController extends BaseController
      *        campaigns with contracts).
      * @param Models\VacancyValidationRequestModel|null $body
      *
-     * @return Models\VacancyValidationModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
     public function postCampaignsValidateVacancyInfo(
         string $xCustomerId,
         ?Models\VacancyValidationRequestModel $body = null
-    ): Models\VacancyValidationModel {
+    ): ApiResponse {
+        //check that all required arguments are provided
+        if (!isset($xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/campaigns/validate-vacancy-info/';
 
@@ -662,9 +712,6 @@ class CampaignsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -698,6 +745,12 @@ class CampaignsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'VacancyValidationModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'VacancyValidationModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 }

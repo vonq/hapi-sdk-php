@@ -10,7 +10,7 @@
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `productId` | `string` | Required | Product Identification | getProductId(): string | setProductId(string productId): void |
-| `status` | [`string (Status3Enum)`](../../doc/models/status-3-enum.md) | Required | Status per product | getStatus(): string | setStatus(string status): void |
+| `status` | [`string (StatusOrderedProductsGetElementEnum)`](../../doc/models/status-ordered-products-get-element-enum.md) | Required | Status per product | getStatus(): string | setStatus(string status): void |
 | `statusDescription` | `?string` | Required | Status description, additional status information. For Contract based products, in case of posting error, this will include the raw job board error message, therefore is not always user-friendly | getStatusDescription(): ?string | setStatusDescription(?string statusDescription): void |
 | `deliveredOn` | `?\DateTime` | Required | Date when the channel went online | getDeliveredOn(): ?\DateTime | setDeliveredOn(?\DateTime deliveredOn): void |
 | `duration` | `?string` | Required | How long will the `Product` be online. [DEPRECATED] please instead use the `durationPeriod` | getDuration(): ?string | setDuration(?string duration): void |
@@ -29,11 +29,17 @@
   "statusDescription": null,
   "deliveredOn": "11/30/2020 11:00:15",
   "duration": "20 days",
-  "durationPeriod": null,
+  "durationPeriod": {
+    "range": "days",
+    "period": 30
+  },
   "utm": "utm_medium=social&utm_source=facebook&utm_campaign=example",
   "jobBoardLink": "http://job.ad.com/software-developer",
   "contractId": "06a8f6f0-5e0e-4614-869e-ab95a8530633",
-  "postingRequirements": null
+  "postingRequirements": {
+    "someText": "example",
+    "someIntValue": 22
+  }
 }
 ```
 

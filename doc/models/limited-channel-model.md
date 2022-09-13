@@ -28,31 +28,60 @@
 
 ```json
 {
-  "id": null,
-  "name": "Linkedin",
-  "url": "https://linkedin.com/",
-  "type": null,
-  "mc_enabled": false,
-  "manual_setup_required": null,
-  "setup_instructions": null,
-  "feed_url": null,
-  "contract_credentials": null,
-  "contract_facets": {
-    "name": null,
-    "label": null,
-    "sort": null,
-    "required": null,
-    "type": "AUTOCOMPLETE",
-    "options": null
-  },
-  "posting_requirements": {
-    "name": null,
-    "label": null,
-    "sort": null,
-    "required": null,
-    "type": "AUTOCOMPLETE",
-    "options": null
-  }
+  "type": "type0",
+  "contract_credentials": [
+    {
+      "name": "name6",
+      "label": "label6",
+      "sort": "sort8",
+      "description": "description6"
+    },
+    {
+      "name": "name7",
+      "label": "label7",
+      "sort": "sort9",
+      "description": "description7"
+    }
+  ],
+  "logo_url": [
+    {
+      "url": "url9"
+    },
+    {
+      "url": "url0"
+    },
+    {
+      "url": "url1"
+    }
+  ],
+  "logo_square_url": [
+    {
+      "url": "url5",
+      "size": "size1"
+    },
+    {
+      "url": "url6",
+      "size": "size2"
+    },
+    {
+      "url": "url7",
+      "size": "size3"
+    }
+  ],
+  "logo_rectangle_url": [
+    {
+      "url": "url5",
+      "size": "size9"
+    },
+    {
+      "url": "url6",
+      "size": "size8"
+    },
+    {
+      "url": "url7",
+      "size": "size7"
+    }
+  ]
 }
 ```
 

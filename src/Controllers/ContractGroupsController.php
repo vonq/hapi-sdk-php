@@ -8,17 +8,18 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Controllers;
+namespace HAPI\Controllers;
 
-use HAPILib\Exceptions\ApiException;
-use HAPILib\ConfigurationInterface;
-use HAPILib\ApiHelper;
-use HAPILib\Models;
-use HAPILib\Http\HttpRequest;
-use HAPILib\Http\HttpResponse;
-use HAPILib\Http\HttpMethod;
-use HAPILib\Http\HttpContext;
-use HAPILib\Http\HttpCallBack;
+use HAPI\Exceptions\ApiException;
+use HAPI\ConfigurationInterface;
+use HAPI\ApiHelper;
+use HAPI\Models;
+use HAPI\Http\ApiResponse;
+use HAPI\Http\HttpRequest;
+use HAPI\Http\HttpResponse;
+use HAPI\Http\HttpMethod;
+use HAPI\Http\HttpContext;
+use HAPI\Http\HttpCallBack;
 
 class ContractGroupsController extends BaseController
 {
@@ -37,12 +38,20 @@ class ContractGroupsController extends BaseController
      * @param string|null $ordering Which field to use when ordering the results.
      * @param string|null $search A search term.
      *
-     * @return Models\ContractGroupModel[] Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function listContractsGroups(string $xCustomerId, ?string $ordering = null, ?string $search = null): array
-    {
+    public function listContractsGroups(
+        string $xCustomerId,
+        ?string $ordering = null,
+        ?string $search = null
+    ): ApiResponse {
+        //check that all required arguments are provided
+        if (!isset($xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/igb/contracts/groups/';
 
@@ -69,9 +78,6 @@ class ContractGroupsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -90,7 +96,14 @@ class ContractGroupsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'ContractGroupModel', 1);
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'ContractGroupModel',
+            1
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -102,14 +115,19 @@ class ContractGroupsController extends BaseController
      *        campaigns with contracts).
      * @param Models\ContractGroupRequestModel|null $body
      *
-     * @return Models\ContractGroupModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
     public function createContractsGroup(
         string $xCustomerId,
         ?Models\ContractGroupRequestModel $body = null
-    ): Models\ContractGroupModel {
+    ): ApiResponse {
+        //check that all required arguments are provided
+        if (!isset($xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/igb/contracts/groups/';
 
@@ -134,9 +152,6 @@ class ContractGroupsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->post($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders(), $_bodyJson);
@@ -156,7 +171,7 @@ class ContractGroupsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\ContractGroupValidationErrorException',
+                '\\HAPI\\Exceptions\\ContractGroupValidationErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -165,7 +180,13 @@ class ContractGroupsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'ContractGroupModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'ContractGroupModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -177,12 +198,17 @@ class ContractGroupsController extends BaseController
      *        with Contracts functionality (adding contract, retrieving channels, ordering
      *        campaigns with contracts).
      *
-     * @return Models\ContractGroupModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function getContractGroup(string $groupIdx, string $xCustomerId): Models\ContractGroupModel
+    public function getContractGroup(string $groupIdx, string $xCustomerId): ApiResponse
     {
+        //check that all required arguments are provided
+        if (!isset($groupIdx, $xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/igb/contracts/groups/{group_idx}/';
 
@@ -208,9 +234,6 @@ class ContractGroupsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -230,7 +253,7 @@ class ContractGroupsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 404) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorWithDetailException',
+                '\\HAPI\\Exceptions\\GenericErrorWithDetailException',
                 'Not Found',
                 $_httpRequest,
                 $_httpResponse
@@ -239,7 +262,13 @@ class ContractGroupsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'ContractGroupModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'ContractGroupModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -252,12 +281,17 @@ class ContractGroupsController extends BaseController
      *        with Contracts functionality (adding contract, retrieving channels, ordering
      *        campaigns with contracts).
      *
-     * @return void Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function deleteContractGroup(string $groupIdx, string $xCustomerId): void
+    public function deleteContractGroup(string $groupIdx, string $xCustomerId): ApiResponse
     {
+        //check that all required arguments are provided
+        if (!isset($groupIdx, $xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/igb/contracts/groups/{group_idx}/';
 
@@ -282,9 +316,6 @@ class ContractGroupsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->delete($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -308,7 +339,7 @@ class ContractGroupsController extends BaseController
 
         if ($response->code == 404) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorWithDetailException',
+                '\\HAPI\\Exceptions\\GenericErrorWithDetailException',
                 'Not Found',
                 $_httpRequest,
                 $_httpResponse
@@ -317,6 +348,7 @@ class ContractGroupsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
+        return ApiResponse::createFromContext(null, null, $_httpContext);
     }
 
     /**
@@ -329,7 +361,7 @@ class ContractGroupsController extends BaseController
      *        campaigns with contracts).
      * @param Models\ContractGroupRequestModel|null $body
      *
-     * @return Models\ContractGroupModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
@@ -337,7 +369,12 @@ class ContractGroupsController extends BaseController
         string $groupIdx,
         string $xCustomerId,
         ?Models\ContractGroupRequestModel $body = null
-    ): Models\ContractGroupModel {
+    ): ApiResponse {
+        //check that all required arguments are provided
+        if (!isset($groupIdx, $xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/igb/contracts/groups/{group_idx}/';
 
@@ -367,9 +404,6 @@ class ContractGroupsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->put($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders(), $_bodyJson);
@@ -389,7 +423,7 @@ class ContractGroupsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\ContractGroupValidationErrorException',
+                '\\HAPI\\Exceptions\\ContractGroupValidationErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -398,7 +432,7 @@ class ContractGroupsController extends BaseController
 
         if ($response->code == 404) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorWithDetailException',
+                '\\HAPI\\Exceptions\\GenericErrorWithDetailException',
                 'Not Found',
                 $_httpRequest,
                 $_httpResponse
@@ -407,7 +441,13 @@ class ContractGroupsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'ContractGroupModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'ContractGroupModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -420,7 +460,7 @@ class ContractGroupsController extends BaseController
      *        campaigns with contracts).
      * @param Models\ContractGroupRequestModel|null $body
      *
-     * @return Models\ContractGroupModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
@@ -428,7 +468,12 @@ class ContractGroupsController extends BaseController
         string $groupIdx,
         string $xCustomerId,
         ?Models\ContractGroupRequestModel $body = null
-    ): Models\ContractGroupModel {
+    ): ApiResponse {
+        //check that all required arguments are provided
+        if (!isset($groupIdx, $xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/igb/contracts/groups/{group_idx}/';
 
@@ -458,9 +503,6 @@ class ContractGroupsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->patch($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders(), $_bodyJson);
@@ -480,7 +522,7 @@ class ContractGroupsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\ContractGroupValidationErrorException',
+                '\\HAPI\\Exceptions\\ContractGroupValidationErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -489,7 +531,7 @@ class ContractGroupsController extends BaseController
 
         if ($response->code == 404) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorWithDetailException',
+                '\\HAPI\\Exceptions\\GenericErrorWithDetailException',
                 'Not Found',
                 $_httpRequest,
                 $_httpResponse
@@ -498,6 +540,12 @@ class ContractGroupsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'ContractGroupModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'ContractGroupModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 }

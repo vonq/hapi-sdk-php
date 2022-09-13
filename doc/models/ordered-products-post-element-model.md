@@ -18,10 +18,13 @@
 
 ```json
 {
-  "productId": null,
-  "utm": null,
-  "contractId": null,
-  "postingRequirements": null
+  "productId": "2cbad29e-a510-52fc-bbdf-e873320e89f5",
+  "utm": "utm_medium=social&utm_source=facebook&utm_campaign=example",
+  "contractId": "06a8f6f0-5e0e-4614-869e-ab95a8530633",
+  "postingRequirements": {
+    "someText": "example",
+    "someIntValue": 22
+  }
 }
 ```
 

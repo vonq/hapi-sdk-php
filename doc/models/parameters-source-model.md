@@ -17,7 +17,10 @@ Optional source for the parameters made of parameter name as key and source for 
 
 ```json
 {
-  "term": null
+  "term": {
+    "field": "field0",
+    "facet": "facet0"
+  }
 }
 ```
 

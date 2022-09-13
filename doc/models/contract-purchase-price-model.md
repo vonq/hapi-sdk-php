@@ -16,7 +16,7 @@
 
 ```json
 {
-  "amount": null,
+  "amount": 0,
   "currency": null
 }
 ```
