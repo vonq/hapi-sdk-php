@@ -1,12 +1,12 @@
 # Campaigns
 
 ```php
-$campaignsTrue = $client->getCampaignsTrue();
+$campaignsController = $client->getCampaignsController();
 ```
 
 ## Class Name
 
-`CampaignsTrue`
+`CampaignsController`
 
 ## Methods
 
@@ -44,7 +44,7 @@ function checkCampaignStatus(string $campaignId): ApiResponse
 
 ```php
 $campaignId = '000026a2-0000-0000-0000-000000000000';
-$apiResponse = $campaignsTrue->checkCampaignStatus($campaignId);
+$apiResponse = $campaignsController->checkCampaignStatus($campaignId);
 ```
 
 ## Example Response *(as JSON)*
@@ -108,7 +108,7 @@ $collect['limit'] = $limit;
 $offset = 12;
 $collect['offset'] = $offset;
 
-$apiResponse = $campaignsTrue->listCampaigns($collect);
+$apiResponse = $campaignsController->listCampaigns($collect);
 ```
 
 
@@ -290,7 +290,7 @@ $body->setOrderedProductsSpecs($body_orderedProductsSpecs);
 $body->setWalletId('00001ba8-0000-0000-0000-000000000000');
 $collect['body'] = $body;
 
-$apiResponse = $campaignsTrue->orderCampaign($collect);
+$apiResponse = $campaignsController->orderCampaign($collect);
 ```
 
 ## Example Response *(as JSON)*
@@ -349,7 +349,7 @@ $body = new Models\CampaignValidationRequestModel(
 );
 $collect['body'] = $body;
 
-$apiResponse = $campaignsTrue->postCampaignsValidateCampaign($collect);
+$apiResponse = $campaignsController->postCampaignsValidateCampaign($collect);
 ```
 
 ## Errors
@@ -474,7 +474,7 @@ $body->setVacancy($body_vacancy);
 
 $collect['body'] = $body;
 
-$apiResponse = $campaignsTrue->postCampaignsValidateChannelPosting($collect);
+$apiResponse = $campaignsController->postCampaignsValidateChannelPosting($collect);
 ```
 
 ## Errors
@@ -521,7 +521,7 @@ $body = new Models\VacancyValidationRequestModel(
 );
 $collect['body'] = $body;
 
-$apiResponse = $campaignsTrue->postCampaignsValidateVacancyInfo($collect);
+$apiResponse = $campaignsController->postCampaignsValidateVacancyInfo($collect);
 ```
 
 ## Example Response *(as JSON)*
@@ -563,7 +563,7 @@ function retrieveCampaign(string $campaignId): ApiResponse
 
 ```php
 $campaignId = '000026a2-0000-0000-0000-000000000000';
-$apiResponse = $campaignsTrue->retrieveCampaign($campaignId);
+$apiResponse = $campaignsController->retrieveCampaign($campaignId);
 ```
 
 ## Errors
@@ -608,7 +608,7 @@ $body = new Models\TakeCampaignOfflineRequestModel(
 );
 $collect['body'] = $body;
 
-$apiResponse = $campaignsTrue->takeCampaignOffline($collect);
+$apiResponse = $campaignsController->takeCampaignOffline($collect);
 ```
 
 ## Example Response *(as JSON)*

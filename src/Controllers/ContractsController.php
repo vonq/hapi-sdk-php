@@ -8,17 +8,17 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Controllers;
+namespace HAPI\Controllers;
 
-use HAPILib\Exceptions\ApiException;
-use HAPILib\ConfigurationInterface;
-use HAPILib\ApiHelper;
-use HAPILib\Models;
-use HAPILib\Http\HttpRequest;
-use HAPILib\Http\HttpResponse;
-use HAPILib\Http\HttpMethod;
-use HAPILib\Http\HttpContext;
-use HAPILib\Http\HttpCallBack;
+use HAPI\Exceptions\ApiException;
+use HAPI\ConfigurationInterface;
+use HAPI\ApiHelper;
+use HAPI\Http\ApiResponse;
+use HAPI\Http\HttpRequest;
+use HAPI\Http\HttpResponse;
+use HAPI\Http\HttpMethod;
+use HAPI\Http\HttpContext;
+use HAPI\Http\HttpCallBack;
 
 class ContractsController extends BaseController
 {
@@ -30,38 +30,33 @@ class ContractsController extends BaseController
     /**
      * This endpoint exposes a list of contract available to a particular customer.
      *
-     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
-     *        Post in particular) require this header. You need to provide this to be able to work
-     *        with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
-     * @param int|null $limit Number of results to return per page.
-     * @param int|null $offset The initial index from which to return the results.
+     * @param array $options Array with all options for search
      *
-     * @return Models\PaginatedContractListModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function listContracts(
-        string $xCustomerId,
-        ?int $limit = 50,
-        ?int $offset = 0
-    ): Models\PaginatedContractListModel {
+    public function listContracts(array $options): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($options['xCustomerId'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/contracts/';
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'limit'         => (null != $limit) ?
-                $limit : 50,
-            'offset'        => (null != $offset) ?
-                $offset : 0,
+            'limit'         => $this->val($options, 'limit', 50),
+            'offset'        => $this->val($options, 'offset', 0),
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $xCustomerId
+            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -73,9 +68,6 @@ class ContractsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -95,7 +87,13 @@ class ContractsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'PaginatedContractListModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'PaginatedContractListModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -107,20 +105,19 @@ class ContractsController extends BaseController
      * be possible. To edit contract credentials, the credentials need to be deleted first, and then
      * recreated. When deleted, all corresponding jobs can't be deleted anymore
      *
-     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
-     *        Post in particular) require this header. You need to provide this to be able to work
-     *        with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
-     * @param Models\ContractCreateRequestModel $body
+     * @param array $options Array with all options for search
      *
-     * @return Models\EncryptedContractModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function createContract(
-        string $xCustomerId,
-        Models\ContractCreateRequestModel $body
-    ): Models\EncryptedContractModel {
+    public function createContract(array $options): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($options['xCustomerId'], $options['body'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/contracts/';
 
@@ -128,12 +125,12 @@ class ContractsController extends BaseController
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $xCustomerId,
+            'X-Customer-Id'   => $this->val($options, 'xCustomerId'),
             'Content-Type'    => 'application/json'
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($body);
+        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
 
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
 
@@ -144,9 +141,6 @@ class ContractsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -167,7 +161,7 @@ class ContractsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\ContractCreateRequestValidationErrorException',
+                '\\HAPI\\Exceptions\\ContractCreateRequestValidationErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -176,7 +170,13 @@ class ContractsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'EncryptedContractModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'EncryptedContractModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -196,30 +196,31 @@ class ContractsController extends BaseController
      * result the inability to [Take the campaign offline](https://vonq.stoplight.
      * io/docs/hapi/d70d556dbb9ba-take-a-campaign-offline).
      *
-     * @param string $contractId The ID of the contract you want to delete
-     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
-     *        Post in particular) require this header. You need to provide this to be able to work
-     *        with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
+     * @param array $options Array with all options for search
      *
-     * @return void Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function deleteContract(string $contractId, string $xCustomerId): void
+    public function deleteContract(array $options): ApiResponse
     {
+        //check that all required arguments are provided
+        if (!isset($options['contractId'], $options['xCustomerId'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/contracts/{contract_id}/';
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'contract_id'   => $contractId,
+            'contract_id'   => $this->val($options, 'contractId'),
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
-            'X-Customer-Id'   => $xCustomerId
+            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::DELETE, $_headers, $_queryUrl);
@@ -231,9 +232,6 @@ class ContractsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -258,50 +256,44 @@ class ContractsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
+        return ApiResponse::createFromContext(null, null, $_httpContext);
     }
 
     /**
      * This endpoint exposes a list of multiple contracts, if available to a specific customer
      *
-     * @param string[] $contractsIds Comma separated list of contract IDs
-     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
-     *        Post in particular) require this header. You need to provide this to be able to work
-     *        with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts)
-     * @param int|null $limit Number of results to return per page
-     * @param int|null $offset The initial index from which to return the results
+     * @param array $options Array with all options for search
      *
-     * @return Models\PaginatedDetailedContractListModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveMultipleContracts(
-        array $contractsIds,
-        string $xCustomerId,
-        ?int $limit = 50,
-        ?int $offset = 0
-    ): Models\PaginatedDetailedContractListModel {
+    public function retrieveMultipleContracts(array $options): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($options['contractsIds'], $options['xCustomerId'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/contracts/multiple/{contracts_ids}';
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'contracts_ids' => $contractsIds,
+            'contracts_ids' => $this->val($options, 'contractsIds'),
         ]);
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'limit'         => (null != $limit) ?
-                $limit : 50,
-            'offset'        => (null != $offset) ?
-                $offset : 0,
+            'limit'         => $this->val($options, 'limit', 50),
+            'offset'        => $this->val($options, 'offset', 0),
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $xCustomerId
+            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -313,9 +305,6 @@ class ContractsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -335,12 +324,13 @@ class ContractsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass(
+        $deserializedResponse = ApiHelper::mapClass(
             $_httpRequest,
             $_httpResponse,
             $response->body,
             'PaginatedDetailedContractListModel'
         );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -350,44 +340,39 @@ class ContractsController extends BaseController
      * When `channel_id` is used, the credentials are required. When using `contract_id`, since the
      * credentials were already send as part of contract creation, there is no need to pass the credentials.
      *
-     * @param int $channelIdOrContractId The channel ID or contract ID
-     * @param string $postingRequirementName The name of the posting requirement
-     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
-     *        Post in particular) require this header. You need to provide this to be able to work
-     *        with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
-     * @param Models\FacetAutocompleteModel $body
+     * @param array $options Array with all options for search
      *
-     * @return Models\AutocompleteValuesResponseModel[] Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function listAutocompleteValues(
-        int $channelIdOrContractId,
-        string $postingRequirementName,
-        string $xCustomerId,
-        Models\FacetAutocompleteModel $body
-    ): array {
+    public function listAutocompleteValues(array $options): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($options['channelIdOrContractId'], $options['postingRequirementName'], $options['xCustomerId'], $options['body'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() .
             '/contracts/posting-requirements/{channel_id_or_contract_id}/{posting-requirement-name}/';
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'channel_id_or_contract_id' => $channelIdOrContractId,
-            'posting-requirement-name'  => $postingRequirementName,
+            'channel_id_or_contract_id' => $this->val($options, 'channelIdOrContractId'),
+            'posting-requirement-name'  => $this->val($options, 'postingRequirementName'),
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'              => self::$userAgent,
             'Accept'                  => 'application/json',
-            'X-Customer-Id'             => $xCustomerId,
+            'X-Customer-Id'             => $this->val($options, 'xCustomerId'),
             'Content-Type'              => 'application/json'
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($body);
+        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
 
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
 
@@ -398,9 +383,6 @@ class ContractsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -425,44 +407,46 @@ class ContractsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass(
+        $deserializedResponse = ApiHelper::mapClass(
             $_httpRequest,
             $_httpResponse,
             $response->body,
             'AutocompleteValuesResponseModel',
             1
         );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
      * This endpoint retrieves the detail for a customer contract. It contains a reference to a channel, an
      * (encrypted) credential payload, and the facets set for the My Contracts product.
      *
-     * @param string $contractId ID of the contract you want to retrieve
-     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
-     *        Post in particular) require this header. You need to provide this to be able to work
-     *        with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
+     * @param array $options Array with all options for search
      *
-     * @return Models\EncryptedContractModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveContract(string $contractId, string $xCustomerId): Models\EncryptedContractModel
+    public function retrieveContract(array $options): ApiResponse
     {
+        //check that all required arguments are provided
+        if (!isset($options['contractId'], $options['xCustomerId'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/contracts/single/{contract_id}/';
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'contract_id'   => $contractId,
+            'contract_id'   => $this->val($options, 'contractId'),
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $xCustomerId
+            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -474,9 +458,6 @@ class ContractsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -497,7 +478,7 @@ class ContractsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 404) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorWithDetailException',
+                '\\HAPI\\Exceptions\\GenericErrorWithDetailException',
                 'Not Found',
                 $_httpRequest,
                 $_httpResponse
@@ -506,6 +487,27 @@ class ContractsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'EncryptedContractModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'EncryptedContractModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
+    }
+
+    /**
+     * Array access utility method
+     * @param  array          $arr         Array of values to read from
+     * @param  string         $key         Key to get the value from the array
+     * @param  mixed|null     $default     Default value to use if the key was not found
+     * @return mixed
+     */
+    private function val(array $arr, string $key, $default = null)
+    {
+        if (isset($arr[$key])) {
+            return is_bool($arr[$key]) ? var_export($arr[$key], true) : $arr[$key];
+        }
+        return $default;
     }
 }

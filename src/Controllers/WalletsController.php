@@ -8,17 +8,18 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Controllers;
+namespace HAPI\Controllers;
 
-use HAPILib\Exceptions\ApiException;
-use HAPILib\ConfigurationInterface;
-use HAPILib\ApiHelper;
-use HAPILib\Models;
-use HAPILib\Http\HttpRequest;
-use HAPILib\Http\HttpResponse;
-use HAPILib\Http\HttpMethod;
-use HAPILib\Http\HttpContext;
-use HAPILib\Http\HttpCallBack;
+use HAPI\Exceptions\ApiException;
+use HAPI\ConfigurationInterface;
+use HAPI\ApiHelper;
+use HAPI\Models;
+use HAPI\Http\ApiResponse;
+use HAPI\Http\HttpRequest;
+use HAPI\Http\HttpResponse;
+use HAPI\Http\HttpMethod;
+use HAPI\Http\HttpContext;
+use HAPI\Http\HttpCallBack;
 
 class WalletsController extends BaseController
 {
@@ -36,12 +37,17 @@ class WalletsController extends BaseController
      *        with Contracts functionality (adding contract, retrieving channels, ordering
      *        campaigns with contracts).
      *
-     * @return Models\WalletModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function getWallet(string $xCustomerId): Models\WalletModel
+    public function getWallet(string $xCustomerId): ApiResponse
     {
+        //check that all required arguments are provided
+        if (!isset($xCustomerId)) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/wallet';
 
@@ -62,9 +68,6 @@ class WalletsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -84,7 +87,7 @@ class WalletsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 404) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Not Found',
                 $_httpRequest,
                 $_httpResponse
@@ -93,24 +96,26 @@ class WalletsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'WalletModel');
+        $deserializedResponse = ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'WalletModel');
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
      * Create a wallet for the provided customer ID.
      *
-     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
-     *        Post in particular) require this header. You need to provide this to be able to work
-     *        with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
-     * @param Models\WalletRequestModel|null $body
+     * @param array $options Array with all options for search
      *
-     * @return Models\WalletModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function postWallet(string $xCustomerId, ?Models\WalletRequestModel $body = null): Models\WalletModel
+    public function postWallet(array $options): ApiResponse
     {
+        //check that all required arguments are provided
+        if (!isset($options['xCustomerId'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/wallet';
 
@@ -118,12 +123,12 @@ class WalletsController extends BaseController
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $xCustomerId,
+            'X-Customer-Id'   => $this->val($options, 'xCustomerId'),
             'Content-Type'    => 'application/json'
         ];
 
         //json encode body
-        $_bodyJson = ApiHelper::serialize($body);
+        $_bodyJson = ApiHelper::serialize($this->val($options, 'body'));
 
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
 
@@ -134,9 +139,6 @@ class WalletsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -157,7 +159,7 @@ class WalletsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\WalletValidationErrorException',
+                '\\HAPI\\Exceptions\\WalletValidationErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -166,7 +168,7 @@ class WalletsController extends BaseController
 
         if ($response->code == 409) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorWithDetailException',
+                '\\HAPI\\Exceptions\\GenericErrorWithDetailException',
                 'Returned when a wallet for the provided X-Customer-Id already exists.',
                 $_httpRequest,
                 $_httpResponse
@@ -175,7 +177,7 @@ class WalletsController extends BaseController
 
         if ($response->code == 500) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Internal Server Error',
                 $_httpRequest,
                 $_httpResponse
@@ -184,40 +186,39 @@ class WalletsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'WalletModel');
+        $deserializedResponse = ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'WalletModel');
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
      * Returns billing portal link where the customer can edit his billing details.
      *
-     * @param string $xCustomerId In order to identify the ATS end-user, some requests (to HAPI Job
-     *        Post in particular) require this header. You need to provide this to be able to work
-     *        with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
-     * @param string|null $partnerReturnUrl if set, the billing portal page will have this link as
-     *        "Return to"
+     * @param array $options Array with all options for search
      *
-     * @return Models\BillingPortalLinkModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function postWalletWalletIdBillingPortal(
-        string $xCustomerId,
-        ?string $partnerReturnUrl = null
-    ): Models\BillingPortalLinkModel {
+    public function postWalletWalletIdBillingPortal(array $options): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($options['xCustomerId'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/wallet/billing-portal';
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'partnerReturnUrl' => $partnerReturnUrl,
+            'partnerReturnUrl' => $this->val($options, 'partnerReturnUrl'),
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'     => self::$userAgent,
             'Accept'         => 'application/json',
-            'X-Customer-Id'    => $xCustomerId
+            'X-Customer-Id'    => $this->val($options, 'xCustomerId')
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl);
@@ -229,9 +230,6 @@ class WalletsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -256,7 +254,13 @@ class WalletsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'BillingPortalLinkModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'BillingPortalLinkModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -264,11 +268,11 @@ class WalletsController extends BaseController
      *
      * @param Models\PaymentIntentModel|null $body
      *
-     * @return Models\LimitedPaymentIntentModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function postWalletPaymentIntent(?Models\PaymentIntentModel $body = null): Models\LimitedPaymentIntentModel
+    public function postWalletPaymentIntent(?Models\PaymentIntentModel $body = null): ApiResponse
     {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/wallet/payment-intent';
@@ -290,9 +294,6 @@ class WalletsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->post($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders(), $_bodyJson);
@@ -312,7 +313,7 @@ class WalletsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -321,7 +322,7 @@ class WalletsController extends BaseController
 
         if ($response->code == 422) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorWithDetailException',
+                '\\HAPI\\Exceptions\\GenericErrorWithDetailException',
                 'Unprocessable Entity',
                 $_httpRequest,
                 $_httpResponse
@@ -330,7 +331,13 @@ class WalletsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'LimitedPaymentIntentModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'LimitedPaymentIntentModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -340,11 +347,11 @@ class WalletsController extends BaseController
      *
      * @param string|null $target The ATS webpage where the client should be redirected.
      *
-     * @return array Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function getWalletProcess(?string $target = null): array
+    public function getWalletProcess(?string $target = null): ApiResponse
     {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/wallet/process';
@@ -366,9 +373,6 @@ class WalletsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -393,7 +397,8 @@ class WalletsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return $response->body;
+        $deserializedResponse = $response->body;
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -481,37 +486,29 @@ class WalletsController extends BaseController
      * });
      * ```
      *
-     * @param string $walletId The wallet ID, see `GET /wallet` endpoint.
-     * @param string $partnerId Your partner ID.
-     * @param int|null $amount Amount, in USD cents, that the customer wants to add to his wallet
-     *        balance. If specified, the minimum top-up will be amount - wallet balance. If not
-     *        specified, the minimum top-up amount will be USD 300.
-     * @param string|null $returnUrl After the payment is processed, the customer is redirected to
-     *        this page. It can be for example, the page he was on before starting the billing
-     *        process.
-     * @param string|null $successCallbackUrl Called, asynchronous, when the payment was successful.
+     * @param array $options Array with all options for search
      *
-     * @return array Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function getWalletTopupHtml(
-        string $walletId,
-        string $partnerId,
-        ?int $amount = null,
-        ?string $returnUrl = null,
-        ?string $successCallbackUrl = null
-    ): array {
+    public function getWalletTopupHtml(array $options): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($options['walletId'], $options['partnerId'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/wallet/topup.html';
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'walletId'           => $walletId,
-            'partnerId'          => $partnerId,
-            'amount'             => $amount,
-            'returnUrl'          => $returnUrl,
-            'successCallbackUrl' => $successCallbackUrl,
+            'walletId'           => $this->val($options, 'walletId'),
+            'partnerId'          => $this->val($options, 'partnerId'),
+            'amount'             => $this->val($options, 'amount'),
+            'returnUrl'          => $this->val($options, 'returnUrl'),
+            'successCallbackUrl' => $this->val($options, 'successCallbackUrl'),
         ]);
 
         //prepare headers
@@ -526,9 +523,6 @@ class WalletsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -557,6 +551,22 @@ class WalletsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return $response->body;
+        $deserializedResponse = $response->body;
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
+    }
+
+    /**
+     * Array access utility method
+     * @param  array          $arr         Array of values to read from
+     * @param  string         $key         Key to get the value from the array
+     * @param  mixed|null     $default     Default value to use if the key was not found
+     * @return mixed
+     */
+    private function val(array $arr, string $key, $default = null)
+    {
+        if (isset($arr[$key])) {
+            return is_bool($arr[$key]) ? var_export($arr[$key], true) : $arr[$key];
+        }
+        return $default;
     }
 }

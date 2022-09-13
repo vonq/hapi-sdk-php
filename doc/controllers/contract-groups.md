@@ -1,12 +1,12 @@
 # Contract Groups
 
 ```php
-$contractGroupsTrue = $client->getContractGroupsTrue();
+$contractGroupsController = $client->getContractGroupsController();
 ```
 
 ## Class Name
 
-`ContractGroupsTrue`
+`ContractGroupsController`
 
 ## Methods
 
@@ -51,7 +51,7 @@ $body = new Models\ContractGroupRequestModel(
 );
 $collect['body'] = $body;
 
-$apiResponse = $contractGroupsTrue->createContractsGroup($collect);
+$apiResponse = $contractGroupsController->createContractsGroup($collect);
 ```
 
 ## Errors
@@ -92,7 +92,7 @@ $collect['groupIdx'] = $groupIdx;
 $xCustomerId = 'X-Customer-Id2';
 $collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $contractGroupsTrue->deleteContractGroup($collect);
+$apiResponse = $contractGroupsController->deleteContractGroup($collect);
 ```
 
 ## Errors
@@ -133,7 +133,7 @@ $collect['groupIdx'] = $groupIdx;
 $xCustomerId = 'X-Customer-Id2';
 $collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $contractGroupsTrue->getContractGroup($collect);
+$apiResponse = $contractGroupsController->getContractGroup($collect);
 ```
 
 ## Errors
@@ -177,7 +177,7 @@ $collect['ordering'] = $ordering;
 $search = 'search2';
 $collect['search'] = $search;
 
-$apiResponse = $contractGroupsTrue->listContractsGroups($collect);
+$apiResponse = $contractGroupsController->listContractsGroups($collect);
 ```
 
 
@@ -218,7 +218,7 @@ $body = new Models\ContractGroupRequestModel(
 );
 $collect['body'] = $body;
 
-$apiResponse = $contractGroupsTrue->partialUpdateContractGroup($collect);
+$apiResponse = $contractGroupsController->partialUpdateContractGroup($collect);
 ```
 
 ## Errors
@@ -266,7 +266,7 @@ $body = new Models\ContractGroupRequestModel(
 );
 $collect['body'] = $body;
 
-$apiResponse = $contractGroupsTrue->updateContractGroup($collect);
+$apiResponse = $contractGroupsController->updateContractGroup($collect);
 ```
 
 ## Errors

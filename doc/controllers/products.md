@@ -1,12 +1,12 @@
 # Products
 
 ```php
-$productsTrue = $client->getProductsTrue();
+$productsController = $client->getProductsController();
 ```
 
 ## Class Name
 
-`ProductsTrue`
+`ProductsController`
 
 ## Methods
 
@@ -52,7 +52,7 @@ $collect['productsIds'] = $productsIds;
 $xCustomerId = 'X-Customer-Id2';
 $collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $productsTrue->calculateOrderDeliveryTime($collect);
+$apiResponse = $productsController->calculateOrderDeliveryTime($collect);
 ```
 
 ## Errors
@@ -98,7 +98,7 @@ $collect['acceptLanguage'] = $acceptLanguage;
 $xCustomerId = 'X-Customer-Id2';
 $collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $productsTrue->retrieveMultipleProducts($collect);
+$apiResponse = $productsController->retrieveMultipleProducts($collect);
 ```
 
 
@@ -137,7 +137,7 @@ $collect['acceptLanguage'] = $acceptLanguage;
 $xCustomerId = 'X-Customer-Id2';
 $collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $productsTrue->retrieveSingleProduct($collect);
+$apiResponse = $productsController->retrieveSingleProduct($collect);
 ```
 
 ## Errors
@@ -244,7 +244,7 @@ $collect['acceptLanguage'] = $acceptLanguage;
 $xCustomerId = 'X-Customer-Id2';
 $collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $productsTrue->searchProducts($collect);
+$apiResponse = $productsController->searchProducts($collect);
 ```
 
 ## Errors

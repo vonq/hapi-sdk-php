@@ -165,7 +165,7 @@ It is important that the path inside require_once correctly points to the file `
 
 ![Add a new project in PHPStorm - Step 5](https://apidocs.io/illustration/php?workspaceFolder=HAPI&step=projectFiles)
 
-After this you can add code to initialize the client library and acquire the instance of a True class. Sample code to initialize the client library and use the True methods is given in the subsequent sections.
+After this you can add code to initialize the client library and acquire the instance of a Controller class. Sample code to initialize the client library and use the Controller methods is given in the subsequent sections.
 
 ### 3. Run the Test Project
 

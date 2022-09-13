@@ -8,17 +8,18 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Controllers;
+namespace HAPI\Controllers;
 
-use HAPILib\Exceptions\ApiException;
-use HAPILib\ConfigurationInterface;
-use HAPILib\ApiHelper;
-use HAPILib\Models;
-use HAPILib\Http\HttpRequest;
-use HAPILib\Http\HttpResponse;
-use HAPILib\Http\HttpMethod;
-use HAPILib\Http\HttpContext;
-use HAPILib\Http\HttpCallBack;
+use HAPI\Exceptions\ApiException;
+use HAPI\ConfigurationInterface;
+use HAPI\ApiHelper;
+use HAPI\Models;
+use HAPI\Http\ApiResponse;
+use HAPI\Http\HttpRequest;
+use HAPI\Http\HttpResponse;
+use HAPI\Http\HttpMethod;
+use HAPI\Http\HttpContext;
+use HAPI\Http\HttpCallBack;
 
 class ProductsController extends BaseController
 {
@@ -40,33 +41,32 @@ class ProductsController extends BaseController
      * Note that delivery time is only applicable for Job Marketing products and it won't appear when using
      * HAPI Job Post and connecting your contracts.
      *
-     * @param string[] $productsIds Comma separated list of product IDs
-     * @param string|null $xCustomerId In order to identify the ATS end-user, some requests (to HAPI
-     *        Job Post in particular) require this header. You need to provide this to be able to
-     *        work with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
+     * @param array $options Array with all options for search
      *
-     * @return Models\TotalDeliveryTimeModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function calculateOrderDeliveryTime(
-        array $productsIds,
-        ?string $xCustomerId = null
-    ): Models\TotalDeliveryTimeModel {
+    public function calculateOrderDeliveryTime(array $options): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($options['productsIds'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/delivery-time/{products_ids}/';
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'products_ids'  => $productsIds,
+            'products_ids'  => $this->val($options, 'productsIds'),
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'X-Customer-Id'   => $xCustomerId
+            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -78,9 +78,6 @@ class ProductsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -101,7 +98,7 @@ class ProductsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -110,7 +107,7 @@ class ProductsController extends BaseController
 
         if ($response->code == 404) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Not Found',
                 $_httpRequest,
                 $_httpResponse
@@ -119,7 +116,13 @@ class ProductsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'TotalDeliveryTimeModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'TotalDeliveryTimeModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -128,36 +131,33 @@ class ProductsController extends BaseController
      * Besides the default English, German and Dutch result translations can be requested by specifying an
      * `Accept-Language: [de|nl]` header.
      *
-     * @param string[] $productsIds Comma separated list of product IDs
-     * @param string|null $acceptLanguage The language the client prefers.
-     * @param string|null $xCustomerId In order to identify the ATS end-user, some requests (to HAPI
-     *        Job Post in particular) require this header. You need to provide this to be able to
-     *        work with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
+     * @param array $options Array with all options for search
      *
-     * @return Models\PaginatedProductListModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveMultipleProducts(
-        array $productsIds,
-        ?string $acceptLanguage = null,
-        ?string $xCustomerId = null
-    ): Models\PaginatedProductListModel {
+    public function retrieveMultipleProducts(array $options): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($options['productsIds'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/multiple/{products_ids}/';
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'products_ids'    => $productsIds,
+            'products_ids'    => $this->val($options, 'productsIds'),
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($acceptLanguage),
-            'X-Customer-Id'   => $xCustomerId
+            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($this->val($options, 'acceptLanguage')),
+            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -169,9 +169,6 @@ class ProductsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -191,7 +188,13 @@ class ProductsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'PaginatedProductListModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'PaginatedProductListModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -208,90 +211,42 @@ class ProductsController extends BaseController
      * Besides the default English, German and Dutch result translations can be requested by specifying an
      * `Accept-Language: [de|nl]` header.
      *
-     * @param int|null $limit Number of results to return per page.
-     * @param int|null $offset The initial index from which to return the results.
-     * @param string[]|null $includeLocationId Id for a Location to search products against. If no
-     *        exact matches exist, search will be expanded to the Location's region and country.
-     *        Optionally, a (comma-separated) array of values can be passed. Passing multiple
-     *        values increases the number of search results.
-     * @param string|null $exactLocationId Match only products specifically assigned to a Location.
-     * @param string|null $jobFunctionId Job Function id. Not to be used in conjunction with a Job
-     *        Title id.
-     * @param string|null $jobTitleId Job title id
-     * @param string[]|null $industryId Industry Id
-     * @param string|null $durationFrom Match only products with a duration more or equal than a
-     *        certain number of days
-     * @param string|null $durationTo Match only products with a duration up to a certain number of
-     *        days
-     * @param string|null $name Search text for a product name
-     * @param string|null $currency ISO-4217 code for a currency
-     * @param string|null $sortBy Which products to show first. Defaults to 'relevant'
-     * @param bool|null $recommended Whether to display a list of recommended products for the
-     *        search parameters. If true, returns a limited list of products for the types: Job
-     *        board, social media, publication and community.
-     * @param bool|null $mcEnabled Can be used to filter for products that are linked to a channel
-     *        enabled for My Contracts orders
-     * @param bool|null $excludeRecommended Exclude recommended products from search results. Cannot
-     *        be used in combination with 'recommended'.
-     * @param string|null $acceptLanguage The language the client prefers
-     * @param string|null $xCustomerId In order to identify the ATS end-user, some requests (to HAPI
-     *        Job Post in particular) require this header. You need to provide this to be able to
-     *        work with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
+     * @param array $options Array with all options for search
      *
-     * @return Models\PaginatedProductListModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function searchProducts(
-        ?int $limit = null,
-        ?int $offset = null,
-        ?array $includeLocationId = null,
-        ?string $exactLocationId = null,
-        ?string $jobFunctionId = null,
-        ?string $jobTitleId = null,
-        ?array $industryId = null,
-        ?string $durationFrom = null,
-        ?string $durationTo = null,
-        ?string $name = null,
-        ?string $currency = null,
-        ?string $sortBy = Models\SortByEnum::RELEVANT,
-        ?bool $recommended = null,
-        ?bool $mcEnabled = null,
-        ?bool $excludeRecommended = false,
-        ?string $acceptLanguage = null,
-        ?string $xCustomerId = null
-    ): Models\PaginatedProductListModel {
+    public function searchProducts(array $options): ApiResponse
+    {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/search/';
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'limit'              => $limit,
-            'offset'             => $offset,
-            'includeLocationId'  => $includeLocationId,
-            'exactLocationId'    => $exactLocationId,
-            'jobFunctionId'      => $jobFunctionId,
-            'jobTitleId'         => $jobTitleId,
-            'industryId'         => $industryId,
-            'durationFrom'       => $durationFrom,
-            'durationTo'         => $durationTo,
-            'name'               => $name,
-            'currency'           => $currency,
-            'sortBy'             => (null != $sortBy) ?
-                Models\SortByEnum::checkValue($sortBy) : Models\SortByEnum::RELEVANT,
-            'recommended'        => var_export($recommended, true),
-            'mcEnabled'          => var_export($mcEnabled, true),
-            'excludeRecommended' => (null != $excludeRecommended) ?
-                var_export($excludeRecommended, true) : false,
+            'limit'              => $this->val($options, 'limit'),
+            'offset'             => $this->val($options, 'offset'),
+            'includeLocationId'  => $this->val($options, 'includeLocationId'),
+            'exactLocationId'    => $this->val($options, 'exactLocationId'),
+            'jobFunctionId'      => $this->val($options, 'jobFunctionId'),
+            'jobTitleId'         => $this->val($options, 'jobTitleId'),
+            'industryId'         => $this->val($options, 'industryId'),
+            'durationFrom'       => $this->val($options, 'durationFrom'),
+            'durationTo'         => $this->val($options, 'durationTo'),
+            'name'               => $this->val($options, 'name'),
+            'currency'           => $this->val($options, 'currency'),
+            'sortBy'             => Models\SortByEnum::checkValue($this->val($options, 'sortBy', Models\SortByEnum::RELEVANT)),
+            'recommended'        => $this->val($options, 'recommended'),
+            'mcEnabled'          => $this->val($options, 'mcEnabled'),
+            'excludeRecommended' => $this->val($options, 'excludeRecommended', false),
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'       => self::$userAgent,
             'Accept'           => 'application/json',
-            'Accept-Language'    => Models\AcceptLanguageEnum::checkValue($acceptLanguage),
-            'X-Customer-Id'      => $xCustomerId
+            'Accept-Language'    => Models\AcceptLanguageEnum::checkValue($this->val($options, 'acceptLanguage')),
+            'X-Customer-Id'      => $this->val($options, 'xCustomerId')
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -303,9 +258,6 @@ class ProductsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -326,7 +278,7 @@ class ProductsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -335,7 +287,13 @@ class ProductsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'PaginatedProductListModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'PaginatedProductListModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -344,36 +302,33 @@ class ProductsController extends BaseController
      * Besides the default English, German and Dutch result translations can be requested by specifying an
      * `Accept-Language: [de|nl]` header.
      *
-     * @param string $productId The ID of the product you want to retrieve
-     * @param string|null $acceptLanguage The language the client prefers
-     * @param string|null $xCustomerId In order to identify the ATS end-user, some requests (to HAPI
-     *        Job Post in particular) require this header. You need to provide this to be able to
-     *        work with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
+     * @param array $options Array with all options for search
      *
-     * @return Models\ProductModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveSingleProduct(
-        string $productId,
-        ?string $acceptLanguage = null,
-        ?string $xCustomerId = null
-    ): Models\ProductModel {
+    public function retrieveSingleProduct(array $options): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($options['productId'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/single/{product_id}/';
 
         //process template parameters
         $_queryUrl = ApiHelper::appendUrlWithTemplateParameters($_queryUrl, [
-            'product_id'      => $productId,
+            'product_id'      => $this->val($options, 'productId'),
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($acceptLanguage),
-            'X-Customer-Id'   => $xCustomerId
+            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($this->val($options, 'acceptLanguage')),
+            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -385,9 +340,6 @@ class ProductsController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -408,7 +360,7 @@ class ProductsController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 404) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Not Found',
                 $_httpRequest,
                 $_httpResponse
@@ -417,6 +369,22 @@ class ProductsController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'ProductModel');
+        $deserializedResponse = ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'ProductModel');
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
+    }
+
+    /**
+     * Array access utility method
+     * @param  array          $arr         Array of values to read from
+     * @param  string         $key         Key to get the value from the array
+     * @param  mixed|null     $default     Default value to use if the key was not found
+     * @return mixed
+     */
+    private function val(array $arr, string $key, $default = null)
+    {
+        if (isset($arr[$key])) {
+            return is_bool($arr[$key]) ? var_export($arr[$key], true) : $arr[$key];
+        }
+        return $default;
     }
 }

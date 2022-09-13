@@ -8,15 +8,15 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Controllers;
+namespace HAPI\Controllers;
 
-use HAPILib\Http\HttpCallBack;
-use HAPILib\Http\HttpResponse;
-use HAPILib\ApiHelper;
-use HAPILib\Http\HttpRequest;
-use HAPILib\Exceptions\ApiException;
-use HAPILib\ConfigurationInterface;
-use HAPILib\AuthManagerInterface;
+use HAPI\Http\HttpCallBack;
+use HAPI\Http\HttpResponse;
+use HAPI\ApiHelper;
+use HAPI\Http\HttpRequest;
+use HAPI\Exceptions\ApiException;
+use HAPI\ConfigurationInterface;
+use HAPI\AuthManagerInterface;
 use Unirest\Request;
 
 /**

@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace HAPI;
 
-use HAPI\Trues;
+use HAPI\Controllers;
 
 /**
  * HAPI client class
@@ -206,34 +206,42 @@ class HAPIClient implements ConfigurationInterface
     }
 
     /**
-     * Returns Campaigns True
+     * Returns Campaigns Controller
      */
-    public function getCampaignsTrue(): Trues\CampaignsTrue
+    public function getCampaignsController(): Controllers\CampaignsController
     {
         if ($this->campaigns == null) {
-            $this->campaigns = new Trues\CampaignsTrue($this, $this->authManagers, $this->httpCallback);
+            $this->campaigns = new Controllers\CampaignsController(
+                $this,
+                $this->authManagers,
+                $this->httpCallback
+            );
         }
         return $this->campaigns;
     }
 
     /**
-     * Returns Channels True
+     * Returns Channels Controller
      */
-    public function getChannelsTrue(): Trues\ChannelsTrue
+    public function getChannelsController(): Controllers\ChannelsController
     {
         if ($this->channels == null) {
-            $this->channels = new Trues\ChannelsTrue($this, $this->authManagers, $this->httpCallback);
+            $this->channels = new Controllers\ChannelsController(
+                $this,
+                $this->authManagers,
+                $this->httpCallback
+            );
         }
         return $this->channels;
     }
 
     /**
-     * Returns Contract Groups True
+     * Returns Contract Groups Controller
      */
-    public function getContractGroupsTrue(): Trues\ContractGroupsTrue
+    public function getContractGroupsController(): Controllers\ContractGroupsController
     {
         if ($this->contractGroups == null) {
-            $this->contractGroups = new Trues\ContractGroupsTrue(
+            $this->contractGroups = new Controllers\ContractGroupsController(
                 $this,
                 $this->authManagers,
                 $this->httpCallback
@@ -243,45 +251,61 @@ class HAPIClient implements ConfigurationInterface
     }
 
     /**
-     * Returns Contracts True
+     * Returns Contracts Controller
      */
-    public function getContractsTrue(): Trues\ContractsTrue
+    public function getContractsController(): Controllers\ContractsController
     {
         if ($this->contracts == null) {
-            $this->contracts = new Trues\ContractsTrue($this, $this->authManagers, $this->httpCallback);
+            $this->contracts = new Controllers\ContractsController(
+                $this,
+                $this->authManagers,
+                $this->httpCallback
+            );
         }
         return $this->contracts;
     }
 
     /**
-     * Returns Products True
+     * Returns Products Controller
      */
-    public function getProductsTrue(): Trues\ProductsTrue
+    public function getProductsController(): Controllers\ProductsController
     {
         if ($this->products == null) {
-            $this->products = new Trues\ProductsTrue($this, $this->authManagers, $this->httpCallback);
+            $this->products = new Controllers\ProductsController(
+                $this,
+                $this->authManagers,
+                $this->httpCallback
+            );
         }
         return $this->products;
     }
 
     /**
-     * Returns Taxonomy True
+     * Returns Taxonomy Controller
      */
-    public function getTaxonomyTrue(): Trues\TaxonomyTrue
+    public function getTaxonomyController(): Controllers\TaxonomyController
     {
         if ($this->taxonomy == null) {
-            $this->taxonomy = new Trues\TaxonomyTrue($this, $this->authManagers, $this->httpCallback);
+            $this->taxonomy = new Controllers\TaxonomyController(
+                $this,
+                $this->authManagers,
+                $this->httpCallback
+            );
         }
         return $this->taxonomy;
     }
 
     /**
-     * Returns Wallets True
+     * Returns Wallets Controller
      */
-    public function getWalletsTrue(): Trues\WalletsTrue
+    public function getWalletsController(): Controllers\WalletsController
     {
         if ($this->wallets == null) {
-            $this->wallets = new Trues\WalletsTrue($this, $this->authManagers, $this->httpCallback);
+            $this->wallets = new Controllers\WalletsController(
+                $this,
+                $this->authManagers,
+                $this->httpCallback
+            );
         }
         return $this->wallets;
     }

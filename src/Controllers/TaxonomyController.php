@@ -8,17 +8,18 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Controllers;
+namespace HAPI\Controllers;
 
-use HAPILib\Exceptions\ApiException;
-use HAPILib\ConfigurationInterface;
-use HAPILib\ApiHelper;
-use HAPILib\Models;
-use HAPILib\Http\HttpRequest;
-use HAPILib\Http\HttpResponse;
-use HAPILib\Http\HttpMethod;
-use HAPILib\Http\HttpContext;
-use HAPILib\Http\HttpCallBack;
+use HAPI\Exceptions\ApiException;
+use HAPI\ConfigurationInterface;
+use HAPI\ApiHelper;
+use HAPI\Models;
+use HAPI\Http\ApiResponse;
+use HAPI\Http\HttpRequest;
+use HAPI\Http\HttpResponse;
+use HAPI\Http\HttpMethod;
+use HAPI\Http\HttpContext;
+use HAPI\Http\HttpCallBack;
 
 class TaxonomyController extends BaseController
 {
@@ -34,41 +35,29 @@ class TaxonomyController extends BaseController
      * Besides the default English, German and Dutch result translations can be requested by specifying an
      * `Accept-Language: [de|nl]` header.
      *
-     * @param int|null $limit Number of results to return per page.
-     * @param int|null $offset The initial index from which to return the results.
-     * @param string|null $acceptLanguage The language the client prefers
-     * @param string|null $xCustomerId In order to identify the ATS end-user, some requests (to HAPI
-     *        Job Post in particular) require this header. You need to provide this to be able to
-     *        work with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
+     * @param array $options Array with all options for search
      *
-     * @return Models\IndustryModel[] Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function listIndustries(
-        ?int $limit = 50,
-        ?int $offset = 0,
-        ?string $acceptLanguage = null,
-        ?string $xCustomerId = null
-    ): array {
+    public function listIndustries(array $options): ApiResponse
+    {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/industries/';
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'limit'           => (null != $limit) ?
-                $limit : 50,
-            'offset'          => (null != $offset) ?
-                $offset : 0,
+            'limit'           => $this->val($options, 'limit', 50),
+            'offset'          => $this->val($options, 'offset', 0),
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($acceptLanguage),
-            'X-Customer-Id'   => $xCustomerId
+            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($this->val($options, 'acceptLanguage')),
+            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -80,9 +69,6 @@ class TaxonomyController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -102,7 +88,8 @@ class TaxonomyController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'IndustryModel', 1);
+        $deserializedResponse = ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'IndustryModel', 1);
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -114,17 +101,13 @@ class TaxonomyController extends BaseController
      * Besides the default English, German and Dutch result translations can be requested by specifying an
      * `Accept-Language: [de|nl]` header.
      *
-     * @param string|null $acceptLanguage The language the client prefers
-     * @param string|null $xCustomerId In order to identify the ATS end-user, some requests (to HAPI
-     *        Job Post in particular) require this header. You need to provide this to be able to
-     *        work with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
+     * @param array $options Array with all options for search
      *
-     * @return Models\JobFunctionTreeModel[] Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveJobFunctionsTree(?string $acceptLanguage = null, ?string $xCustomerId = null): array
+    public function retrieveJobFunctionsTree(array $options): ApiResponse
     {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/job-functions/';
@@ -133,8 +116,8 @@ class TaxonomyController extends BaseController
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($acceptLanguage),
-            'X-Customer-Id'   => $xCustomerId
+            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($this->val($options, 'acceptLanguage')),
+            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -146,9 +129,6 @@ class TaxonomyController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -168,7 +148,14 @@ class TaxonomyController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'JobFunctionTreeModel', 1);
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'JobFunctionTreeModel',
+            1
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -182,44 +169,35 @@ class TaxonomyController extends BaseController
      * Besides the default English, German and Dutch result translations can be requested by specifying an
      * `Accept-Language: [de|nl]` header.
      *
-     * @param string $text Search text for a job title name
-     * @param int|null $limit Number of results to return per page.
-     * @param int|null $offset The initial index from which to return the results.
-     * @param string|null $acceptLanguage The language the client prefers
-     * @param string|null $xCustomerId In order to identify the ATS end-user, some requests (to HAPI
-     *        Job Post in particular) require this header. You need to provide this to be able to
-     *        work with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
+     * @param array $options Array with all options for search
      *
-     * @return Models\PaginatedJobTitleListModel Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function searchJobTitles(
-        string $text,
-        ?int $limit = 50,
-        ?int $offset = 0,
-        ?string $acceptLanguage = null,
-        ?string $xCustomerId = null
-    ): Models\PaginatedJobTitleListModel {
+    public function searchJobTitles(array $options): ApiResponse
+    {
+        //check that all required arguments are provided
+        if (!isset($options['text'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/job-titles/';
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'text'            => $text,
-            'limit'           => (null != $limit) ?
-                $limit : 50,
-            'offset'          => (null != $offset) ?
-                $offset : 0,
+            'text'            => $this->val($options, 'text'),
+            'limit'           => $this->val($options, 'limit', 50),
+            'offset'          => $this->val($options, 'offset', 0),
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($acceptLanguage),
-            'X-Customer-Id'   => $xCustomerId
+            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($this->val($options, 'acceptLanguage')),
+            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -231,9 +209,6 @@ class TaxonomyController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -253,7 +228,13 @@ class TaxonomyController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'PaginatedJobTitleListModel');
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'PaginatedJobTitleListModel'
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
@@ -263,34 +244,33 @@ class TaxonomyController extends BaseController
      * Use the `id` key of each object in the response to search for a Product.
      * Supports text input in English, Dutch and German.
      *
-     * @param string $text Search text for a location name in either English, Dutch, German, French
-     *        and Italian. Partial recognition of 20 other languages.
-     * @param string|null $acceptLanguage The language the client prefers
-     * @param string|null $xCustomerId In order to identify the ATS end-user, some requests (to HAPI
-     *        Job Post in particular) require this header. You need to provide this to be able to
-     *        work with Contracts functionality (adding contract, retrieving channels, ordering
-     *        campaigns with contracts).
+     * @param array $options Array with all options for search
      *
-     * @return Models\LocationModel[] Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function searchLocations(string $text, ?string $acceptLanguage = null, ?string $xCustomerId = null): array
+    public function searchLocations(array $options): ApiResponse
     {
+        //check that all required arguments are provided
+        if (!isset($options['text'])) {
+            throw new \InvalidArgumentException("One or more required arguments were NULL.");
+        }
+
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/products/location/search/';
 
         //process query parameters
         ApiHelper::appendUrlWithQueryParameters($_queryUrl, [
-            'text'            => $text,
+            'text'            => $this->val($options, 'text'),
         ]);
 
         //prepare headers
         $_headers = [
             'user-agent'    => self::$userAgent,
             'Accept'        => 'application/json',
-            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($acceptLanguage),
-            'X-Customer-Id'   => $xCustomerId
+            'Accept-Language' => Models\AcceptLanguageEnum::checkValue($this->val($options, 'acceptLanguage')),
+            'X-Customer-Id'   => $this->val($options, 'xCustomerId')
         ];
 
         $_httpRequest = new HttpRequest(HttpMethod::GET, $_headers, $_queryUrl);
@@ -302,9 +282,6 @@ class TaxonomyController extends BaseController
         if ($this->getHttpCallBack() != null) {
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
-
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
 
         // and invoke the API call request to fetch the response
         try {
@@ -325,7 +302,7 @@ class TaxonomyController extends BaseController
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw $this->createExceptionFromJson(
-                '\\HAPILib\\Exceptions\\GenericErrorException',
+                '\\HAPI\\Exceptions\\GenericErrorException',
                 'Bad Request',
                 $_httpRequest,
                 $_httpResponse
@@ -334,17 +311,18 @@ class TaxonomyController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'LocationModel', 1);
+        $deserializedResponse = ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'LocationModel', 1);
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
      * Retrieve all Education Level possible values.
      *
-     * @return Models\EducationLevelModel[] Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveEducationLevels(): array
+    public function retrieveEducationLevels(): ApiResponse
     {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/taxonomy/education-levels';
@@ -365,9 +343,6 @@ class TaxonomyController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -386,17 +361,24 @@ class TaxonomyController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'EducationLevelModel', 1);
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'EducationLevelModel',
+            1
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
     }
 
     /**
      * Retrieve all Seniority possible values.
      *
-     * @return Models\SeniorityModel[] Response from the API call
+     * @return ApiResponse Response from the API call
      *
      * @throws ApiException Thrown if API call fails
      */
-    public function retrieveSeniorities(): array
+    public function retrieveSeniorities(): ApiResponse
     {
         //prepare query string for API call
         $_queryUrl = $this->config->getBaseUri() . '/taxonomy/seniority';
@@ -417,9 +399,6 @@ class TaxonomyController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        // Enable or disable SSL certificate validation
-        self::$request->verifyPeer(!$this->config->getSkipSslVerification());
-
         // and invoke the API call request to fetch the response
         try {
             $response = self::$request->get($_httpRequest->getQueryUrl(), $_httpRequest->getHeaders());
@@ -438,6 +417,28 @@ class TaxonomyController extends BaseController
 
         //handle errors defined at the API level
         $this->validateResponse($_httpResponse, $_httpRequest);
-        return ApiHelper::mapClass($_httpRequest, $_httpResponse, $response->body, 'SeniorityModel', 1);
+        $deserializedResponse = ApiHelper::mapClass(
+            $_httpRequest,
+            $_httpResponse,
+            $response->body,
+            'SeniorityModel',
+            1
+        );
+        return ApiResponse::createFromContext($response->body, $deserializedResponse, $_httpContext);
+    }
+
+    /**
+     * Array access utility method
+     * @param  array          $arr         Array of values to read from
+     * @param  string         $key         Key to get the value from the array
+     * @param  mixed|null     $default     Default value to use if the key was not found
+     * @return mixed
+     */
+    private function val(array $arr, string $key, $default = null)
+    {
+        if (isset($arr[$key])) {
+            return is_bool($arr[$key]) ? var_export($arr[$key], true) : $arr[$key];
+        }
+        return $default;
     }
 }

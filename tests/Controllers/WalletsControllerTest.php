@@ -5,18 +5,18 @@
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Tests;
+namespace HAPI\Tests;
 
-use HAPILib\Exceptions\ApiException;
-use HAPILib\Exceptions;
-use HAPILib\ApiHelper;
-use HAPILib\Models;
+use HAPI\Exceptions\ApiException;
+use HAPI\Exceptions;
+use HAPI\ApiHelper;
+use HAPI\Models;
 use PHPUnit\Framework\TestCase;
 
 class WalletsControllerTest extends TestCase
 {
     /**
-     * @var \HAPILib\Controllers\WalletsController Controller instance
+     * @var \HAPI\Controllers\WalletsController Controller instance
      */
     protected static $controller;
 
@@ -46,7 +46,7 @@ class WalletsControllerTest extends TestCase
         // Set callback and perform API call
         $result = null;
         try {
-            $result = self::$controller->postWalletPaymentIntent($body);
+            $result = self::$controller->postWalletPaymentIntent($body)->getResult();
         } catch (ApiException $e) {
         }
 
@@ -78,7 +78,7 @@ class WalletsControllerTest extends TestCase
         // Set callback and perform API call
         $result = null;
         try {
-            $result = self::$controller->getWalletProcess($target);
+            $result = self::$controller->getWalletProcess($target)->getResult();
         } catch (ApiException $e) {
         }
 

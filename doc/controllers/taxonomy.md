@@ -1,12 +1,12 @@
 # Taxonomy
 
 ```php
-$taxonomyTrue = $client->getTaxonomyTrue();
+$taxonomyController = $client->getTaxonomyController();
 ```
 
 ## Class Name
 
-`TaxonomyTrue`
+`TaxonomyController`
 
 ## Methods
 
@@ -58,7 +58,7 @@ $collect['acceptLanguage'] = $acceptLanguage;
 $xCustomerId = 'X-Customer-Id2';
 $collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $taxonomyTrue->listIndustries($collect);
+$apiResponse = $taxonomyController->listIndustries($collect);
 ```
 
 ## Example Response *(as JSON)*
@@ -272,7 +272,7 @@ function retrieveEducationLevels(): ApiResponse
 ## Example Usage
 
 ```php
-$apiResponse = $taxonomyTrue->retrieveEducationLevels();
+$apiResponse = $taxonomyController->retrieveEducationLevels();
 ```
 
 ## Example Response *(as JSON)*
@@ -325,7 +325,7 @@ $collect['acceptLanguage'] = $acceptLanguage;
 $xCustomerId = 'X-Customer-Id2';
 $collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $taxonomyTrue->retrieveJobFunctionsTree($collect);
+$apiResponse = $taxonomyController->retrieveJobFunctionsTree($collect);
 ```
 
 ## Example Response *(as JSON)*
@@ -362,7 +362,7 @@ function retrieveSeniorities(): ApiResponse
 ## Example Usage
 
 ```php
-$apiResponse = $taxonomyTrue->retrieveSeniorities();
+$apiResponse = $taxonomyController->retrieveSeniorities();
 ```
 
 ## Example Response *(as JSON)*
@@ -504,7 +504,7 @@ $collect['acceptLanguage'] = $acceptLanguage;
 $xCustomerId = 'X-Customer-Id2';
 $collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $taxonomyTrue->searchJobTitles($collect);
+$apiResponse = $taxonomyController->searchJobTitles($collect);
 ```
 
 
@@ -545,7 +545,7 @@ $collect['acceptLanguage'] = $acceptLanguage;
 $xCustomerId = 'X-Customer-Id2';
 $collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $taxonomyTrue->searchLocations($collect);
+$apiResponse = $taxonomyController->searchLocations($collect);
 ```
 
 ## Example Response *(as JSON)*

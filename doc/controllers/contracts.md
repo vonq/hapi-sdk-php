@@ -1,12 +1,12 @@
 # Contracts
 
 ```php
-$contractsTrue = $client->getContractsTrue();
+$contractsController = $client->getContractsController();
 ```
 
 ## Class Name
 
-`ContractsTrue`
+`ContractsController`
 
 ## Methods
 
@@ -65,7 +65,7 @@ $body->setPurchasePrice(new Models\PurchasePriceModel(
 ));
 $collect['body'] = $body;
 
-$apiResponse = $contractsTrue->createContract($collect);
+$apiResponse = $contractsController->createContract($collect);
 ```
 
 ## Errors
@@ -110,7 +110,7 @@ $collect['contractId'] = $contractId;
 $xCustomerId = 'X-Customer-Id2';
 $collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $contractsTrue->deleteContract($collect);
+$apiResponse = $contractsController->deleteContract($collect);
 ```
 
 ## Errors
@@ -162,7 +162,7 @@ $body->setTerm('Example term text');
 $body->setCredentials(HAPI\ApiHelper::deserialize('{"key1":"val1","key2":"val2"}'));
 $collect['body'] = $body;
 
-$apiResponse = $contractsTrue->listAutocompleteValues($collect);
+$apiResponse = $contractsController->listAutocompleteValues($collect);
 ```
 
 ## Example Response *(as JSON)*
@@ -225,7 +225,7 @@ $collect['limit'] = $limit;
 $offset = 0;
 $collect['offset'] = $offset;
 
-$apiResponse = $contractsTrue->listContracts($collect);
+$apiResponse = $contractsController->listContracts($collect);
 ```
 
 
@@ -259,7 +259,7 @@ $collect['contractId'] = $contractId;
 $xCustomerId = 'X-Customer-Id2';
 $collect['xCustomerId'] = $xCustomerId;
 
-$apiResponse = $contractsTrue->retrieveContract($collect);
+$apiResponse = $contractsController->retrieveContract($collect);
 ```
 
 ## Errors
@@ -307,6 +307,6 @@ $collect['limit'] = $limit;
 $offset = 0;
 $collect['offset'] = $offset;
 
-$apiResponse = $contractsTrue->retrieveMultipleContracts($collect);
+$apiResponse = $contractsController->retrieveMultipleContracts($collect);
 ```
 

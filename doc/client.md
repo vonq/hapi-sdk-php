@@ -39,17 +39,17 @@ API calls return an `ApiResponse` object that includes the following fields:
 
 ## VONQ Hiring API Client
 
-The gateway for the SDK. This class acts as a factory for the Trues and also holds the configuration of the SDK.
+The gateway for the SDK. This class acts as a factory for the Controllers and also holds the configuration of the SDK.
 
-## Trues
+## Controllers
 
 | Name | Description |
 |  --- | --- |
-| getCampaignsTrue() | Gets CampaignsTrue |
-| getChannelsTrue() | Gets ChannelsTrue |
-| getContractGroupsTrue() | Gets ContractGroupsTrue |
-| getContractsTrue() | Gets ContractsTrue |
-| getProductsTrue() | Gets ProductsTrue |
-| getTaxonomyTrue() | Gets TaxonomyTrue |
-| getWalletsTrue() | Gets WalletsTrue |
+| getCampaignsController() | Gets CampaignsController |
+| getChannelsController() | Gets ChannelsController |
+| getContractGroupsController() | Gets ContractGroupsController |
+| getContractsController() | Gets ContractsController |
+| getProductsController() | Gets ProductsController |
+| getTaxonomyController() | Gets TaxonomyController |
+| getWalletsController() | Gets WalletsController |
 

@@ -1,12 +1,12 @@
 # Channels
 
 ```php
-$channelsTrue = $client->getChannelsTrue();
+$channelsController = $client->getChannelsController();
 ```
 
 ## Class Name
 
-`ChannelsTrue`
+`ChannelsController`
 
 ## Methods
 
@@ -56,7 +56,7 @@ $collect['offset'] = $offset;
 $acceptLanguage = Models\AcceptLanguageEnum::NL;
 $collect['acceptLanguage'] = $acceptLanguage;
 
-$apiResponse = $channelsTrue->listChannels($collect);
+$apiResponse = $channelsController->listChannels($collect);
 ```
 
 ## Example Response *(as JSON)*
@@ -119,7 +119,7 @@ $collect['xCustomerId'] = $xCustomerId;
 $acceptLanguage = Models\AcceptLanguageEnum::NL;
 $collect['acceptLanguage'] = $acceptLanguage;
 
-$apiResponse = $channelsTrue->retrieveChannel($collect);
+$apiResponse = $channelsController->retrieveChannel($collect);
 ```
 
 ## Errors

@@ -5,18 +5,18 @@
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Tests;
+namespace HAPI\Tests;
 
-use HAPILib\Exceptions\ApiException;
-use HAPILib\Exceptions;
-use HAPILib\ApiHelper;
-use HAPILib\Models;
+use HAPI\Exceptions\ApiException;
+use HAPI\Exceptions;
+use HAPI\ApiHelper;
+use HAPI\Models;
 use PHPUnit\Framework\TestCase;
 
 class CampaignsControllerTest extends TestCase
 {
     /**
-     * @var \HAPILib\Controllers\CampaignsController Controller instance
+     * @var \HAPI\Controllers\CampaignsController Controller instance
      */
     protected static $controller;
 
@@ -42,14 +42,15 @@ request against the endpoint `/campaigns`
     public function testTestListCampaigns()
     {
         // Parameters for the API call
-        $companyId = null;
-        $limit = null;
-        $offset = null;
+        $input = array();
+        $input['companyId'] = null;
+        $input['limit'] = null;
+        $input['offset'] = null;
 
         // Set callback and perform API call
         $result = null;
         try {
-            $result = self::$controller->listCampaigns($companyId, $limit, $offset);
+            $result = self::$controller->listCampaigns($input)->getResult();
         } catch (ApiException $e) {
         }
 

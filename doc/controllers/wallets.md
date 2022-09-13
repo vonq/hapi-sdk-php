@@ -1,12 +1,12 @@
 # Wallets
 
 ```php
-$walletsTrue = $client->getWalletsTrue();
+$walletsController = $client->getWalletsController();
 ```
 
 ## Class Name
 
-`WalletsTrue`
+`WalletsController`
 
 ## Methods
 
@@ -40,7 +40,7 @@ function getWallet(string $xCustomerId): ApiResponse
 
 ```php
 $xCustomerId = 'X-Customer-Id2';
-$apiResponse = $walletsTrue->getWallet($xCustomerId);
+$apiResponse = $walletsController->getWallet($xCustomerId);
 ```
 
 ## Example Response *(as JSON)*
@@ -87,7 +87,7 @@ function getWalletProcess(?string $target = null): ApiResponse
 
 ```php
 $target = 'target2';
-$apiResponse = $walletsTrue->getWalletProcess($target);
+$apiResponse = $walletsController->getWalletProcess($target);
 ```
 
 ## Errors
@@ -217,7 +217,7 @@ $collect['returnUrl'] = $returnUrl;
 $successCallbackUrl = 'successCallbackUrl8';
 $collect['successCallbackUrl'] = $successCallbackUrl;
 
-$apiResponse = $walletsTrue->getWalletTopupHtml($collect);
+$apiResponse = $walletsController->getWalletTopupHtml($collect);
 ```
 
 ## Errors
@@ -261,7 +261,7 @@ $body = new Models\WalletRequestModel(
 );
 $collect['body'] = $body;
 
-$apiResponse = $walletsTrue->postWallet($collect);
+$apiResponse = $walletsController->postWallet($collect);
 ```
 
 ## Example Response *(as JSON)*
@@ -320,7 +320,7 @@ $body = new Models\PaymentIntentModel(
 $body->setQueryParamsAmount(238);
 $body->setSuccessCallbackUrl('successCallbackUrl8');
 $body->setAgreeTerms(false);
-$apiResponse = $walletsTrue->postWalletPaymentIntent($body);
+$apiResponse = $walletsController->postWalletPaymentIntent($body);
 ```
 
 ## Errors
@@ -361,7 +361,7 @@ $collect['xCustomerId'] = $xCustomerId;
 $partnerReturnUrl = 'partnerReturnUrl4';
 $collect['partnerReturnUrl'] = $partnerReturnUrl;
 
-$apiResponse = $walletsTrue->postWalletWalletIdBillingPortal($collect);
+$apiResponse = $walletsController->postWalletWalletIdBillingPortal($collect);
 ```
 
 ## Example Response *(as JSON)*
