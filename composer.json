@@ -1,5 +1,6 @@
 {
-    "name": "vonq/hapi-sdk",
+    "name": "apimatic/vonqhiringapi",
+    "description": "The VONQ Hiring API aims to provide all the basic VONQ Services through a comprehensive [RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer) API. Systems would be able to consume these services to list available VONQ Products and create Campaigns based on those Products.  ## Overview  Our latest API version is currently version 2. It offers more search facets and filters, a new recommendation engine, and a richer, evolving set of taxonomies so your users can find the most relevant, best-performing products for their vacancies.  ### Schema  The API can be accessed at `https://marketplace.api.vonq.com` and is HTTPS-only. All requests must be encoded in JSON, and all responses will be encoded in JSON as well.  ### Environments  We currently support two different environments for the Hiring API. The `Production` environment is connected to our other `Production` backend services. That means that any order sent to this environment is considered final and processed.  At the same time we support a `Sandbox` environment, accessible via `https://marketplace-sandbox.api.vonq.com`. You can safely test your API implementation here. None of the orders sent to this environment are considered final, so they will not be executed nor charged. This environment requires a different API Token to operate, which will be provided to you when available.   ### HTTP Methods  Whenever possible, the Hiring API uses RESTful `HTTP` methods for its actions. | HTTP Method | Description                                      | |:----------|--------------------------------------------------| | `GET`     | Retrieve one or several Resources                | | `POST`    | Create a new Resource. Eg: Create a new Campaign | | `PATCH`   | Change part of the structure of a Resource       |  ### Pagination  Lists of multiple Resources will automatically paginate every 50 items by default. You can retrieve more elements by specifying a value for the `offset` parameter (the default `offset` is 0). If you need to change the number of elements returned by the default pagination, you can do so using the `limit` query parameter.  Example:  ```  curl https://marketplace.api.vonq.com/portfolio?limit=100&offset=400  ```  ### User-Agent  We recommend that every request made to the Hiring API includes a `User-Agent` header. This is not a mandatory requirement at the moment, but this may change in the future. Specifying your User-Agent will allow us to provide you with more effective support.  ### Error Codes  The Hiring API uses standard HTTP Status codes for its responses to inform your system how the Hiring API handled your request. Response codes in the range of `2xx` represent success codes (Eg, `201 Created`). Codes in the `4xx` range indicates an error on the request performed, usually because the payload used doesn't contain all the necessary information or is in an invalid format (Eg, `400 Bad Request`). The error codes in the `5xx` range mean that an error occurred in the Hiring API and we were not able to handle your request. It can also happen when our services are temporarily not available (Eg, `500 Internal Server Error`). These should be rare. We log these errors and investigate them as soon as possible.  The following Response coded are shared amongst all endpoints:  + Response 400 (application/json)          {             \"requestBody\": \"The request does not contain valid JSON.\"         }  + Response 401 (application/json)          {             \"authentication\": \"Authentication Required\"         }  + Response 401 (application/json)          {             \"authentication\": \"Username could not be found.\"         }  + Response 500 (application/json)  ### Caching  We recommend avoiding using cached versions of portfolio and taxonomy data since it is subject to regular updates. Campaign ordeproducts  invalid taxonomy will be rejected. If you do need to use caching, we recommend refreshing it daily.  ### Rate Limits  To prevent abuse and ensure service stability, all the API requests are rate limited. Rate limits specify the maximum number of API calls (60) that can be made in 60 seconds. These limits reset every 60 seconds. User of the API can make up to 60 request per 60 seconds.  If a user encounters the rate limit, HAPI will send a '429 Too many requests' error message.",
     "type": "library",
     "keywords": [
         "VONQ Hiring API",
@@ -24,20 +25,25 @@
         "apimatic/jsonmapper": "^3.0.4"
     },
     "require-dev": {
+        "squizlabs/php_codesniffer": "^3.5",
+        "phan/phan": "5.3.1",
         "phpunit/phpunit": "^7.5 || ^8.5"
     },
     "autoload": {
         "psr-4": {
-            "HAPILib\\": "src/"
+            "VONQHiringAPILib\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "HAPILib\\Tests\\": "tests/"
+            "VONQHiringAPILib\\Tests\\": "tests/"
         }
     },
     "scripts": {
         "test": "phpunit",
-        "test-coverage": "phpunit --coverage-html=coverage"
+        "test-coverage": "phpunit --coverage-html=coverage",
+        "lint": "phpcs --standard=phpcs-ruleset.xml src/",
+        "lint-fix": "phpcbf --standard=phpcs-ruleset.xml src/",
+        "analyze": "phan --allow-polyfill-parser"
     }
 }

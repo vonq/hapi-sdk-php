@@ -12,8 +12,8 @@ $productsController = $client->getProductsController();
 
 * [Calculate Order Delivery Time](../../doc/controllers/products.md#calculate-order-delivery-time)
 * [Retrieve Multiple Products](../../doc/controllers/products.md#retrieve-multiple-products)
-* [Retrieve Single Product](../../doc/controllers/products.md#retrieve-single-product)
 * [Search Products](../../doc/controllers/products.md#search-products)
+* [Retrieve Single Product](../../doc/controllers/products.md#retrieve-single-product)
 
 
 # Calculate Order Delivery Time
@@ -27,7 +27,7 @@ Learn why some products take up to 10 days to setup: - https://hapisupport.vonq.
 Note that delivery time is only applicable for Job Marketing products and it won't appear when using HAPI Job Post and connecting your contracts.
 
 ```php
-function calculateOrderDeliveryTime(array $productsIds, ?string $xCustomerId = null): TotalDeliveryTimeModel
+function calculateOrderDeliveryTime(array $productsIds, ?string $xCustomerId = null): TotalDeliveryTime
 ```
 
 ## Parameters
@@ -39,7 +39,7 @@ function calculateOrderDeliveryTime(array $productsIds, ?string $xCustomerId = n
 
 ## Response Type
 
-[`TotalDeliveryTimeModel`](../../doc/models/total-delivery-time-model.md)
+[`TotalDeliveryTime`](../../doc/models/total-delivery-time.md)
 
 ## Example Usage
 
@@ -67,7 +67,7 @@ function retrieveMultipleProducts(
     array $productsIds,
     ?string $acceptLanguage = null,
     ?string $xCustomerId = null
-): PaginatedProductListModel
+): PaginatedProductList
 ```
 
 ## Parameters
@@ -80,7 +80,7 @@ function retrieveMultipleProducts(
 
 ## Response Type
 
-[`PaginatedProductListModel`](../../doc/models/paginated-product-list-model.md)
+[`PaginatedProductList`](../../doc/models/paginated-product-list.md)
 
 ## Example Usage
 
@@ -89,46 +89,6 @@ $productsIds = ['products_ids7', 'products_ids8'];
 
 $result = $productsController->retrieveMultipleProducts($productsIds);
 ```
-
-
-# Retrieve Single Product
-
-Sometimes you already have access to the Identification code of any particular Product and you want to retrieve the most up-to-date information about it.
-Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
-
-```php
-function retrieveSingleProduct(
-    string $productId,
-    ?string $acceptLanguage = null,
-    ?string $xCustomerId = null
-): ProductModel
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `productId` | `string` | Template, Required | The ID of the product you want to retrieve |
-| `acceptLanguage` | [`?string (AcceptLanguageEnum)`](../../doc/models/accept-language-enum.md) | Header, Optional | The language the client prefers |
-| `xCustomerId` | `?string` | Header, Optional | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
-
-## Response Type
-
-[`ProductModel`](../../doc/models/product-model.md)
-
-## Example Usage
-
-```php
-$productId = 'product_id4';
-
-$result = $productsController->retrieveSingleProduct($productId);
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 404 | Not Found | [`GenericErrorException`](../../doc/models/generic-error-exception.md) |
 
 
 # Search Products
@@ -161,7 +121,7 @@ function searchProducts(
     ?bool $excludeRecommended = false,
     ?string $acceptLanguage = null,
     ?string $xCustomerId = null
-): PaginatedProductListModel
+): PaginatedProductList
 ```
 
 ## Parameters
@@ -188,7 +148,7 @@ function searchProducts(
 
 ## Response Type
 
-[`PaginatedProductListModel`](../../doc/models/paginated-product-list-model.md)
+[`PaginatedProductList`](../../doc/models/paginated-product-list.md)
 
 ## Example Usage
 
@@ -204,4 +164,44 @@ $result = $productsController->searchProducts(null, null, null, null, null, null
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 400 | Bad Request | [`GenericErrorException`](../../doc/models/generic-error-exception.md) |
+
+
+# Retrieve Single Product
+
+Sometimes you already have access to the Identification code of any particular Product and you want to retrieve the most up-to-date information about it.
+Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
+
+```php
+function retrieveSingleProduct(
+    string $productId,
+    ?string $acceptLanguage = null,
+    ?string $xCustomerId = null
+): Product
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `productId` | `string` | Template, Required | The ID of the product you want to retrieve |
+| `acceptLanguage` | [`?string (AcceptLanguageEnum)`](../../doc/models/accept-language-enum.md) | Header, Optional | The language the client prefers |
+| `xCustomerId` | `?string` | Header, Optional | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
+
+## Response Type
+
+[`Product`](../../doc/models/product.md)
+
+## Example Usage
+
+```php
+$productId = 'product_id4';
+
+$result = $productsController->retrieveSingleProduct($productId);
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 404 | Not Found | [`GenericErrorException`](../../doc/models/generic-error-exception.md) |
 

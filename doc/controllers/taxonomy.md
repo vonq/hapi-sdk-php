@@ -11,11 +11,11 @@ $taxonomyController = $client->getTaxonomyController();
 ## Methods
 
 * [List Industries](../../doc/controllers/taxonomy.md#list-industries)
-* [Retrieve Education Levels](../../doc/controllers/taxonomy.md#retrieve-education-levels)
 * [Retrieve Job Functions Tree](../../doc/controllers/taxonomy.md#retrieve-job-functions-tree)
-* [Retrieve Seniorities](../../doc/controllers/taxonomy.md#retrieve-seniorities)
 * [Search Job Titles](../../doc/controllers/taxonomy.md#search-job-titles)
 * [Search Locations](../../doc/controllers/taxonomy.md#search-locations)
+* [Retrieve Education Levels](../../doc/controllers/taxonomy.md#retrieve-education-levels)
+* [Retrieve Seniorities](../../doc/controllers/taxonomy.md#retrieve-seniorities)
 
 
 # List Industries
@@ -44,7 +44,7 @@ function listIndustries(
 
 ## Response Type
 
-[`IndustryModel[]`](../../doc/models/industry-model.md)
+[`Industry[]`](../../doc/models/industry.md)
 
 ## Example Usage
 
@@ -251,41 +251,6 @@ $result = $taxonomyController->listIndustries($limit, $offset);
 ```
 
 
-# Retrieve Education Levels
-
-Retrieve all Education Level possible values.
-
-```php
-function retrieveEducationLevels(): array
-```
-
-## Response Type
-
-[`EducationLevelModel[]`](../../doc/models/education-level-model.md)
-
-## Example Usage
-
-```php
-$result = $taxonomyController->retrieveEducationLevels();
-```
-
-## Example Response *(as JSON)*
-
-```json
-[
-  {
-    "id": 1,
-    "name": [
-      {
-        "languageCode": "nl_NL",
-        "value": "Master / Postdoctoraal"
-      }
-    ]
-  }
-]
-```
-
-
 # Retrieve Job Functions Tree
 
 This endpoint returns a tree-like structure of supported Job Functions that can be used to search for Products.
@@ -306,7 +271,7 @@ function retrieveJobFunctionsTree(?string $acceptLanguage = null, ?string $xCust
 
 ## Response Type
 
-[`JobFunctionTreeModel[]`](../../doc/models/job-function-tree-model.md)
+[`JobFunctionTree[]`](../../doc/models/job-function-tree.md)
 
 ## Example Usage
 
@@ -333,6 +298,278 @@ $result = $taxonomyController->retrieveJobFunctionsTree();
 ```
 
 
+# Search Job Titles
+
+This endpoint takes any text as input and returns a list of supported Job Titles matching the query, ordered by popularity.
+Use the `id` key of each object in the response to search for a Product.
+Currently, we support 4,000 job titles for each of the following languages: English, Dutch and German.
+Each Job Title is associated with a [**`Job Function`**](b3A6MzM0NDA3MzU-job-functions) in a many-to-one fashion.
+Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
+
+```php
+function searchJobTitles(
+    string $text,
+    ?int $limit = 50,
+    ?int $offset = 0,
+    ?string $acceptLanguage = null,
+    ?string $xCustomerId = null
+): PaginatedJobTitleList
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `text` | `string` | Query, Required | Search text for a job title name |
+| `limit` | `?int` | Query, Optional | Number of results to return per page.<br>**Default**: `50`<br>**Constraints**: `>= 0`, `<= 100` |
+| `offset` | `?int` | Query, Optional | The initial index from which to return the results.<br>**Default**: `0`<br>**Constraints**: `>= 0` |
+| `acceptLanguage` | [`?string (AcceptLanguageEnum)`](../../doc/models/accept-language-enum.md) | Header, Optional | The language the client prefers |
+| `xCustomerId` | `?string` | Header, Optional | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
+
+## Response Type
+
+[`PaginatedJobTitleList`](../../doc/models/paginated-job-title-list.md)
+
+## Example Usage
+
+```php
+$text = 'text0';
+$limit = 10;
+$offset = 0;
+
+$result = $taxonomyController->searchJobTitles($text, $limit, $offset);
+```
+
+
+# Search Locations
+
+This endpoint takes any text as input and returns a list of Locations matching the query, ordered by popularity.
+Each response will include the entire world as a Location, even no Locations match the text query.
+Use the `id` key of each object in the response to search for a Product.
+Supports text input in English, Dutch and German.
+
+```php
+function searchLocations(string $text, ?string $acceptLanguage = null, ?string $xCustomerId = null): array
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `text` | `string` | Query, Required | Search text for a location name in either English, Dutch, German, French and Italian. Partial recognition of 20 other languages. |
+| `acceptLanguage` | [`?string (AcceptLanguageEnum)`](../../doc/models/accept-language-enum.md) | Header, Optional | The language the client prefers |
+| `xCustomerId` | `?string` | Header, Optional | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
+
+## Response Type
+
+[`Location[]`](../../doc/models/location.md)
+
+## Example Usage
+
+```php
+$text = 'text0';
+
+$result = $taxonomyController->searchLocations($text);
+```
+
+## Example Response *(as JSON)*
+
+```json
+[
+  {
+    "id": 2395,
+    "fully_qualified_place_name": "United States",
+    "canonical_name": "United States",
+    "place_type": [
+      "country"
+    ],
+    "within": {
+      "id": 2616,
+      "fully_qualified_place_name": "North America",
+      "canonical_name": "North America",
+      "place_type": [
+        "continent"
+      ],
+      "within": {
+        "id": 2425,
+        "fully_qualified_place_name": "Welt",
+        "canonical_name": "International",
+        "place_type": [
+          "world"
+        ],
+        "bounding_box": []
+      },
+      "bounding_box": []
+    },
+    "bounding_box": []
+  },
+  {
+    "id": 2546,
+    "fully_qualified_place_name": "US Virgin Islands",
+    "canonical_name": "US Virgin Islands",
+    "place_type": [
+      "country",
+      "region"
+    ],
+    "within": {
+      "id": 2616,
+      "fully_qualified_place_name": "North America",
+      "canonical_name": "North America",
+      "place_type": [
+        "continent"
+      ],
+      "within": {
+        "id": 2425,
+        "fully_qualified_place_name": "Welt",
+        "canonical_name": "International",
+        "place_type": [
+          "world"
+        ],
+        "bounding_box": []
+      },
+      "bounding_box": []
+    },
+    "bounding_box": []
+  },
+  {
+    "id": 2501,
+    "fully_qualified_place_name": "US Minor Outlying Islands",
+    "canonical_name": "US Minor Outlying Islands",
+    "place_type": [
+      "country",
+      "region"
+    ],
+    "bounding_box": []
+  },
+  {
+    "id": 26698,
+    "fully_qualified_place_name": "Statesboro, Georgia, United States",
+    "canonical_name": "Statesboro",
+    "place_type": [
+      "place"
+    ],
+    "within": {
+      "id": 2395,
+      "fully_qualified_place_name": "United States",
+      "canonical_name": "United States",
+      "place_type": [
+        "country"
+      ],
+      "within": {
+        "id": 2616,
+        "fully_qualified_place_name": "North America",
+        "canonical_name": "North America",
+        "place_type": [
+          "continent"
+        ],
+        "within": {
+          "id": 2425,
+          "fully_qualified_place_name": "Welt",
+          "canonical_name": "International",
+          "place_type": [
+            "world"
+          ],
+          "bounding_box": []
+        },
+        "bounding_box": []
+      },
+      "bounding_box": []
+    },
+    "area": 2195,
+    "bounding_box": [
+      -81.976425,
+      32.187913,
+      -81.52575,
+      32.653433
+    ]
+  },
+  {
+    "id": 30620,
+    "fully_qualified_place_name": "State College, Pennsylvania, United States",
+    "canonical_name": "State College",
+    "place_type": [
+      "place"
+    ],
+    "within": {
+      "id": 2395,
+      "fully_qualified_place_name": "United States",
+      "canonical_name": "United States",
+      "place_type": [
+        "country"
+      ],
+      "within": {
+        "id": 2616,
+        "fully_qualified_place_name": "North America",
+        "canonical_name": "North America",
+        "place_type": [
+          "continent"
+        ],
+        "within": {
+          "id": 2425,
+          "fully_qualified_place_name": "Welt",
+          "canonical_name": "International",
+          "place_type": [
+            "world"
+          ],
+          "bounding_box": []
+        },
+        "bounding_box": []
+      },
+      "bounding_box": []
+    },
+    "area": 254,
+    "bounding_box": [
+      -77.972841,
+      40.729539,
+      -77.786646,
+      40.874866
+    ]
+  }
+]
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Bad Request | [`GenericErrorException`](../../doc/models/generic-error-exception.md) |
+
+
+# Retrieve Education Levels
+
+Retrieve all Education Level possible values.
+
+```php
+function retrieveEducationLevels(): array
+```
+
+## Response Type
+
+[`EducationLevel[]`](../../doc/models/education-level.md)
+
+## Example Usage
+
+```php
+$result = $taxonomyController->retrieveEducationLevels();
+```
+
+## Example Response *(as JSON)*
+
+```json
+[
+  {
+    "id": 1,
+    "name": [
+      {
+        "languageCode": "nl_NL",
+        "value": "Master / Postdoctoraal"
+      }
+    ]
+  }
+]
+```
+
+
 # Retrieve Seniorities
 
 Retrieve all Seniority possible values.
@@ -343,7 +580,7 @@ function retrieveSeniorities(): array
 
 ## Response Type
 
-[`SeniorityModel[]`](../../doc/models/seniority-model.md)
+[`Seniority[]`](../../doc/models/seniority.md)
 
 ## Example Usage
 
@@ -442,85 +679,4 @@ $result = $taxonomyController->retrieveSeniorities();
   }
 ]
 ```
-
-
-# Search Job Titles
-
-This endpoint takes any text as input and returns a list of supported Job Titles matching the query, ordered by popularity.
-Use the `id` key of each object in the response to search for a Product.
-Currently, we support 4,000 job titles for each of the following languages: English, Dutch and German.
-Each Job Title is associated with a [**`Job Function`**](b3A6MzM0NDA3MzU-job-functions) in a many-to-one fashion.
-Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
-
-```php
-function searchJobTitles(
-    string $text,
-    ?int $limit = 50,
-    ?int $offset = 0,
-    ?string $acceptLanguage = null,
-    ?string $xCustomerId = null
-): PaginatedJobTitleListModel
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `text` | `string` | Query, Required | Search text for a job title name |
-| `limit` | `?int` | Query, Optional | Number of results to return per page.<br>**Default**: `50`<br>**Constraints**: `>= 0`, `<= 100` |
-| `offset` | `?int` | Query, Optional | The initial index from which to return the results.<br>**Default**: `0`<br>**Constraints**: `>= 0` |
-| `acceptLanguage` | [`?string (AcceptLanguageEnum)`](../../doc/models/accept-language-enum.md) | Header, Optional | The language the client prefers |
-| `xCustomerId` | `?string` | Header, Optional | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
-
-## Response Type
-
-[`PaginatedJobTitleListModel`](../../doc/models/paginated-job-title-list-model.md)
-
-## Example Usage
-
-```php
-$text = 'text0';
-$limit = 10;
-$offset = 0;
-
-$result = $taxonomyController->searchJobTitles($text, $limit, $offset);
-```
-
-
-# Search Locations
-
-This endpoint takes any text as input and returns a list of Locations matching the query, ordered by popularity.
-Each response will include the entire world as a Location, even no Locations match the text query.
-Use the `id` key of each object in the response to search for a Product.
-Supports text input in English, Dutch and German.
-
-```php
-function searchLocations(string $text, ?string $acceptLanguage = null, ?string $xCustomerId = null): array
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `text` | `string` | Query, Required | Search text for a location name in either English, Dutch, German, French and Italian. Partial recognition of 20 other languages. |
-| `acceptLanguage` | [`?string (AcceptLanguageEnum)`](../../doc/models/accept-language-enum.md) | Header, Optional | The language the client prefers |
-| `xCustomerId` | `?string` | Header, Optional | In order to identify the ATS end-user, some requests (to HAPI Job Post in particular) require this header. You need to provide this to be able to work with Contracts functionality (adding contract, retrieving channels, ordering campaigns with contracts). |
-
-## Response Type
-
-[`LocationModel[]`](../../doc/models/location-model.md)
-
-## Example Usage
-
-```php
-$text = 'text0';
-
-$result = $taxonomyController->searchLocations($text);
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Bad Request | [`GenericErrorException`](../../doc/models/generic-error-exception.md) |
 
