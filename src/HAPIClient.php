@@ -8,9 +8,9 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib;
+namespace HAPI;
 
-use HAPILib\Controllers;
+use HAPI\Trues;
 
 /**
  * HAPI client class
@@ -34,7 +34,6 @@ class HAPIClient implements ConfigurationInterface
     private $retryOnTimeout = ConfigurationDefaults::RETRY_ON_TIMEOUT;
     private $httpStatusCodesToRetry = ConfigurationDefaults::HTTP_STATUS_CODES_TO_RETRY;
     private $httpMethodsToRetry = ConfigurationDefaults::HTTP_METHODS_TO_RETRY;
-    private $skipSslVerification = ConfigurationDefaults::SKIP_SSL_VERIFICATION;
     private $environment = ConfigurationDefaults::ENVIRONMENT;
     private $xAuthToken = ConfigurationDefaults::X_AUTH_TOKEN;
     private $customHeaderAuthenticationManager;
@@ -69,9 +68,6 @@ class HAPIClient implements ConfigurationInterface
         }
         if (isset($configOptions['httpMethodsToRetry'])) {
             $this->httpMethodsToRetry = $configOptions['httpMethodsToRetry'];
-        }
-        if (isset($configOptions['skipSslVerification'])) {
-            $this->skipSslVerification = $configOptions['skipSslVerification'];
         }
         if (isset($configOptions['environment'])) {
             $this->environment = $configOptions['environment'];
@@ -120,9 +116,6 @@ class HAPIClient implements ConfigurationInterface
         }
         if (isset($this->httpMethodsToRetry)) {
             $configMap['httpMethodsToRetry'] = $this->httpMethodsToRetry;
-        }
-        if (isset($this->skipSslVerification)) {
-            $configMap['skipSslVerification'] = $this->skipSslVerification;
         }
         if (isset($this->environment)) {
             $configMap['environment'] = $this->environment;
@@ -190,11 +183,6 @@ class HAPIClient implements ConfigurationInterface
         return $this->httpMethodsToRetry;
     }
 
-    public function getSkipSslVerification(): bool
-    {
-        return $this->skipSslVerification;
-    }
-
     public function getEnvironment(): string
     {
         return $this->environment;
@@ -212,48 +200,40 @@ class HAPIClient implements ConfigurationInterface
      *
      * @return string         Base URI
      */
-    public function getBaseUri(string $server = Server::DEFAULT_): string
+    public function getBaseUri(string $server = Server::SANDBOX): string
     {
         return static::ENVIRONMENT_MAP[$this->environment][$server];
     }
 
     /**
-     * Returns Campaigns Controller
+     * Returns Campaigns True
      */
-    public function getCampaignsController(): Controllers\CampaignsController
+    public function getCampaignsTrue(): Trues\CampaignsTrue
     {
         if ($this->campaigns == null) {
-            $this->campaigns = new Controllers\CampaignsController(
-                $this,
-                $this->authManagers,
-                $this->httpCallback
-            );
+            $this->campaigns = new Trues\CampaignsTrue($this, $this->authManagers, $this->httpCallback);
         }
         return $this->campaigns;
     }
 
     /**
-     * Returns Channels Controller
+     * Returns Channels True
      */
-    public function getChannelsController(): Controllers\ChannelsController
+    public function getChannelsTrue(): Trues\ChannelsTrue
     {
         if ($this->channels == null) {
-            $this->channels = new Controllers\ChannelsController(
-                $this,
-                $this->authManagers,
-                $this->httpCallback
-            );
+            $this->channels = new Trues\ChannelsTrue($this, $this->authManagers, $this->httpCallback);
         }
         return $this->channels;
     }
 
     /**
-     * Returns Contract Groups Controller
+     * Returns Contract Groups True
      */
-    public function getContractGroupsController(): Controllers\ContractGroupsController
+    public function getContractGroupsTrue(): Trues\ContractGroupsTrue
     {
         if ($this->contractGroups == null) {
-            $this->contractGroups = new Controllers\ContractGroupsController(
+            $this->contractGroups = new Trues\ContractGroupsTrue(
                 $this,
                 $this->authManagers,
                 $this->httpCallback
@@ -263,61 +243,45 @@ class HAPIClient implements ConfigurationInterface
     }
 
     /**
-     * Returns Contracts Controller
+     * Returns Contracts True
      */
-    public function getContractsController(): Controllers\ContractsController
+    public function getContractsTrue(): Trues\ContractsTrue
     {
         if ($this->contracts == null) {
-            $this->contracts = new Controllers\ContractsController(
-                $this,
-                $this->authManagers,
-                $this->httpCallback
-            );
+            $this->contracts = new Trues\ContractsTrue($this, $this->authManagers, $this->httpCallback);
         }
         return $this->contracts;
     }
 
     /**
-     * Returns Products Controller
+     * Returns Products True
      */
-    public function getProductsController(): Controllers\ProductsController
+    public function getProductsTrue(): Trues\ProductsTrue
     {
         if ($this->products == null) {
-            $this->products = new Controllers\ProductsController(
-                $this,
-                $this->authManagers,
-                $this->httpCallback
-            );
+            $this->products = new Trues\ProductsTrue($this, $this->authManagers, $this->httpCallback);
         }
         return $this->products;
     }
 
     /**
-     * Returns Taxonomy Controller
+     * Returns Taxonomy True
      */
-    public function getTaxonomyController(): Controllers\TaxonomyController
+    public function getTaxonomyTrue(): Trues\TaxonomyTrue
     {
         if ($this->taxonomy == null) {
-            $this->taxonomy = new Controllers\TaxonomyController(
-                $this,
-                $this->authManagers,
-                $this->httpCallback
-            );
+            $this->taxonomy = new Trues\TaxonomyTrue($this, $this->authManagers, $this->httpCallback);
         }
         return $this->taxonomy;
     }
 
     /**
-     * Returns Wallets Controller
+     * Returns Wallets True
      */
-    public function getWalletsController(): Controllers\WalletsController
+    public function getWalletsTrue(): Trues\WalletsTrue
     {
         if ($this->wallets == null) {
-            $this->wallets = new Controllers\WalletsController(
-                $this,
-                $this->authManagers,
-                $this->httpCallback
-            );
+            $this->wallets = new Trues\WalletsTrue($this, $this->authManagers, $this->httpCallback);
         }
         return $this->wallets;
     }
@@ -329,10 +293,12 @@ class HAPIClient implements ConfigurationInterface
      */
     private const ENVIRONMENT_MAP = [
         Environment::PRODUCTION => [
-            Server::DEFAULT_ => 'https://marketplace.api.vonq.com',
+            Server::PRODUCTION => 'https://marketplace.api.vonq.com',
+            Server::SANDBOX => 'https://marketplace-sandbox.api.vonq.com',
         ],
         Environment::SANDBOX => [
-            Server::DEFAULT_ => 'https://marketplace-sandbox.api.vonq.com',
+            Server::SANDBOX => 'https://marketplace-sandbox.api.vonq.com',
+            Server::PRODUCTION => 'https://marketplace.api.vonq.com',
         ],
     ];
 }

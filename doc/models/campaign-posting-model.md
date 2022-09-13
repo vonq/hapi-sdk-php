@@ -17,9 +17,9 @@
 
 ```json
 {
-  "name": null,
-  "clicks": null,
-  "productId": null
+  "name": "Linkedin.com 30 days",
+  "clicks": 14,
+  "productId": "245e4f13-436e-5c18-bf51-964c7eab288c"
 }
 ```
 

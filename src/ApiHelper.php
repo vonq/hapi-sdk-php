@@ -8,15 +8,15 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib;
+namespace HAPI;
 
 use apimatic\jsonmapper\JsonMapper;
 use Exception;
 use InvalidArgumentException;
 use JsonSerializable;
-use HAPILib\Exceptions\ApiException;
-use HAPILib\Http\HttpRequest;
-use HAPILib\Http\HttpResponse;
+use HAPI\Exceptions\ApiException;
+use HAPI\Http\HttpRequest;
+use HAPI\Http\HttpResponse;
 use stdClass;
 
 /**
@@ -96,7 +96,7 @@ class ApiHelper
         $queryUrl .= (($hasParams) ? '&' : '?');
 
         //append parameters
-        $queryUrl .= http_build_query($parameters);
+        $queryUrl .= static::httpBuildQuery($parameters);
     }
 
     /**
@@ -121,7 +121,7 @@ class ApiHelper
         $value,
         string $classname,
         int $dimension = 0,
-        string $namespace = 'HAPILib\Models'
+        string $namespace = 'HAPI\Models'
     ) {
         try {
             return $dimension == 0 ? self::getJsonMapper()->mapClass($value, "$namespace\\$classname")
@@ -152,7 +152,7 @@ class ApiHelper
         $value,
         string $types,
         array $facMethods = [],
-        string $namespace = 'HAPILib\Models'
+        string $namespace = 'HAPI\Models'
     ) {
         try {
             return self::getJsonMapper()->mapFor($value, $types, $namespace, $facMethods);
@@ -258,6 +258,24 @@ class ApiHelper
     }
 
     /**
+     * Check if an array isAssociative (has string keys)
+     *
+     * @param  array   $arr   A valid array
+     *
+     * @return boolean        True if the array is Associative, false if it is Indexed
+     */
+    private static function isAssociative(array $arr): bool
+    {
+        foreach ($arr as $key => $value) {
+            if (is_string($key)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Prepare a model for form/query encoding.
      *
      * @param JsonSerializable|null $model  A valid instance of JsonSerializable.
@@ -296,5 +314,53 @@ class ApiHelper
             return self::prepareFields($value);
         }
         return $value;
+    }
+
+    /*
+     * Encode the given data to be sent as form parameters.
+     *
+     * @param  mixed $data Input data to be encoded
+     *
+     * @return array       Encoded data
+     */
+    public static function formEncode($data)
+    {
+        if (is_array($data) || is_object($data) || $data instanceof \Traversable) {
+            return static::httpBuildQuery((array)$data);
+        }
+
+        return $data;
+    }
+
+    /*
+     * Generate URL-encoded query string from the giving list of parameters.
+     *
+     * @param  iterable $data       Input data to be encoded
+     * @param  string   $parent     Parent name accessor
+     * @param  boolean  $innerArray Is this an array within another array
+     *
+     * @return string               Url encoded query string
+     */
+    public static function httpBuildQuery(iterable $data, string $parent = '', bool $innerArray = false): string
+    {
+        if (!is_array($data)) {
+            return "";
+        }
+        $r = [];
+        foreach ((array)$data as $k => $v) {
+            if ($innerArray) {
+                if (is_numeric($k) && is_scalar($v)) {
+                    $k = $parent;
+                } else {
+                    $k = $parent . "[$k]";
+                }
+            }
+            if (is_array($v)) {
+                $r[] = static::httpBuildQuery($v, $k, true);
+                continue;
+            }
+            $r[] = urlencode($k) . "=" . urlencode(strval($v));
+        }
+        return implode("&", $r);
     }
 }

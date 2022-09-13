@@ -17,9 +17,19 @@
 
 ```json
 {
-  "name": null,
-  "phoneNumber": null,
-  "emailAddress": null
+  "name": [
+    "name0",
+    "name1",
+    "name2"
+  ],
+  "phoneNumber": [
+    "phoneNumber5",
+    "phoneNumber6"
+  ],
+  "emailAddress": [
+    "emailAddress0",
+    "emailAddress1"
+  ]
 }
 ```
 

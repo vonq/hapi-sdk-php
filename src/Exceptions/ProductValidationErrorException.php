@@ -8,12 +8,12 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Exceptions;
+namespace HAPI\Exceptions;
 
-class ProductValidationErrorException extends \HAPILib\Exceptions\ApiException
+class ProductValidationErrorException extends \HAPI\Exceptions\ApiException
 {
     /**
-     * @var \HAPILib\Models\ProductValidationErrorsModel|null
+     * @var \HAPI\Models\ProductValidationErrorsModel|null
      */
     private $errors;
 
@@ -25,7 +25,7 @@ class ProductValidationErrorException extends \HAPILib\Exceptions\ApiException
     /**
      * Returns Errors.
      */
-    public function getErrors(): ?\HAPILib\Models\ProductValidationErrorsModel
+    public function getErrors(): ?\HAPI\Models\ProductValidationErrorsModel
     {
         return $this->errors;
     }
@@ -35,7 +35,7 @@ class ProductValidationErrorException extends \HAPILib\Exceptions\ApiException
      *
      * @maps errors
      */
-    public function setErrors(?\HAPILib\Models\ProductValidationErrorsModel $errors): void
+    public function setErrors(?\HAPI\Models\ProductValidationErrorsModel $errors): void
     {
         $this->errors = $errors;
     }

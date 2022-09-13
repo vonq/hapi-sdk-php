@@ -35,20 +35,26 @@
     "addressLine1": "Westblaak 175",
     "postcode": "3012 KJ",
     "city": "Rotterdam",
-    "country": "The Netherlands"
+    "country": "The Netherlands",
+    "allowsRemoteWork": 0
   },
   "contactInfo": {
-    "name": "Janet Doe"
+    "name": "Janet Doe",
+    "phoneNumber": "+31 6 5555 5555",
+    "emailAddress": "janet.doe@vonq.com"
   },
   "yearsOfExperience": 5,
   "employmentType": "permanent",
   "weeklyWorkingHours": {
+    "from": 32,
     "to": 40
   },
   "salaryIndication": {
     "period": "yearly",
     "range": {
-      "to": 60000
+      "from": 56000,
+      "to": 60000,
+      "currency": "EUR"
     }
   },
   "jobPageUrl": "http://amadeus-hospitality-it-careers.com/vacancy/software-development-manager-breda",

@@ -8,7 +8,7 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib;
+namespace HAPI;
 
 /**
  * An interface for all configuration parameters required by the SDK.
@@ -61,11 +61,6 @@ interface ConfigurationInterface
     public function getHttpMethodsToRetry(): array;
 
     /**
-     * Get set to true to allow skipping ssl certificate verification
-     */
-    public function getSkipSslVerification(): bool;
-
-    /**
      * Get current API environment
      */
     public function getEnvironment(): string;
@@ -82,5 +77,5 @@ interface ConfigurationInterface
      *
      * @return string Base URI
      */
-    public function getBaseUri(string $server = Server::DEFAULT_): string;
+    public function getBaseUri(string $server = Server::SANDBOX): string;
 }

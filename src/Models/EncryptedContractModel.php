@@ -8,9 +8,9 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Models;
+namespace HAPI\Models;
 
-use HAPILib\Utils\DateTimeHelper;
+use HAPI\Utils\DateTimeHelper;
 use stdClass;
 
 class EncryptedContractModel implements \JsonSerializable
@@ -328,7 +328,7 @@ class EncryptedContractModel implements \JsonSerializable
      * Sets Expiry Date.
      *
      * @maps expiry_date
-     * @factory \HAPILib\Utils\DateTimeHelper::fromRfc3339DateTime
+     * @factory \HAPI\Utils\DateTimeHelper::fromRfc3339DateTime
      */
     public function setExpiryDate(?\DateTime $expiryDate): void
     {

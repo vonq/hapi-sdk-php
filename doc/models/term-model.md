@@ -16,8 +16,8 @@
 
 ```json
 {
-  "field": null,
-  "facet": null
+  "field": "field6",
+  "facet": "facet6"
 }
 ```
 

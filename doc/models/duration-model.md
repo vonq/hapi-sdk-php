@@ -16,8 +16,8 @@
 
 ```json
 {
-  "range": null,
-  "period": null
+  "range": "days",
+  "period": 30
 }
 ```
 

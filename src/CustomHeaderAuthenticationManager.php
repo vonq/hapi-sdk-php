@@ -8,9 +8,9 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib;
+namespace HAPI;
 
-use HAPILib\Http\HttpRequest;
+use HAPI\Http\HttpRequest;
 
 /**
  * Utility class for authorization and token management.

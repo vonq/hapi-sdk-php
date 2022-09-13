@@ -30,13 +30,42 @@ only `null` when part of a top-level Location's `within` key
     198.25,
     198.26
   ],
-  "area": null,
+  "area": 106,
   "place_type": [
     "continent",
     "world",
     "place"
   ],
-  "within": null
+  "within": {
+    "id": 176,
+    "fully_qualified_place_name": "fully_qualified_place_name0",
+    "canonical_name": "canonical_name0",
+    "bounding_box": [
+      109.29,
+      109.3
+    ],
+    "area": 42,
+    "place_type": [
+      "region",
+      "district",
+      "place"
+    ],
+    "within": {
+      "id": 112,
+      "fully_qualified_place_name": "fully_qualified_place_name4",
+      "canonical_name": "canonical_name4",
+      "bounding_box": [
+        198.25,
+        198.26
+      ],
+      "area": 106,
+      "place_type": [
+        "continent",
+        "world",
+        "place"
+      ]
+    }
+  }
 }
 ```
 

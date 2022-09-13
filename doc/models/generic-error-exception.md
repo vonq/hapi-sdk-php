@@ -15,7 +15,7 @@
 
 ```json
 {
-  "error": null
+  "error": "error4"
 }
 ```
 

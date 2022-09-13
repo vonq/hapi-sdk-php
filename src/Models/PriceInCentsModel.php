@@ -8,7 +8,7 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Models;
+namespace HAPI\Models;
 
 use stdClass;
 
@@ -70,7 +70,7 @@ class PriceInCentsModel implements \JsonSerializable
      *
      * @required
      * @maps currency
-     * @factory \HAPILib\Models\CurrencyEnum::checkValue
+     * @factory \HAPI\Models\CurrencyEnum::checkValue
      */
     public function setCurrency(string $currency): void
     {

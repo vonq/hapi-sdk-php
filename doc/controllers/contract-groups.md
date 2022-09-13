@@ -1,12 +1,12 @@
 # Contract Groups
 
 ```php
-$contractGroupsController = $client->getContractGroupsController();
+$contractGroupsTrue = $client->getContractGroupsTrue();
 ```
 
 ## Class Name
 
-`ContractGroupsController`
+`ContractGroupsTrue`
 
 ## Methods
 
@@ -23,7 +23,7 @@ $contractGroupsController = $client->getContractGroupsController();
 This endpoint allows to create a new contract group
 
 ```php
-function createContractsGroup(string $xCustomerId, ?ContractGroupRequestModel $body = null): ContractGroupModel
+function createContractsGroup(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -40,9 +40,18 @@ function createContractsGroup(string $xCustomerId, ?ContractGroupRequestModel $b
 ## Example Usage
 
 ```php
-$xCustomerId = 'X-Customer-Id2';
+$collect = [];
 
-$result = $contractGroupsController->createContractsGroup($xCustomerId);
+$xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
+$body_name = 'name6';
+$body = new Models\ContractGroupRequestModel(
+    $body_name
+);
+$collect['body'] = $body;
+
+$apiResponse = $contractGroupsTrue->createContractsGroup($collect);
 ```
 
 ## Errors
@@ -58,7 +67,7 @@ Deletes a contract Contract Group by idx.
 Groups with idx=0 or associated to contracts can't be deleted.
 
 ```php
-function deleteContractGroup(string $groupIdx, string $xCustomerId): void
+function deleteContractGroup(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -75,10 +84,15 @@ function deleteContractGroup(string $groupIdx, string $xCustomerId): void
 ## Example Usage
 
 ```php
-$groupIdx = 'group_idx8';
-$xCustomerId = 'X-Customer-Id2';
+$collect = [];
 
-$contractGroupsController->deleteContractGroup($groupIdx, $xCustomerId);
+$groupIdx = 'group_idx8';
+$collect['groupIdx'] = $groupIdx;
+
+$xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
+$apiResponse = $contractGroupsTrue->deleteContractGroup($collect);
 ```
 
 ## Errors
@@ -94,7 +108,7 @@ $contractGroupsController->deleteContractGroup($groupIdx, $xCustomerId);
 Returns the details of the Contract Group by index/idx
 
 ```php
-function getContractGroup(string $groupIdx, string $xCustomerId): ContractGroupModel
+function getContractGroup(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -111,10 +125,15 @@ function getContractGroup(string $groupIdx, string $xCustomerId): ContractGroupM
 ## Example Usage
 
 ```php
-$groupIdx = 'group_idx8';
-$xCustomerId = 'X-Customer-Id2';
+$collect = [];
 
-$result = $contractGroupsController->getContractGroup($groupIdx, $xCustomerId);
+$groupIdx = 'group_idx8';
+$collect['groupIdx'] = $groupIdx;
+
+$xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
+$apiResponse = $contractGroupsTrue->getContractGroup($collect);
 ```
 
 ## Errors
@@ -129,7 +148,7 @@ $result = $contractGroupsController->getContractGroup($groupIdx, $xCustomerId);
 This endpoint exposes the list of contract groups
 
 ```php
-function listContractsGroups(string $xCustomerId, ?string $ordering = null, ?string $search = null): array
+function listContractsGroups(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -147,9 +166,18 @@ function listContractsGroups(string $xCustomerId, ?string $ordering = null, ?str
 ## Example Usage
 
 ```php
-$xCustomerId = 'X-Customer-Id2';
+$collect = [];
 
-$result = $contractGroupsController->listContractsGroups($xCustomerId);
+$xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
+$ordering = 'ordering0';
+$collect['ordering'] = $ordering;
+
+$search = 'search2';
+$collect['search'] = $search;
+
+$apiResponse = $contractGroupsTrue->listContractsGroups($collect);
 ```
 
 
@@ -158,11 +186,7 @@ $result = $contractGroupsController->listContractsGroups($xCustomerId);
 Allows updating the contract group name
 
 ```php
-function partialUpdateContractGroup(
-    string $groupIdx,
-    string $xCustomerId,
-    ?ContractGroupRequestModel $body = null
-): ContractGroupModel
+function partialUpdateContractGroup(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -180,10 +204,21 @@ function partialUpdateContractGroup(
 ## Example Usage
 
 ```php
-$groupIdx = 'group_idx8';
-$xCustomerId = 'X-Customer-Id2';
+$collect = [];
 
-$result = $contractGroupsController->partialUpdateContractGroup($groupIdx, $xCustomerId);
+$groupIdx = 'group_idx8';
+$collect['groupIdx'] = $groupIdx;
+
+$xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
+$body_name = 'name6';
+$body = new Models\ContractGroupRequestModel(
+    $body_name
+);
+$collect['body'] = $body;
+
+$apiResponse = $contractGroupsTrue->partialUpdateContractGroup($collect);
 ```
 
 ## Errors
@@ -199,11 +234,7 @@ $result = $contractGroupsController->partialUpdateContractGroup($groupIdx, $xCus
 Allows updating the contract group name
 
 ```php
-function updateContractGroup(
-    string $groupIdx,
-    string $xCustomerId,
-    ?ContractGroupRequestModel $body = null
-): ContractGroupModel
+function updateContractGroup(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -221,10 +252,21 @@ function updateContractGroup(
 ## Example Usage
 
 ```php
-$groupIdx = 'group_idx8';
-$xCustomerId = 'X-Customer-Id2';
+$collect = [];
 
-$result = $contractGroupsController->updateContractGroup($groupIdx, $xCustomerId);
+$groupIdx = 'group_idx8';
+$collect['groupIdx'] = $groupIdx;
+
+$xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
+$body_name = 'name6';
+$body = new Models\ContractGroupRequestModel(
+    $body_name
+);
+$collect['body'] = $body;
+
+$apiResponse = $contractGroupsTrue->updateContractGroup($collect);
 ```
 
 ## Errors

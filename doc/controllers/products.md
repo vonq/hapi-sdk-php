@@ -1,12 +1,12 @@
 # Products
 
 ```php
-$productsController = $client->getProductsController();
+$productsTrue = $client->getProductsTrue();
 ```
 
 ## Class Name
 
-`ProductsController`
+`ProductsTrue`
 
 ## Methods
 
@@ -27,7 +27,7 @@ Learn why some products take up to 10 days to setup: - https://hapisupport.vonq.
 Note that delivery time is only applicable for Job Marketing products and it won't appear when using HAPI Job Post and connecting your contracts.
 
 ```php
-function calculateOrderDeliveryTime(array $productsIds, ?string $xCustomerId = null): TotalDeliveryTimeModel
+function calculateOrderDeliveryTime(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -44,9 +44,15 @@ function calculateOrderDeliveryTime(array $productsIds, ?string $xCustomerId = n
 ## Example Usage
 
 ```php
-$productsIds = ['products_ids7', 'products_ids8'];
+$collect = [];
 
-$result = $productsController->calculateOrderDeliveryTime($productsIds);
+$productsIds = ['products_ids7', 'products_ids8'];
+$collect['productsIds'] = $productsIds;
+
+$xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
+$apiResponse = $productsTrue->calculateOrderDeliveryTime($collect);
 ```
 
 ## Errors
@@ -63,11 +69,7 @@ Sometimes you already have access to the Identification codes of more than one P
 Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
 
 ```php
-function retrieveMultipleProducts(
-    array $productsIds,
-    ?string $acceptLanguage = null,
-    ?string $xCustomerId = null
-): PaginatedProductListModel
+function retrieveMultipleProducts(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -85,9 +87,18 @@ function retrieveMultipleProducts(
 ## Example Usage
 
 ```php
-$productsIds = ['products_ids7', 'products_ids8'];
+$collect = [];
 
-$result = $productsController->retrieveMultipleProducts($productsIds);
+$productsIds = ['products_ids7', 'products_ids8'];
+$collect['productsIds'] = $productsIds;
+
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
+$collect['acceptLanguage'] = $acceptLanguage;
+
+$xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
+$apiResponse = $productsTrue->retrieveMultipleProducts($collect);
 ```
 
 
@@ -97,11 +108,7 @@ Sometimes you already have access to the Identification code of any particular P
 Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
 
 ```php
-function retrieveSingleProduct(
-    string $productId,
-    ?string $acceptLanguage = null,
-    ?string $xCustomerId = null
-): ProductModel
+function retrieveSingleProduct(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -119,9 +126,18 @@ function retrieveSingleProduct(
 ## Example Usage
 
 ```php
-$productId = 'product_id4';
+$collect = [];
 
-$result = $productsController->retrieveSingleProduct($productId);
+$productId = 'product_id4';
+$collect['productId'] = $productId;
+
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
+$collect['acceptLanguage'] = $acceptLanguage;
+
+$xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
+$apiResponse = $productsTrue->retrieveSingleProduct($collect);
 ```
 
 ## Errors
@@ -143,25 +159,7 @@ Calling this endpoint will guarantee that the Products you see are configured fo
 Besides the default English, German and Dutch result translations can be requested by specifying an `Accept-Language: [de|nl]` header.
 
 ```php
-function searchProducts(
-    ?int $limit = null,
-    ?int $offset = null,
-    ?array $includeLocationId = null,
-    ?string $exactLocationId = null,
-    ?string $jobFunctionId = null,
-    ?string $jobTitleId = null,
-    ?array $industryId = null,
-    ?string $durationFrom = null,
-    ?string $durationTo = null,
-    ?string $name = null,
-    ?string $currency = null,
-    ?string $sortBy = Models\SortByEnum::RELEVANT,
-    ?bool $recommended = null,
-    ?bool $mcEnabled = null,
-    ?bool $excludeRecommended = false,
-    ?string $acceptLanguage = null,
-    ?string $xCustomerId = null
-): PaginatedProductListModel
+function searchProducts(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -193,10 +191,60 @@ function searchProducts(
 ## Example Usage
 
 ```php
-$sortBy = Models\SortByEnum::RELEVANT;
-$excludeRecommended = false;
+$collect = [];
 
-$result = $productsController->searchProducts(null, null, null, null, null, null, null, null, null, null, null, $sortBy, null, null, $excludeRecommended);
+$limit = 172;
+$collect['limit'] = $limit;
+
+$offset = 12;
+$collect['offset'] = $offset;
+
+$includeLocationId = ['includeLocationId3', 'includeLocationId4'];
+$collect['includeLocationId'] = $includeLocationId;
+
+$exactLocationId = 'exactLocationId6';
+$collect['exactLocationId'] = $exactLocationId;
+
+$jobFunctionId = 'jobFunctionId8';
+$collect['jobFunctionId'] = $jobFunctionId;
+
+$jobTitleId = 'jobTitleId4';
+$collect['jobTitleId'] = $jobTitleId;
+
+$industryId = ['industryId3'];
+$collect['industryId'] = $industryId;
+
+$durationFrom = 'durationFrom8';
+$collect['durationFrom'] = $durationFrom;
+
+$durationTo = 'durationTo6';
+$collect['durationTo'] = $durationTo;
+
+$name = 'name0';
+$collect['name'] = $name;
+
+$currency = 'currency0';
+$collect['currency'] = $currency;
+
+$sortBy = Models\SortByEnum::RELEVANT;
+$collect['sortBy'] = $sortBy;
+
+$recommended = false;
+$collect['recommended'] = $recommended;
+
+$mcEnabled = false;
+$collect['mcEnabled'] = $mcEnabled;
+
+$excludeRecommended = false;
+$collect['excludeRecommended'] = $excludeRecommended;
+
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
+$collect['acceptLanguage'] = $acceptLanguage;
+
+$xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
+$apiResponse = $productsTrue->searchProducts($collect);
 ```
 
 ## Errors

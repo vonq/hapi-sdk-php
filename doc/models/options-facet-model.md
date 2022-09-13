@@ -24,10 +24,28 @@
   "default": "default0",
   "key": "key0",
   "label": "label0",
-  "labels": null,
+  "labels": {
+    "key0": {
+      "key1": "val1",
+      "key2": "val2"
+    },
+    "key1": {
+      "key1": "val1",
+      "key2": "val2"
+    }
+  },
   "sort": "sort8",
-  "parent": null,
-  "requires": null
+  "parent": "parent0",
+  "requires": [
+    {
+      "key1": "val1",
+      "key2": "val2"
+    },
+    {
+      "key1": "val1",
+      "key2": "val2"
+    }
+  ]
 }
 ```
 

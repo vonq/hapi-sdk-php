@@ -5,9 +5,9 @@
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Tests;
+namespace HAPI\Tests;
 
-use HAPILib\ApiHelper;
+use HAPI\ApiHelper;
 use \apimatic\jsonmapper\JsonMapper;
 
 /**

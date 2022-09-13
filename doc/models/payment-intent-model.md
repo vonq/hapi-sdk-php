@@ -20,12 +20,12 @@
 
 ```json
 {
-  "walletId": "00000290-0000-0000-0000-000000000000",
-  "partnerId": "00000c8c-0000-0000-0000-000000000000",
-  "amount": 46,
+  "walletId": null,
+  "partnerId": null,
+  "amount": null,
   "queryParamsAmount": null,
   "successCallbackUrl": null,
-  "agreeTerms": null
+  "agreeTerms": false
 }
 ```
 

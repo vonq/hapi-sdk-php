@@ -1,12 +1,12 @@
 # Channels
 
 ```php
-$channelsController = $client->getChannelsController();
+$channelsTrue = $client->getChannelsTrue();
 ```
 
 ## Class Name
 
-`ChannelsController`
+`ChannelsTrue`
 
 ## Methods
 
@@ -19,13 +19,7 @@ $channelsController = $client->getChannelsController();
 This endpoint exposes a list of channels with support for contracts. For all of the required details for creating a contract or a campaign for each channel, please call the "Retrieve details for channel with support for contracts".
 
 ```php
-function listChannels(
-    string $xCustomerId,
-    ?string $search = null,
-    ?int $limit = 25,
-    ?int $offset = 0,
-    ?string $acceptLanguage = null
-): PaginatedListChannelListModel
+function listChannels(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -45,11 +39,24 @@ function listChannels(
 ## Example Usage
 
 ```php
-$xCustomerId = 'X-Customer-Id2';
-$limit = 10;
-$offset = 0;
+$collect = [];
 
-$result = $channelsController->listChannels($xCustomerId, null, $limit, $offset);
+$xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
+$search = 'search2';
+$collect['search'] = $search;
+
+$limit = 10;
+$collect['limit'] = $limit;
+
+$offset = 0;
+$collect['offset'] = $offset;
+
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
+$collect['acceptLanguage'] = $acceptLanguage;
+
+$apiResponse = $channelsTrue->listChannels($collect);
 ```
 
 ## Example Response *(as JSON)*
@@ -83,11 +90,7 @@ $result = $channelsController->listChannels($xCustomerId, null, $limit, $offset)
 This endpoint exposes the details of a channel with support for contracts,as well as all the required details for creating a contract or a campaign for each channel.
 
 ```php
-function retrieveChannel(
-    int $channelId,
-    string $xCustomerId,
-    ?string $acceptLanguage = null
-): LimitedChannelModel
+function retrieveChannel(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -105,10 +108,18 @@ function retrieveChannel(
 ## Example Usage
 
 ```php
-$channelId = 154;
-$xCustomerId = 'X-Customer-Id2';
+$collect = [];
 
-$result = $channelsController->retrieveChannel($channelId, $xCustomerId);
+$channelId = 154;
+$collect['channelId'] = $channelId;
+
+$xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
+$acceptLanguage = Models\AcceptLanguageEnum::NL;
+$collect['acceptLanguage'] = $acceptLanguage;
+
+$apiResponse = $channelsTrue->retrieveChannel($collect);
 ```
 
 ## Errors

@@ -29,23 +29,242 @@
 
 ```json
 {
-  "contract_id": "06a8f6f0-5e0e-4614-869e-ab95a8530633",
-  "customer_id": "c0cbefa5-6f04-4dbc-8208-5963bc433166",
-  "channel_id": 0,
-  "credentials": null,
-  "class_name": null,
-  "facets": null,
-  "product": null,
-  "posting_requirements": {
-    "name": null,
-    "label": null,
-    "sort": null,
-    "required": null,
-    "type": "AUTOCOMPLETE",
-    "options": null
+  "contract_id": "contract_id8",
+  "customer_id": "customer_id8",
+  "channel_id": 28,
+  "alias": "alias2",
+  "credentials": {
+    "key1": "val1",
+    "key2": "val2"
   },
-  "expiry_date": "02/15/2022 12:03:45",
-  "credits": 0
+  "class_name": "class_name8",
+  "facets": {
+    "key1": "val1",
+    "key2": "val2"
+  },
+  "product": {
+    "product_id": "product_id6",
+    "title": "title6"
+  },
+  "posting_requirements": [
+    {
+      "name": "name8",
+      "label": "label8",
+      "sort": "sort0",
+      "required": false,
+      "type": "STATISCH",
+      "options": [
+        {
+          "default": "default5",
+          "key": "key5",
+          "label": "label5",
+          "labels": {
+            "key0": {
+              "key1": "val1",
+              "key2": "val2"
+            },
+            "key1": {
+              "key1": "val1",
+              "key2": "val2"
+            },
+            "key2": {
+              "key1": "val1",
+              "key2": "val2"
+            }
+          },
+          "sort": "sort7",
+          "parent": "parent5",
+          "requires": [
+            {
+              "key1": "val1",
+              "key2": "val2"
+            },
+            {
+              "key1": "val1",
+              "key2": "val2"
+            }
+          ]
+        },
+        {
+          "default": "default6",
+          "key": "key6",
+          "label": "label6",
+          "labels": {
+            "key0": {
+              "key1": "val1",
+              "key2": "val2"
+            }
+          },
+          "sort": "sort8",
+          "parent": "parent6",
+          "requires": [
+            {
+              "key1": "val1",
+              "key2": "val2"
+            },
+            {
+              "key1": "val1",
+              "key2": "val2"
+            },
+            {
+              "key1": "val1",
+              "key2": "val2"
+            }
+          ]
+        },
+        {
+          "default": "default7",
+          "key": "key7",
+          "label": "label7",
+          "labels": {
+            "key0": {
+              "key1": "val1",
+              "key2": "val2"
+            },
+            "key1": {
+              "key1": "val1",
+              "key2": "val2"
+            }
+          },
+          "sort": "sort9",
+          "parent": "parent7",
+          "requires": [
+            {
+              "key1": "val1",
+              "key2": "val2"
+            }
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "rule": "maxlengthcombined",
+          "data": "data6"
+        }
+      ],
+      "autocomplete": {},
+      "display_rules": {
+        "show": [
+          {
+            "facet": "facet5",
+            "value": "String4",
+            "op": "notempty"
+          },
+          {
+            "facet": "facet6",
+            "value": "String5",
+            "op": "equal"
+          },
+          {
+            "facet": "facet7",
+            "value": "String6",
+            "op": "in"
+          }
+        ]
+      }
+    },
+    {
+      "name": "name9",
+      "label": "label9",
+      "sort": "sort1",
+      "required": true,
+      "type": "MULTIPLE",
+      "options": [
+        {
+          "default": "default6",
+          "key": "key6",
+          "label": "label6",
+          "labels": {
+            "key0": {
+              "key1": "val1",
+              "key2": "val2"
+            }
+          },
+          "sort": "sort8",
+          "parent": "parent6",
+          "requires": [
+            {
+              "key1": "val1",
+              "key2": "val2"
+            },
+            {
+              "key1": "val1",
+              "key2": "val2"
+            },
+            {
+              "key1": "val1",
+              "key2": "val2"
+            }
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "rule": "maxlevels",
+          "data": "data7"
+        },
+        {
+          "rule": "nl-pc",
+          "data": "data8"
+        }
+      ],
+      "autocomplete": {},
+      "display_rules": {
+        "show": [
+          {
+            "facet": "facet6",
+            "value": "String5",
+            "op": "equal"
+          }
+        ]
+      }
+    }
+  ],
+  "expiry_date": "2016-03-13T12:52:32.123Z",
+  "credits": 220,
+  "purchase_price": {
+    "amount": 147.42,
+    "currency": "currency0"
+  },
+  "igb_customer_id": "igb_customer_id6",
+  "channel": {
+    "id": 232,
+    "mc_enabled": false,
+    "logo_url": [
+      {
+        "url": "url5"
+      },
+      {
+        "url": "url4"
+      },
+      {
+        "url": "url3"
+      }
+    ],
+    "logo_square_url": [
+      {
+        "url": "url9",
+        "size": "size5"
+      }
+    ],
+    "logo_rectangle_url": [
+      {
+        "url": "url3",
+        "size": "size1"
+      },
+      {
+        "url": "url2",
+        "size": "size2"
+      },
+      {
+        "url": "url1",
+        "size": "size3"
+      }
+    ]
+  },
+  "group": {
+    "name": "name8"
+  }
 }
 ```
 

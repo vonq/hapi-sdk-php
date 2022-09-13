@@ -23,15 +23,29 @@
 
 ```json
 {
-  "alias": null,
-  "channel_id": null,
-  "credentials": null,
-  "facets": null,
-  "expiry_date": null,
-  "credits": null,
-  "purchase_price": null,
-  "followed_instructions": null,
-  "group_id": null
+  "alias": [
+    "alias8"
+  ],
+  "channel_id": [
+    "channel_id2"
+  ],
+  "credentials": {
+    "key0": {
+      "key1": "val1",
+      "key2": "val2"
+    }
+  },
+  "facets": {
+    "key0": {
+      "key1": "val1",
+      "key2": "val2"
+    }
+  },
+  "expiry_date": [
+    "expiry_date0",
+    "expiry_date1",
+    "expiry_date2"
+  ]
 }
 ```
 

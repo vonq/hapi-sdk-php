@@ -17,9 +17,9 @@
 
 ```json
 {
-  "someText": null,
+  "someText": "example",
   "multipleSelectField": null,
-  "someIntValue": null
+  "someIntValue": 22
 }
 ```
 

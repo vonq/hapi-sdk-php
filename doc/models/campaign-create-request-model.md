@@ -25,11 +25,14 @@
 ```json
 {
   "companyId": "dd1c5be0-b0e1-41c8-ba92-e876da16c38b",
+  "orderReference": "PO_567_2019",
+  "currency": null,
   "recruiterInfo": {
     "id": "af78ce39-94a8-45dc-8c68-35f4d684fa5f",
     "name": "John Doe",
     "emailAddress": "john.doe@vonq.com"
   },
+  "campaignName": "Software Development Manager",
   "postingDetails": {
     "title": "Come work for us, we're looking for amazing Software Developers",
     "description": "Are you a LEADER and a BUILDER?  Global is looking for individuals who are dynamic, sales-oriented, and who want to control their destiny.  With a full training programme and consistent support, Global will provide you with the tools to excel in this very lucrative business.",
@@ -41,44 +44,70 @@
       "addressLine1": "Westblaak 175",
       "postcode": "3012 KJ",
       "city": "Rotterdam",
-      "country": "The Netherlands"
+      "country": "The Netherlands",
+      "allowsRemoteWork": 0
     },
     "contactInfo": {
-      "name": "Janet Doe"
+      "name": "Janet Doe",
+      "phoneNumber": "+31 6 5555 5555",
+      "emailAddress": "janet.doe@vonq.com"
     },
     "yearsOfExperience": 5,
     "employmentType": "permanent",
     "weeklyWorkingHours": {
+      "from": 32,
       "to": 40
     },
     "salaryIndication": {
       "period": "yearly",
       "range": {
-        "to": 60000
+        "from": 56000,
+        "to": 60000,
+        "currency": "EUR"
       }
     },
     "jobPageUrl": "http://amadeus-hospitality-it-careers.com/vacancy/software-development-manager-breda",
     "applicationUrl": "http://amadeus-hospitality-it-careers.com/vacancy/software-development-manager-breda/apply"
   },
   "targetGroup": {
-    "educationLevel": {
-      "description": "Element name",
-      "vonqId": "23"
-    },
-    "seniority": {
-      "description": "Element name",
-      "vonqId": "23"
-    },
-    "industry": {
-      "description": "Element name",
-      "vonqId": "23"
-    },
-    "jobCategory": {
-      "description": "Element name",
-      "vonqId": "23"
-    }
+    "educationLevel": [
+      {
+        "description": "Element name",
+        "vonqId": "23"
+      }
+    ],
+    "seniority": [
+      {
+        "description": "Element name",
+        "vonqId": "23"
+      }
+    ],
+    "industry": [
+      {
+        "description": "Element name",
+        "vonqId": "23"
+      }
+    ],
+    "jobCategory": [
+      {
+        "description": "Element name",
+        "vonqId": "23"
+      }
+    ]
   },
-  "orderedProducts": null
+  "orderedProducts": null,
+  "orderedProductsSpecs": [
+    {
+      "productId": "2cbad29e-a510-52fc-bbdf-e873320e89f5",
+      "utm": "utm_medium=social&utm_source=facebook&utm_campaign=example",
+      "contractId": "06a8f6f0-5e0e-4614-869e-ab95a8530633",
+      "postingRequirements": {
+        "someText": "example",
+        "someIntValue": 22
+      }
+    }
+  ],
+  "walletId": null
 }
 ```
 

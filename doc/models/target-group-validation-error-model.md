@@ -18,10 +18,86 @@
 
 ```json
 {
-  "jobCategory": null,
-  "seniority": null,
-  "industry": null,
-  "educationLevel": null
+  "jobCategory": [
+    {
+      "vonqId": [
+        "vonqId4",
+        "vonqId5"
+      ],
+      "description": [
+        "description7",
+        "description8"
+      ]
+    }
+  ],
+  "seniority": [
+    {
+      "vonqId": [
+        "vonqId3",
+        "vonqId4",
+        "vonqId5"
+      ],
+      "description": [
+        "description6",
+        "description5"
+      ]
+    },
+    {
+      "vonqId": [
+        "vonqId4"
+      ],
+      "description": [
+        "description7"
+      ]
+    },
+    {
+      "vonqId": [
+        "vonqId5",
+        "vonqId6"
+      ],
+      "description": [
+        "description8",
+        "description7",
+        "description6"
+      ]
+    }
+  ],
+  "industry": [
+    {
+      "vonqId": [
+        "vonqId2",
+        "vonqId3"
+      ],
+      "description": [
+        "description5",
+        "description6",
+        "description7"
+      ]
+    },
+    {
+      "vonqId": [
+        "vonqId3",
+        "vonqId4",
+        "vonqId5"
+      ],
+      "description": [
+        "description4",
+        "description5"
+      ]
+    }
+  ],
+  "educationLevel": [
+    {
+      "vonqId": [
+        "vonqId4",
+        "vonqId5"
+      ],
+      "description": [
+        "description7",
+        "description8"
+      ]
+    }
+  ]
 }
 ```
 

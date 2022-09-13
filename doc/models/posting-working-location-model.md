@@ -21,9 +21,11 @@
 ```json
 {
   "addressLine1": "Westblaak 175",
+  "addressLine2": null,
   "postcode": "3012 KJ",
   "city": "Rotterdam",
-  "country": "The Netherlands"
+  "country": "The Netherlands",
+  "allowsRemoteWork": 0
 }
 ```
 

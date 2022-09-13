@@ -1,12 +1,12 @@
 # Wallets
 
 ```php
-$walletsController = $client->getWalletsController();
+$walletsTrue = $client->getWalletsTrue();
 ```
 
 ## Class Name
 
-`WalletsController`
+`WalletsTrue`
 
 ## Methods
 
@@ -23,7 +23,7 @@ $walletsController = $client->getWalletsController();
 Retrieves wallet details and balance. You must first create a wallet for your customer. See [POST /wallet](HAPI-Payments.yaml/paths/~1wallet)
 
 ```php
-function getWallet(string $xCustomerId): WalletModel
+function getWallet(string $xCustomerId): ApiResponse
 ```
 
 ## Parameters
@@ -40,8 +40,7 @@ function getWallet(string $xCustomerId): WalletModel
 
 ```php
 $xCustomerId = 'X-Customer-Id2';
-
-$result = $walletsController->getWallet($xCustomerId);
+$apiResponse = $walletsTrue->getWallet($xCustomerId);
 ```
 
 ## Example Response *(as JSON)*
@@ -71,7 +70,7 @@ Landing page after a succesful payment operation. The user is redirected here fr
 :information_source: **Note** This endpoint does not require authentication.
 
 ```php
-function getWalletProcess(?string $target = null): array
+function getWalletProcess(?string $target = null): ApiResponse
 ```
 
 ## Parameters
@@ -87,7 +86,8 @@ function getWalletProcess(?string $target = null): array
 ## Example Usage
 
 ```php
-$result = $walletsController->getWalletProcess();
+$target = 'target2';
+$apiResponse = $walletsTrue->getWalletProcess($target);
 ```
 
 ## Errors
@@ -180,13 +180,7 @@ window.addEventListener("message", e => {
 :information_source: **Note** This endpoint does not require authentication.
 
 ```php
-function getWalletTopupHtml(
-    string $walletId,
-    string $partnerId,
-    ?int $amount = null,
-    ?string $returnUrl = null,
-    ?string $successCallbackUrl = null
-): array
+function getWalletTopupHtml(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -206,10 +200,24 @@ function getWalletTopupHtml(
 ## Example Usage
 
 ```php
-$walletId = '00000290-0000-0000-0000-000000000000';
-$partnerId = '00000c8c-0000-0000-0000-000000000000';
+$collect = [];
 
-$result = $walletsController->getWalletTopupHtml($walletId, $partnerId);
+$walletId = '00000290-0000-0000-0000-000000000000';
+$collect['walletId'] = $walletId;
+
+$partnerId = '00000c8c-0000-0000-0000-000000000000';
+$collect['partnerId'] = $partnerId;
+
+$amount = 46;
+$collect['amount'] = $amount;
+
+$returnUrl = 'returnUrl2';
+$collect['returnUrl'] = $returnUrl;
+
+$successCallbackUrl = 'successCallbackUrl8';
+$collect['successCallbackUrl'] = $successCallbackUrl;
+
+$apiResponse = $walletsTrue->getWalletTopupHtml($collect);
 ```
 
 ## Errors
@@ -225,7 +233,7 @@ $result = $walletsController->getWalletTopupHtml($walletId, $partnerId);
 Create a wallet for the provided customer ID.
 
 ```php
-function postWallet(string $xCustomerId, ?WalletRequestModel $body = null): WalletModel
+function postWallet(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -242,13 +250,18 @@ function postWallet(string $xCustomerId, ?WalletRequestModel $body = null): Wall
 ## Example Usage
 
 ```php
+$collect = [];
+
 $xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
 $body_customerName = 'VONQ';
 $body = new Models\WalletRequestModel(
     $body_customerName
 );
+$collect['body'] = $body;
 
-$result = $walletsController->postWallet($xCustomerId, $body);
+$apiResponse = $walletsTrue->postWallet($collect);
 ```
 
 ## Example Response *(as JSON)*
@@ -280,7 +293,7 @@ Initiates a payment intent object. To make a payment, one first needs to create 
 :information_source: **Note** This endpoint does not require authentication.
 
 ```php
-function postWalletPaymentIntent(?PaymentIntentModel $body = null): LimitedPaymentIntentModel
+function postWalletPaymentIntent(?PaymentIntentModel $body = null): ApiResponse
 ```
 
 ## Parameters
@@ -296,7 +309,18 @@ function postWalletPaymentIntent(?PaymentIntentModel $body = null): LimitedPayme
 ## Example Usage
 
 ```php
-$result = $walletsController->postWalletPaymentIntent();
+$body_walletId = '00001ba8-0000-0000-0000-000000000000';
+$body_partnerId = '0000016c-0000-0000-0000-000000000000';
+$body_amount = 218;
+$body = new Models\PaymentIntentModel(
+    $body_walletId,
+    $body_partnerId,
+    $body_amount
+);
+$body->setQueryParamsAmount(238);
+$body->setSuccessCallbackUrl('successCallbackUrl8');
+$body->setAgreeTerms(false);
+$apiResponse = $walletsTrue->postWalletPaymentIntent($body);
 ```
 
 ## Errors
@@ -312,10 +336,7 @@ $result = $walletsController->postWalletPaymentIntent();
 Returns billing portal link where the customer can edit his billing details.
 
 ```php
-function postWalletWalletIdBillingPortal(
-    string $xCustomerId,
-    ?string $partnerReturnUrl = null
-): BillingPortalLinkModel
+function postWalletWalletIdBillingPortal(array $options): ApiResponse
 ```
 
 ## Parameters
@@ -332,9 +353,15 @@ function postWalletWalletIdBillingPortal(
 ## Example Usage
 
 ```php
-$xCustomerId = 'X-Customer-Id2';
+$collect = [];
 
-$result = $walletsController->postWalletWalletIdBillingPortal($xCustomerId);
+$xCustomerId = 'X-Customer-Id2';
+$collect['xCustomerId'] = $xCustomerId;
+
+$partnerReturnUrl = 'partnerReturnUrl4';
+$collect['partnerReturnUrl'] = $partnerReturnUrl;
+
+$apiResponse = $walletsTrue->postWalletWalletIdBillingPortal($collect);
 ```
 
 ## Example Response *(as JSON)*

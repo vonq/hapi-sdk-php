@@ -8,7 +8,7 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Models;
+namespace HAPI\Models;
 
 use stdClass;
 
@@ -45,9 +45,9 @@ class ProductModel implements \JsonSerializable
     private $homepage;
 
     /**
-     * @var array
+     * @var ProductLogoModel[]|null
      */
-    private $logoUrl = [];
+    private $logoUrl;
 
     /**
      * @var ProductLogoWithSizeModel[]|null
@@ -312,10 +312,7 @@ class ProductModel implements \JsonSerializable
      */
     public function getLogoUrl(): ?array
     {
-        if (count($this->logoUrl) == 0) {
-            return null;
-        }
-        return $this->logoUrl['value'];
+        return $this->logoUrl;
     }
 
     /**
@@ -327,15 +324,7 @@ class ProductModel implements \JsonSerializable
      */
     public function setLogoUrl(?array $logoUrl): void
     {
-        $this->logoUrl['value'] = $logoUrl;
-    }
-
-    /**
-     * Unsets Logo Url.
-     */
-    public function unsetLogoUrl(): void
-    {
-        $this->logoUrl = [];
+        $this->logoUrl = $logoUrl;
     }
 
     /**
@@ -521,7 +510,7 @@ class ProductModel implements \JsonSerializable
      *
      * @required
      * @maps type
-     * @factory \HAPILib\Models\ChannelTypeEnum::checkValue
+     * @factory \HAPI\Models\ChannelTypeEnum::checkValue
      */
     public function setType(string $type): void
     {
@@ -585,7 +574,7 @@ class ProductModel implements \JsonSerializable
      *
      * @required
      * @maps audience_group
-     * @factory \HAPILib\Models\AudienceGroupEnum::checkValue
+     * @factory \HAPI\Models\AudienceGroupEnum::checkValue
      */
     public function setAudienceGroup(string $audienceGroup): void
     {
@@ -688,9 +677,7 @@ class ProductModel implements \JsonSerializable
         $json['industries']         = $this->industries;
         $json['description']        = $this->description;
         $json['homepage']           = $this->homepage;
-        if (!empty($this->logoUrl)) {
-            $json['logo_url']       = $this->logoUrl['value'];
-        }
+        $json['logo_url']           = $this->logoUrl;
         $json['logo_square_url']    = $this->logoSquareUrl;
         $json['logo_rectangle_url'] = $this->logoRectangleUrl;
         $json['duration']           = $this->duration;

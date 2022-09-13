@@ -27,15 +27,64 @@
 
 ```json
 {
-  "contract_id": "06a8f6f0-5e0e-4614-869e-ab95a8530633",
-  "customer_id": "c0cbefa5-6f04-4dbc-8208-5963bc433166",
-  "channel_id": 0,
-  "class_name": null,
-  "facets": null,
-  "product": null,
-  "expiry_date": "02/15/2022 12:03:45",
-  "credits": 0,
-  "igb_customer_id": null
+  "contract_id": "contract_id8",
+  "customer_id": "customer_id8",
+  "channel_id": 28,
+  "alias": "alias2",
+  "class_name": "class_name8",
+  "facets": {
+    "key1": "val1",
+    "key2": "val2"
+  },
+  "product": {
+    "product_id": "product_id6",
+    "title": "title6"
+  },
+  "expiry_date": "2016-03-13T12:52:32.123Z",
+  "credits": 220,
+  "purchase_price": {
+    "amount": 147.42,
+    "currency": "currency0"
+  },
+  "igb_customer_id": "igb_customer_id6",
+  "group": {
+    "name": "name8"
+  },
+  "channel": {
+    "id": 232,
+    "mc_enabled": false,
+    "logo_url": [
+      {
+        "url": "url5"
+      },
+      {
+        "url": "url4"
+      },
+      {
+        "url": "url3"
+      }
+    ],
+    "logo_square_url": [
+      {
+        "url": "url9",
+        "size": "size5"
+      }
+    ],
+    "logo_rectangle_url": [
+      {
+        "url": "url3",
+        "size": "size1"
+      },
+      {
+        "url": "url2",
+        "size": "size2"
+      },
+      {
+        "url": "url1",
+        "size": "size3"
+      }
+    ]
+  }
 }
 ```
 

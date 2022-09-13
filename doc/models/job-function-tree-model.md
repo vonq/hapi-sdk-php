@@ -25,8 +25,7 @@
       "name": "name4",
       "children": {
         "id": 74,
-        "name": "name4",
-        "children": null
+        "name": "name4"
       }
     },
     {
@@ -34,8 +33,7 @@
       "name": "name5",
       "children": {
         "id": 73,
-        "name": "name3",
-        "children": null
+        "name": "name3"
       }
     }
   ]

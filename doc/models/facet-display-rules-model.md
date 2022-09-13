@@ -20,10 +20,11 @@ Else the facet is not displayed and should not be shown to the user nor facet da
 
 ```json
 {
-  "show": {
-    "facet": "IGB_locationtype",
-    "op": null
-  }
+  "show": [
+    {
+      "facet": "IGB_locationtype"
+    }
+  ]
 }
 ```
 

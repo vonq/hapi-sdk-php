@@ -28,7 +28,20 @@
   "sort": null,
   "required": null,
   "type": "AUTOCOMPLETE",
-  "options": null
+  "options": null,
+  "rules": [
+    {
+      "rule": "date"
+    }
+  ],
+  "autocomplete": null,
+  "display_rules": {
+    "show": [
+      {
+        "facet": "IGB_locationtype"
+      }
+    ]
+  }
 }
 ```
 

@@ -18,7 +18,13 @@
 ```json
 {
   "campaignId": "dd1c5be0-b0e1-41c8-ba92-e876da16c38b",
-  "status": "online"
+  "status": "online",
+  "orderedProductsStatuses": [
+    {
+      "productId": "8eefb7a1-c5f3-5739-9fe6-cea17e2ee742",
+      "status": "online"
+    }
+  ]
 }
 ```
 

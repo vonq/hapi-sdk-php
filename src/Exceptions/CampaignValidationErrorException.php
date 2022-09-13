@@ -8,9 +8,9 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Exceptions;
+namespace HAPI\Exceptions;
 
-class CampaignValidationErrorException extends \HAPILib\Exceptions\ApiException
+class CampaignValidationErrorException extends \HAPI\Exceptions\ApiException
 {
     /**
      * @var array|null

@@ -23,7 +23,7 @@
 
 ```json
 {
-  "alias": null,
+  "alias": "alias2",
   "channel_id": 28,
   "credentials": {
     "key0": {
@@ -31,12 +31,18 @@
       "key2": "val2"
     }
   },
-  "facets": null,
-  "expiry_date": null,
-  "credits": null,
-  "purchase_price": null,
-  "followed_instructions": null,
-  "group_id": null
+  "facets": {
+    "key0": {
+      "key1": "val1",
+      "key2": "val2"
+    }
+  },
+  "expiry_date": "2016-03-13T12:52:32.123Z",
+  "credits": 220,
+  "purchase_price": {
+    "amount": 150,
+    "currency": "TOP"
+  }
 }
 ```
 

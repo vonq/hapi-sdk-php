@@ -8,9 +8,9 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Exceptions;
+namespace HAPI\Exceptions;
 
-class GenericErrorWithDetailException extends \HAPILib\Exceptions\ApiException
+class GenericErrorWithDetailException extends \HAPI\Exceptions\ApiException
 {
     /**
      * @var string
@@ -19,14 +19,14 @@ class GenericErrorWithDetailException extends \HAPILib\Exceptions\ApiException
 
     /**
      * @param string $reason
-     * @param \HAPILib\Http\HttpRequest $request
-     * @param \HAPILib\Http\HttpResponse $response
+     * @param \HAPI\Http\HttpRequest $request
+     * @param \HAPI\Http\HttpResponse $response
      * @param string $detail
      */
     public function __construct(
         string $reason,
-        \HAPILib\Http\HttpRequest $request,
-        \HAPILib\Http\HttpResponse $response,
+        \HAPI\Http\HttpRequest $request,
+        \HAPI\Http\HttpResponse $response,
         string $detail
     ) {
         parent::__construct($reason, $request, $response);

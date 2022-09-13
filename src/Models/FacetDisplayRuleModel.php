@@ -8,9 +8,9 @@ declare(strict_types=1);
  * This file was automatically generated for VONQ by APIMATIC v3.0 ( https://www.apimatic.io ).
  */
 
-namespace HAPILib\Models;
+namespace HAPI\Models;
 
-use HAPILib\ApiHelper;
+use HAPI\ApiHelper;
 use stdClass;
 
 class FacetDisplayRuleModel implements \JsonSerializable
@@ -101,7 +101,7 @@ class FacetDisplayRuleModel implements \JsonSerializable
      *
      * @required
      * @maps op
-     * @factory \HAPILib\Models\OpEnum::checkValue
+     * @factory \HAPI\Models\OpEnum::checkValue
      */
     public function setOp(string $op): void
     {
